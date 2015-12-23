@@ -1,0 +1,28 @@
+Dec 22 06:24:15 1.23.99.109 u83407249 Connection from 1.23.99.109 port 54434
+Dec 22 06:24:34 1.23.99.109 u83407249 Accepted password for u83407249 from 1.23.99.109 port 54434 ssh2
+Dec 22 06:56:50 10.72.10.199 tmp83407249-4433 Connection from 10.72.10.199 port 55679
+Dec 22 06:56:50 10.72.10.199 tmp83407249-4433 Accepted password for tmp83407249-4433 from 10.72.10.199 port 55679 ssh2
+Dec 22 11:56:50 10.72.10.199 u83407249 SFTP session started in /kunden/homepages/21/d606346880/htdocs
+Dec 22 11:56:51 10.72.10.199 u83407249 Client version 3
+Dec 22 08:03:26 10.72.10.199 u83407249 Connection closed by 10.72.10.199
+Dec 23 02:26:50 10.72.10.201 tmp83407249-5044 Connection from 212.91.171.178 port 54848
+Dec 23 03:44:53 icpu4884 sshd[15151]: Connection from 10.72.10.201 port 55160
+Dec 23 03:44:54 10.72.10.201 tmp83407249-5044 Accepted password for tmp83407249-5044 from 10.72.10.201 port 55160 ssh2
+Dec 23 08:44:54 10.72.10.201 u83407249 SFTP session started in /kunden/homepages/21/d606346880/htdocs
+Dec 23 08:44:54 10.72.10.201 u83407249 Client version 3
+Dec 23 03:46:30 10.72.10.201 tmp83407249-424 Connection from 10.72.10.201 port 55296
+Dec 23 03:46:31 10.72.10.201 tmp83407249-424 Accepted password for tmp83407249-424 from 10.72.10.201 port 55296 ssh2
+Dec 23 03:46:47 10.72.10.199 tmp83407249-7287 Connection from 10.72.10.199 port 59018
+Dec 23 03:46:47 10.72.10.199 tmp83407249-7287 Accepted password for tmp83407249-7287 from 10.72.10.199 port 59018 ssh2
+Dec 23 08:46:48 10.72.10.199 u83407249 SFTP session started in /kunden/homepages/21/d606346880/htdocs
+Dec 23 08:46:48 10.72.10.199 u83407249 Client version 3
+Dec 23 03:48:01 10.72.10.199 tmp83407249-9135 Connection from 10.72.10.199 port 59289
+Dec 23 03:48:01 10.72.10.199 tmp83407249-9135 Accepted password for tmp83407249-9135 from 10.72.10.199 port 59289 ssh2
+Dec 23 04:48:25 10.72.10.201 u83407249 Connection closed by 10.72.10.201
+Dec 23 04:48:25 10.72.10.201 tmp83407249-424 Connection closed by 10.72.10.201
+Dec 23 04:50:21 10.72.10.199 u83407249 Connection closed by 10.72.10.199
+Dec 23 04:50:21 10.72.10.199 tmp83407249-9135 Connection closed by 10.72.10.199
+Dec 23 07:07:18 10.72.10.199 tmp83407249-3200 Connection from 10.72.10.199 port 55676
+Dec 23 07:07:19 10.72.10.199 tmp83407249-3200 Accepted password for tmp83407249-3200 from 10.72.10.199 port 55676 ssh2
+Dec 23 12:07:19 10.72.10.199 u83407249 SFTP session started in /kunden/homepages/21/d606346880/htdocs
+Dec 23 12:07:19 10.72.10.199 u83407249 Client version 3
