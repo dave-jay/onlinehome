@@ -333,9 +333,13 @@ label {
     z-index:9999;
     display:none;
     position:fixed;
-    top:51px;
+    border-bottom:1px solid green;
+    top:0px;
     width:100%;
-    height:16px;
+    padding:9px;
+    text-align:center;
+    color:white;
+    font-weight:bold;
     background-color: #93C616;
     background-image:-webkit-gradient(linear,0 100%,100% 0,color-stop(0.25,rgba(255,255,255,0.15)),color-stop(0.25,transparent),color-stop(0.5,transparent),color-stop(0.5,rgba(255,255,255,0.15)),color-stop(0.75,rgba(255,255,255,0.15)),color-stop(0.75,transparent),to(transparent));
     background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
