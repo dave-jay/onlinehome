@@ -59,5 +59,16 @@ class apiPipeDrive extends apiCore {
         $this->apiEndpoint = "deals/{$deal_id}";
         return $this->doCall($this->prepareApiUrl(), array(), 'GET');
     }
+    
+    public function getAgentByDealSource($source_id){
+        $data = qs("select * from call_list_by_source where pd_source_id = '{$source_id}' ");
+        $agents = $data['pd_user_id'];
+        
+        if($agents){
+            return json_decode($agents);
+        }
+        return array();
+        
+    }
 
 }
