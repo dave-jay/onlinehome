@@ -19,7 +19,7 @@
 <Response>
     <Dial>
         <?php foreach($agent_numbers as $key => $value): ?>
-        <Number url="http://s606346885.onlinehome.us/AgentCallLog/<?php print $value; ?>">+<?php print $value; ?></Number>
+        <Number url="http://s606346885.onlinehome.us/AgentCallLog/<?php print $value; ?>/<?php print $dealId; ?>">+<?php print $value; ?></Number>
         <?php endforeach; ?>
     </Dial>
     <Say>The call failed or the remote party hung up. Goodbye.</Say>
