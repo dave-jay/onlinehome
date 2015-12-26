@@ -1,8 +1,8 @@
 <?php
-
+_errors_on();
 # Get Pipedrive API object
 $apiPD = new apiPipeDrive();
-//$apiCall = new apiCall();
+$apiCall = new apiCall();
 
 # Set default timezone
 date_default_timezone_set('America/New_York');
@@ -30,7 +30,7 @@ if (in_array($deal_source, array('37'))) {
     $person_info = json_decode($person_info, true);
 
     # Get Phone
-    $phone = $data['data']['phone']['0'];
+    $phone = $person_info['data']['phone']['0'];
     $phone_label = $phone['label'];
     $phone_value = $phone['value'];
 
@@ -39,9 +39,9 @@ if (in_array($deal_source, array('37'))) {
 
     # Retrieve which agents we have to broadcast from source ( i.e. HotDeal, CCC, Dialer )
     $agent_numbers = $apiPD->getAgentByDealSource($deal_source);
-
+   
     # Finally call the agents
-    //$apiCall->doBroadcast($phone_value, $agent_numbers , $deal_id); 
+    $apiCall->doBroadcast($phone_value, $agent_numbers , $deal_id); 
 }
 
 die;

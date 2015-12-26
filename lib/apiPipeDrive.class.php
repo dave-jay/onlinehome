@@ -65,7 +65,15 @@ class apiPipeDrive extends apiCore {
         $agents = $data['pd_user_id'];
         
         if($agents){
-            return json_decode($agents);
+            $agents = json_decode($agents,true);
+            $agents_condition = "'".implode("','",$agents) . "'";
+            $phones = q("select * from pd_users where pd_id in ({$agents_condition}) ");
+            $phones_data = array();
+            foreach($phones as $each_phone){
+                $phones_data[] = $each_phone['phone'];
+            }
+            $phones_data = array_filter($phones_data);
+            return ($phones_data);
         }
         return array();
         
