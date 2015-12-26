@@ -9,8 +9,9 @@
 
     <div style='display: none;'><a href="<?php print _U ?>" style="color:grey;">Agent Reports&nbsp;<i class="fa fa-area-chart"></i></a></div>
     <div style='display: none;' class="menu_divide"><a href="<?php print _U ?>" style="color:grey;">Calls Summary&nbsp;<i class="fa fa-phone"></i></a></div>
-    <div class="menu_divide"><a href="<?php print _U ?>sms_service" style="color:grey;">SMS Text&nbsp;<i class="fa fa-envelope-o"></i></a></div>
+    <div class=""><a href="<?php print _U ?>sms_service" style="color:grey;">SMS Text&nbsp;<i class="fa fa-envelope-o"></i></a></div>
     <div class="menu_divide"><a href="<?php print _U ?>call_distribution" style="color:grey;">Call Distribution&nbsp;<i class="fa fa-phone"></i></a></div>
-    <div><a href="<?php print _U ?>sequence_mgnt" style="color:grey;">Sequence Management<i class="fa fa-group"></i></a></div>
+    <div><a href="<?php print _U ?>agents" style="color:grey;">Agents List<i class="fa fa-group"></i></a></div>
+<!--    <div><a href="<?php print _U ?>sequence_mgnt" style="color:grey;">Agents List<i class="fa fa-group"></i></a></div>-->
 
 </div>
