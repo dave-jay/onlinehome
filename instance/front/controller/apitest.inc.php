@@ -1,15 +1,9 @@
 <?php
 _errors_on();
 
-//die;
-$apiPD = new apiPipeDrive();
-$deal_data = $apiPD->getDealInfo('4412');
-d(json_decode($deal_data,true));
-
 die;
 $apiPD = new apiPipeDrive();
-$data = $apiPD->getAgentByDealSource('37');
-d($data);
+$apiPD->getAgentByDealSource('37');
 die;
 $person_id_test = '4421';
 $apiPD = new apiPipeDrive();

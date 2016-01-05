@@ -17,7 +17,7 @@ qi("pd_push_notification_log", array("payload" => $payload));
 # now, identify if that is hot lead then get the number of customer and start calling the customer
 # c2a6fc3129578b646ae55717ed15f03ce3ee4df0 - this is key for custom attribute/field - "Source"
 $deal_source = $data['current']['c2a6fc3129578b646ae55717ed15f03ce3ee4df0'];
-if (in_array($deal_source, array('37'))) {
+if (in_array($deal_source, array('37')) || 1) {
     
     # Get Person ID
     $person_id = $data['current']['person_id'];
@@ -43,6 +43,10 @@ if (in_array($deal_source, array('37'))) {
     # Finally call the agents
     $apiCall->doBroadcast($phone_value, $agent_numbers , $deal_id); 
 }
+//15162004065 - dj
+// 15165249063 - wayne
 
+// 18664632339 - godaddy
+// salesforce - 18006676389
 die;
 ?>

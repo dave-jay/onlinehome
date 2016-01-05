@@ -1,8 +1,18 @@
 <?php
-    //$agent_numbers = explode(',', $_REQUEST['agent_numbers']);
-    //$dealId = $_REQUEST['dealId'];
-    $agent_numbers = explode(',', $_SESSION['agent_numbers']);
-    $dealId = $_SESSION['dealId'];
+
+    $agent_numbers = explode(',', $_REQUEST['agent_numbers']);
+    $dealId = _e($_REQUEST['dealId'],0);;
+    $phone_value = $_REQUEST['phone_value'];
+    $cur_agent = $_REQUEST['cur_agent'];
+    $data = qs("select * from deal_sid where deal_id='{$dealId}'");
+    if(count($data)>0){
+        die("call handled");
+    }else{
+        qi("deal_sid",array("deal_id"=>$dealId,"sid"=>$_REQUEST['CallSid']));
+    }
+    
+    //$agent_numbers = explode(',', $_SESSION['agent_numbers']);
+    //$dealId = $_SESSION['dealId'];
     
     // if the caller pressed anything but 1 send them back
     //if($_REQUEST['Digits'] != '1') {
@@ -18,10 +28,7 @@
 ?>
 <Response>
     <Dial>
-        <?php foreach($agent_numbers as $key => $value): ?>
-        <Number url="http://s606346885.onlinehome.us/AgentCallLog/<?php print $value; ?>/<?php print $dealId; ?>">+<?php print $value; ?></Number>
-        <?php endforeach; ?>
+        <Number url="http://s606346885.onlinehome.us/AgentCallLog/<?php print $cur_agent; ?>/<?php print $dealId; ?>/<?php print $phone_value; ?>/<?php print $cur_agent; ?>"><?php print $phone_value; ?></Number>
     </Dial>
     <Say>The call failed or the remote party hung up. Goodbye.</Say>
-</Response>
-<?php die; ?>
+</Response><?php die; ?>
