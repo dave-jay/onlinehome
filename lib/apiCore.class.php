@@ -2,7 +2,7 @@
 
 class apiCore {
 
-    public function doCall($url, $data=array(), $method = "post") {
+    public function doCall($url, $data = array(), $method = "GET") {
         $ch = curl_init();
         $timeout = 5;
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -11,8 +11,12 @@ class apiCore {
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 
-        if ($method == "post") {
+        if (strtolower($method) == "post") {
             curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        }
+        if (strtolower($method) == "put") {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         }
 
@@ -31,4 +35,5 @@ class apiCore {
     }
 
 }
+
 ?>

@@ -1,20 +1,20 @@
 <div style="padding: 7px; color: #86b414; font-size: 18px; border-bottom: 1px solid #86b414;">
-    Call Distribution
+    Call Distribution Settings
 </div>
 
 <div class="page_body">
-    <div class="panel-body">   
+    <div class="panel-body" style="padding-left:0px;padding-right:0px;">   
         <form action="" method="post" id="userForm" novalidate="novalidate">
             <table class="table" border='0' style="width:100%;">
                 <tr>
-                    <td style="width:25%;font-weight:bold;">Lead Source</td>
-                    <td style="width:75%;font-weight:bold;">Agent List</td>
+                    <td style="width:15%;font-weight:bold;background-color:#e4f3e5">Deal Source</td>
+                    <td style="width:85%;font-weight:bold;background-color:#e4f3e5">Agent List</td>
                 </tr>
                 <?php if (!empty($source_list)): ?>
                     <?php foreach ($source_list as $each_source): ?>
                         <tr>
-                            <td style="width:25%;font-weight:bold;"><?php echo $each_source["source_name"] ?></td>
-                            <td style="width:75%;">
+                            <td style="width:15%;font-weight:bold;"><?php echo $each_source["source_name"] ?></td>
+                            <td style="width:85%;">
                                 <?php
                                 $source_user_list = array();
                                 $source_user_list_ids = array();
@@ -26,7 +26,7 @@
                                 }
                                 ?>
                                 <?php if (!empty($user_list)): ?>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="height:100px;overflow:auto">
                                         <?php foreach ($user_list as $each_user): ?>
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="padding:2px 10px;">
                                                 <?php

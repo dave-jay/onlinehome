@@ -57,6 +57,10 @@
         try {
             $("#success_msg_content").html(msg);
             $("#success_msg_jquery").slideDown("slow");           
+            
+            setTimeout(function(){
+                $("#success_msg_jquery").slideUp("slow");           
+            },2000)
         } catch (e) {
 
         }
