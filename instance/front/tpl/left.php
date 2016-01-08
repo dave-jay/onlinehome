@@ -12,6 +12,8 @@
     <div class=""><a href="<?php print _U ?>sms_service" style="color:grey;">SMS Text&nbsp;<i class="fa fa-envelope-o"></i></a></div>
     <div class="menu_divide"><a href="<?php print _U ?>call_distribution" style="color:grey;">Call Distribution&nbsp;<i class="fa fa-phone"></i></a></div>
     <div><a href="<?php print _U ?>agents" style="color:grey;">Agents List<i class="fa fa-group"></i></a></div>
+    <div><a href="<?php print _U ?>call_report" style="color:grey;">Call List<i class="fa fa-list"></i></a></div>
+    <div><a href="<?php print _U ?>call_statistics" style="color:grey;">Call Statistics<i class="fa fa-list"></i></a></div>
 <!--    <div><a href="<?php print _U ?>sequence_mgnt" style="color:grey;">Agents List<i class="fa fa-group"></i></a></div>-->
 
 </div>

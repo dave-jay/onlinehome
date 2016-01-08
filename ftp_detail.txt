@@ -1,0 +1,16 @@
+http://s606346885.onlinehome.us/index.php
+FTP:
+HOST : s606346885.onlinehome.us
+USERNAME : u83407249
+PASSWORD : Brusgus23!
+
+PMA:
+URL: https://phpmyadmin.1and1.com
+CLIENTID : 464165984
+PASSWORD : Brusgus23!
+
+DB:
+HOST : db606436013.db.1and1.com
+USERNAME : dbo606436013
+PASSWORD : Brusgus23!
+DATABASE : db606436013

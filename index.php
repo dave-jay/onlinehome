@@ -20,7 +20,7 @@ error_reporting(0);
 define('DB_HOST', 'localhost');
 define('DB_PASSWORD', '');
 define('DB_UNAME', 'root');
-define('DB_NAME', 'lysoft');
+define('DB_NAME', 'db606436013');
 
 define('IS_DEV_ENV', false);
 
