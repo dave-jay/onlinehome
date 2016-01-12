@@ -2,7 +2,7 @@
 
 $agent_numbers = $_REQUEST['agent_numbers'];
 $dealId = _e($_REQUEST['dealId'], '0');
-$phone_value = $_REQUEST['phone_value'];
+$phone_value = urlencode($_REQUEST['phone_value']);
 $cur_agent = $_REQUEST['cur_agent'];
 
 $status = qs("select * from deal_sid where status = 'A' and deal_id = '{$dealId}'  ");

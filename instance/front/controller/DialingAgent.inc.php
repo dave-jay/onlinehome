@@ -7,7 +7,7 @@
     $agent_numbers = explode(',', $_REQUEST['agent_numbers']);
 	$rand = mt_rand(1,1000) . "_" . mt_rand(1,1000); // for testing - the deal id should be random
     $dealId = _e($_REQUEST['dealId'],"T{$rand}");
-    $phone_value = $_REQUEST['phone_value'];
+    $phone_value = urlencode($_REQUEST['phone_value']);
     $cur_agent = $_REQUEST['cur_agent'];
     qi("deal_sid",array("deal_id"=>$dealId,"sid"=>$_REQUEST['CallSid']));    
 
