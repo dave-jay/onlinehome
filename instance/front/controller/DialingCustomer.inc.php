@@ -9,11 +9,11 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 // <Dial>+18774942065</Dial>
 ?>
 <Response>
-	<Say>Thank you Wayne. Connecting to customer!</Say>
+    <Say>Connecting to customer!</Say>    
     <Dial>        
         <Number statusCallbackEvent="answered"
                 statusCallback="http://s606346885.onlinehome.us/AgentCallLog/<?php print $cur_agent; ?>/<?php print $dealId; ?>/<?php print $phone_value; ?>/<?php print $cur_agent; ?>"
                 statusCallbackMethod="POST"><?php print $phone_value; ?></Number>
-    </Dial>
+    </Dial>    
     <Record timeout="10" transcribe="true" action="http://s606346885.onlinehome.us/RecordCallBack/<?php print $cur_agent; ?>/<?php print $dealId; ?>/<?php print $phone_value; ?>/<?php print $cur_agent; ?>" />
 </Response><?php die; ?>

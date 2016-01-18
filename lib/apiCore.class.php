@@ -33,7 +33,7 @@ class apiCore {
         }
         return $this->apiURL . $this->apiEndpoint . "?" . (implode("&", $params));
     }
-
+    
 }
 
 ?>

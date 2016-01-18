@@ -26,8 +26,22 @@ $call_detail_fields['deal_id'] = $urlArgs[1];
 
 if(count($call_detail_data)>0){
     qu('call_detail',$call_detail_fields,"id='{$call_detail_data['id']}'");
+    $call_detail_id = $call_detail_data['id'];
 }else{
-    qi('call_detail',$call_detail_fields);
+    $call_detail_fields['sid'] = $_REQUEST['ParentCallSid'];
+    $call_detail_id = qi('call_detail',$call_detail_fields);
+}
+$fields['subject'] = 'Call';
+$fields['done'] = '0';
+$fields['type'] = 'call';
+$fields['deal_id'] = $urlArgs[1]; // Test Deal Id - $fields['deal_id'] = '4586';
+$fields['note'] = "<iframe src='".lr("playAudio?call_detail_id=".$call_detail_id)."' width='380' height='100'></iframe>";
+//$data = $apiPD->createActivity($fields);
+$activity_data = json_decode($data);
+if(isset($activity_data->success) && $activity_data->success){    
+    qu('call_detail',array("activity_id"=>$activity_data->data->id),"id='{$call_detail_id}'");
+}else{
+    echo "Failed to create activity";
 }
 
 

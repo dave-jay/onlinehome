@@ -78,5 +78,18 @@ class apiPipeDrive extends apiCore {
         return array();
         
     }
-
+    
+    public function createActivity($activityFields=array()){
+        $this->apiEndpoint = "activities";
+        return $this->doCall($this->prepareApiUrl(), $activityFields, 'POST');
+    }
+    public function modifyActivity($activity_id, $activityFields=array()){
+        $this->apiEndpoint = "activities/".$activity_id;
+        return $this->doCall($this->prepareApiUrl(), $activityFields, 'PUT');
+    }
+    
+    public function getAllActivityType(){
+        $this->apiEndpoint = "activityTypes";
+        return $this->doCall($this->prepareApiUrl(), array(), 'GET');
+    }
 }
