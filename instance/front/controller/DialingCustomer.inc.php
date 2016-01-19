@@ -10,10 +10,9 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 ?>
 <Response>
     <Say>Connecting to customer!</Say>    
-    <Dial>        
+    <Dial record="record-from-answer" action="http://s606346885.onlinehome.us/RecordCallBack/<?php print $cur_agent; ?>/<?php print $dealId; ?>/<?php print $phone_value; ?>/<?php print $cur_agent; ?>" >        
         <Number statusCallbackEvent="answered"
                 statusCallback="http://s606346885.onlinehome.us/AgentCallLog/<?php print $cur_agent; ?>/<?php print $dealId; ?>/<?php print $phone_value; ?>/<?php print $cur_agent; ?>"
                 statusCallbackMethod="POST"><?php print $phone_value; ?></Number>
-    </Dial>    
-    <Record timeout="10" transcribe="true" action="http://s606346885.onlinehome.us/RecordCallBack/<?php print $cur_agent; ?>/<?php print $dealId; ?>/<?php print $phone_value; ?>/<?php print $cur_agent; ?>" />
+    </Dial>        
 </Response><?php die; ?>
