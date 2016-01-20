@@ -9,7 +9,7 @@ $recording_duration = (isset($_REQUEST['RecordingDuration'])?$_REQUEST['Recordin
 //qi('config',array("key"=>$agent_id,"value"=>$urlArgs[1]));
 
 $apiPD = new apiPipeDrive();
-$apiPD->assignDeal($urlArgs[1], $agent_id);
+//$apiPD->assignDeal($urlArgs[1], $agent_id);
 
 $call_detail_data = q("select * from call_detail where sid='{$_REQUEST['CallSid']}'");
 $call_detail_fields['agent_phone'] = $urlArgs[0];
@@ -30,9 +30,11 @@ if(count($call_detail_data)>0){
 }
 
 $deal_data = json_decode($apiPD->getDealInfo($urlArgs[1])); //$deal_data = json_decode($apiPD->getDealInfo('4586'));
+//$deal_data = json_decode($apiPD->getDealInfo('4586'));
 $person_id = isset($deal_data->data->person_id->value)?($deal_data->data->person_id->value):'';
 $org_id = isset($deal_data->data->org_id->value)?($deal_data->data->org_id->value):'';
-
+$apiPD->assignPerson($person_id, $agent_id);
+$apiPD->assignOrganization($org_id, $agent_id);
 
 $fields['subject'] = 'Call';
 $fields['done'] = '0';
@@ -42,7 +44,6 @@ $fields['person_id'] = $person_id;
 $fields['org_id'] = $org_id;
 
 $param = http_build_query(array('call_detail_id'=>$call_detail_id.'|'.urlencode($recording_url.'|'.$recording_duration)));
-//$fields['note'] = "<iframe src='https://my-brilliant.info/wakeup/playAudio?".$param."' width='380' height='110'></iframe>";
 $fields['note'] = "<iframe src='https://www.leadpropel.com/playAudio?".$param."' width='380' height='110'></iframe>";
 $data = $apiPD->createActivity($fields);
 $activity_data = json_decode($data);

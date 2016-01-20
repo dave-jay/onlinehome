@@ -20,7 +20,7 @@ include _PATH . "/Services/Twilio.php";
 $client = new Services_Twilio($account_sid, $auth_token);
 
 // call first
-$url = "http://s606346885.onlinehome.us/DialingCustomer?";
+$url = _U."DialingCustomer?";
 try {
     $params = ("agent_numbers=" . $agent_numbers . "&dealId=" . $dealId . "&phone_value=" . $phone_value . "&cur_agent=" . $cur_agent);
     $url = $url . $params;

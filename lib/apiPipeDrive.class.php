@@ -92,4 +92,18 @@ class apiPipeDrive extends apiCore {
         $this->apiEndpoint = "activityTypes";
         return $this->doCall($this->prepareApiUrl(), array(), 'GET');
     }
+    
+    public function assignPerson($person_id, $owner_id) {
+        $data = array();
+        $data['owner_id'] = $owner_id;
+        $this->apiEndpoint = "persons/{$person_id}";
+        return $this->doCall($this->prepareApiUrl(), $data, 'PUT');
+    }
+    
+    public function assignOrganization($organization_id, $owner_id) {
+        $data = array();
+        $data['owner_id'] = $owner_id;
+        $this->apiEndpoint = "organizations/{$organization_id}";
+        return $this->doCall($this->prepareApiUrl(), $data, 'PUT');
+    }
 }
