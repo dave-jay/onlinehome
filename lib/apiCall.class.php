@@ -26,8 +26,7 @@ class apiCall {
                     "Method" => "GET",
                     "StatusCallback" => $url_agent_calling,
                     "StatusCallbackMethod" => "POST",
-                    "StatusCallbackEvent" => array("ringing"),
-                    "IfMachine" => "Hangup"
+                    "StatusCallbackEvent" => array("ringing"),                    
                 ));
                 echo $call->sid . "<br>";
                 //sleep(2);

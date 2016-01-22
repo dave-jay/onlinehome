@@ -1,8 +1,47 @@
 <?php
-_errors_on();
+$apiPD = new apiPipeDrive();
+//$deal_data = $apiPD->getDealInfo($dealId); //$deal_data = $apiPD->getDealInfo('5232');
+$deal_data = $apiPD->getDealInfo('5232');
+$deal_data = json_decode($deal_data);
+d($deal_data);
+die;
+$cur_agent = "18006676389";
 
+$old_agent_numbers = "919737128292,18006676389,919737128291";
+$old_agent_numbers = explode(",", $old_agent_numbers);
+d($old_agent_numbers);
+foreach ($old_agent_numbers as $each_agents){
+    if($cur_agent != $each_agents){
+        $agent_numbers[] = $each_agents;
+    }
+}
+echo "<br>--1<br>";
+d($agent_numbers);
+echo "<br>--2<br>";
+$agent_numbers = implode(",", $agent_numbers);
+echo $agent_numbers."<br>";
+echo "<br>--3<br>";
+$t = array("a","b","c");
+d($t);
 die;
 $apiPD = new apiPipeDrive();
+//$deal_data = $apiPD->getDealInfo($dealId); //$deal_data = $apiPD->getDealInfo('5232');
+$deal_data = $apiPD->getDealInfo('5232');
+$deal_data = json_decode($deal_data);
+$deal_amount = ($deal_data->data->value);
+$deal_currency = ($deal_data->data->currency);
+$organization = ($deal_data->data->org_name);
+$Person = ($deal_data->data->person_name);
+echo ($Person);
+die;
+_errors_on();
+
+$apiPD = new apiPipeDrive();
+$deal_data = $apiPD->getDealInfo('5232');
+$deal_data = json_decode($deal_data);
+d($deal_data);
+
+die;
 $apiPD->getAgentByDealSource('37');
 die;
 $person_id_test = '4421';

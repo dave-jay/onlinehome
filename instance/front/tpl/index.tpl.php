@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <title> LeadPropel | <?php print _cg("page_title"); ?></title>
-        <link rel="shortcut icon" href="<?php print _MEDIA_URL ?>img/Affiliates.jpg" />
+        <link rel="shortcut icon" href="<?php print _MEDIA_URL ?>img/favicon.ico" />
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="<?php print _MEDIA_URL ?>bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 
