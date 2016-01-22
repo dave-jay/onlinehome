@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title> LySoft Media | <?php print _cg("page_title"); ?></title>
+        <title> LeadPropel | <?php print _cg("page_title"); ?></title>
         <link rel="shortcut icon" href="<?php print _MEDIA_URL ?>img/Affiliates.jpg" />
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="<?php print _MEDIA_URL ?>bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
@@ -31,7 +31,7 @@
                     <div class="row topbar">
                        
                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
-                          LySoft Media
+                          <img src="<?php print _MEDIA_URL ?>img/lead-propel-logo.png" />
                         </div>
                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 menu_right">
                             <ul class="nav navbar-nav navbar-right">

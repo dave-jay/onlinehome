@@ -1,8 +1,5 @@
 <div class="row">
-    <div class="brill_logo" style="margin-bottom:20px;">
-<!--            <img src="http://www.mylogo.com/logo.png" />-->
-        <span style="font-size: 20px;font-style: Castellar;color:#A4B582;"><b><i></i>LySoft Media</i></b></span>
-    </div>
+    
     <div class="active_menu"><a href="<?php print _U ?>dashboard" style="color:grey;">Dashboard&nbsp;<i class="fa fa-home"></i></a></div>
     <div class=""><a href="<?php print _U ?>twilio_settings" style="color:grey;">Twilio Settings&nbsp;<i class="fa fa-cog"></i></a></div>
     <div class="menu_divide"><a href="<?php print _U ?>pipedrive_settings" style="color:grey;">PipeDrive Settings&nbsp;<i class="fa fa-file-text"></i></a></div>
@@ -12,7 +9,7 @@
     <div class=""><a href="<?php print _U ?>sms_service" style="color:grey;">SMS Text&nbsp;<i class="fa fa-envelope-o"></i></a></div>
     <div class="menu_divide"><a href="<?php print _U ?>call_distribution" style="color:grey;">Call Distribution&nbsp;<i class="fa fa-phone"></i></a></div>
     <div><a href="<?php print _U ?>agents" style="color:grey;">Agents List<i class="fa fa-group"></i></a></div>
-    <div><a href="<?php print _U ?>call_report" style="color:grey;">Call List<i class="fa fa-list"></i></a></div>
+    <div><a href="<?php print _U ?>call_report" style="color:grey;">Call Reports<i class="fa fa-list"></i></a></div>
     <div><a href="<?php print _U ?>call_statistics" style="color:grey;">Call Statistics<i class="fa fa-list"></i></a></div>
 <!--    <div><a href="<?php print _U ?>sequence_mgnt" style="color:grey;">Agents List<i class="fa fa-group"></i></a></div>-->
 

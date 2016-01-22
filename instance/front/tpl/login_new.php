@@ -45,8 +45,8 @@
                             </div>
                         <?php } ?>
                         <div class="brand">
-                            <img class="brand-img" src="<?php print _MEDIA_URL ?>loginDesignNew/logo-blue.png" alt="RapidCMS">
-                            <h2 class="brand-text font-size-18">LySoft Media</h2>
+                            <img class="brand-img" src="<?php print _MEDIA_URL ?>img/lead-propel-logo.png" alt="LeadPropel" style="width:330px;">
+                            
                         </div>
 
 
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="page-copyright page-copyright-inverse">
-                    <p>© 2015. All RIGHT RESERVED LySoft Media</p>
+                    <p>© <?php print date('Y');?>. All RIGHT RESERVED LeadPropel</p>
 
                 </div>
             </div>

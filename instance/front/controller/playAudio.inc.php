@@ -25,6 +25,9 @@ if (isset($_REQUEST['call_detail_id']) && $_REQUEST['call_detail_id'] != '') {
     elseif($call_data['status']=='running') {
         echo "<div style='color:green;'>Call is running at this moment!</div>";
     }
+    elseif($call_data['status']=='in-progress') {
+        echo "<div style='color:green;'>Call is in-progress!</div>";
+    }
     else{
         echo "<div style='color:red;'>No Recording Found!</div>";
     }

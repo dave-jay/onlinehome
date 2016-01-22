@@ -8,12 +8,45 @@ $agent = qs("select pd_id,name from pd_users where phone = '{$cur_agent}'");
 $agent_id = $agent['pd_id'];
 $agent_name = $agent['name'];
 
-////Assign Deal to Agent before calling to customer
 $apiPD = new apiPipeDrive();
 $apiPD->assignDeal($dealId, $agent_id);
 
+$deal_data = json_decode($apiPD->getDealInfo($dealId)); //$deal_data = json_decode($apiPD->getDealInfo('4586'));
+$person_id = isset($deal_data->data->person_id->value)?($deal_data->data->person_id->value):'';
+$org_id = isset($deal_data->data->org_id->value)?($deal_data->data->org_id->value):'';
+$apiPD->assignPerson($person_id, $agent_id);
+$apiPD->assignOrganization($org_id, $agent_id);
+
+
+$call_detail_data = q("select * from call_detail where sid='{$_REQUEST['CallSid']}'");
+$call_detail_fields['agent_phone'] = $cur_agent;
+$call_detail_fields['agent_id'] = $agent_id;
+$call_detail_fields['agent_name'] = $agent_name;
+$call_detail_fields['status'] = (isset($_REQUEST['CallStatus'])?$_REQUEST['CallStatus']:'');
+$call_detail_fields['customer_phone'] = $phone_value;
+$call_detail_fields['deal_id'] = $dealId;
+$call_detail_fields['sid'] = $_REQUEST['CallSid'];
+$call_detail_id = qi('call_detail',$call_detail_fields);
+
+
+$fields['subject'] = 'Call';
+$fields['done'] = '1';
+$fields['type'] = 'call';
+$fields['deal_id'] = $dealId; // Test Deal Id - $fields['deal_id'] = '4586';
+$fields['person_id'] = $person_id;
+$fields['org_id'] = $org_id;
+
+$param = http_build_query(array('call_detail_id'=>$call_detail_id));
+$fields['note'] = "<iframe src='https://www.leadpropel.com/playAudio?".$param."' width='380' height='110'></iframe>";
+$data = $apiPD->createActivity($fields);
+$activity_data = json_decode($data);
+if(isset($activity_data->success) && $activity_data->success){    
+    qu('call_detail',array("activity_id"=>$activity_data->data->id),"id='{$call_detail_id}'");
+}
+
 header("content-type: text/xml");
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+// <Dial>+18774942065</Dial>
 ?>
 <Response>
     <Say>Connecting to customer!</Say>    
