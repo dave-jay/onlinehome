@@ -42,8 +42,8 @@ if (count($data) > 0) {
 	}
 }
 
-//$deal_data = $apiPD->getDealInfo($dealId); //$deal_data = $apiPD->getDealInfo('5232'); //Test Mode
-$deal_data = $apiPD->getDealInfo('5232');
+$deal_data = $apiPD->getDealInfo($dealId); //$deal_data = $apiPD->getDealInfo('5232'); //Test Mode
+//$deal_data = $apiPD->getDealInfo('5232');
 $deal_data = json_decode($deal_data);
 $agent_name = ($deal_data->data->user_id->name);
 $deal_amount = ($deal_data->data->value);

@@ -48,8 +48,8 @@ elseif ($_REQUEST['Digits'] == 1):
     } 
 elseif ($_REQUEST['Digits'] == 2):
     $apiPD = new apiPipeDrive();
-    //$deal_data = $apiPD->getDealInfo($dealId); //$deal_data = $apiPD->getDealInfo('5232'); //Test Mode
-    $deal_data = $apiPD->getDealInfo('5232');
+    $deal_data = $apiPD->getDealInfo($dealId); //$deal_data = $apiPD->getDealInfo('5232'); //Test Mode
+    //$deal_data = $apiPD->getDealInfo('5232');
     $deal_data = json_decode($deal_data);
     $agent_name = ($deal_data->data->user_id->name);
     $deal_amount = ($deal_data->data->value);
