@@ -51,11 +51,18 @@ elseif ($_REQUEST['Digits'] == 2):
     $deal_data = $apiPD->getDealInfo($dealId); //$deal_data = $apiPD->getDealInfo('5232'); //Test Mode
     //$deal_data = $apiPD->getDealInfo('5232');
     $deal_data = json_decode($deal_data);
-    $agent_name = ($deal_data->data->user_id->name);
-    $deal_amount = ($deal_data->data->value);
-    $deal_currency = ($deal_data->data->currency);
-    $organization = ($deal_data->data->org_name);
+    //$agent_name = ($deal_data->data->user_id->name);
+    $deal_amount = str_replace('&', ' and ', ($deal_data->data->value));
+    $deal_currency = str_replace('&', ' and ', ($deal_data->data->currency));
+    $organization = str_replace('&', ' and ', ($deal_data->data->org_name));
     $Person = ($deal_data->data->person_name);
+    
+    $agent_name = '';
+    $agent_detail = qs("select * from pd_users where phone like '%".$cur_agent."%'");
+    if(isset($agent_detail)){
+        $agent_name = $agent_detail['name'];
+    }
+
     header("content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     ?>

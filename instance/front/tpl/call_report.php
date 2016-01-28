@@ -1,3 +1,19 @@
+<div id="soundDialog" class="sound-dialog" title="Reservation Sound" style="display: none;">
+    <p>
+        <audio id="soundAudio" controls style="margin-top: 10px;">
+            <source id="soundSrc" type="audio/wav">
+        </audio>
+    </p>
+    <div>
+        <button type="button" style="margin-left: 20px;" onclick="restart();" title="Repeat" ><i class='fa fa-repeat'></i></button>        
+        <button type="button"  onclick="fastbackward();" title="Fast Rewind"><i class='fa fa-fast-backward'></i></button>        
+        <button type="button"  onclick="backward();" title="Rewind" ><i class='fa fa-chevron-left'></i></button>
+        <button type="button"  onclick="forward();" title="Forward"><i class='fa fa-chevron-right'></i></button>
+        <button type="button"  onclick="fastforward();" title="Fast Forward"><i class='fa fa-fast-forward'></i></button>
+        <button type="button"  onclick="download();" title="Download"><i class='fa fa-download'></i></button>
+    </div>
+</div>
+
 <div style="padding: 7px; color: #86b414; font-size: 18px; border-bottom: 1px solid #86b414;">
     Call Report
 </div>
@@ -28,7 +44,8 @@
                     <th>Customer Phone</th>
                     <th>Date</th>
                     <th>Duration</th>
-                    <th style="width: 110px;">Record</th>
+                    <th>Record</th>
+                    <th>Download</th>
 
                 </tr>
             </thead>
@@ -42,7 +59,21 @@
                             <td><?php echo $each_call['customer_phone']; ?></td>
                             <td><?php echo date('m/d/Y g:i A', strtotime($each_call['created_at'])); ?></td>
                             <td><?php echo ($each_call['recording_duration'] == 0 ? '00:00:00' : (gmdate("H:i:s", $each_call['recording_duration']))); ?></td>
-                            <td><button onclick="play_record(<?php echo $each_call['id']; ?>)" id="play_btn_<?php echo $each_call['id']; ?>" class="btn btn-info play_btn">Play</button></td>
+                            <td>
+                                <?php if ($each_call['recording_url'] == ''): ?>
+                                    <img src="<?php print _MEDIA_URL . "img/mute.png" ?>" style="cursor: not-allowed;"/>
+                                <?php else: ?>
+                                    <img src="<?php print _MEDIA_URL . "img/sound.png" ?>" style="cursor: pointer;" onclick="openAudioFile(<?php echo $each_call['id']; ?>)" />
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ($each_call['recording_url'] == ''): ?>
+                                <div  style="cursor: not-allowed;color:#A6A6A6;" title="No Audio Available"><i class="fa fa-download fa-2x"></i></div>
+                                <?php else: ?>
+                                <div  onclick="download_all(<?php echo $each_call['id']; ?>)"  style="cursor: pointer;"><i class="fa fa-download  fa-2x"></i></div>                                
+                                <?php endif; ?>
+                            </td>
+        <!--                            <td><button onclick="play_record(<?php echo $each_call['id']; ?>)" id="play_btn_<?php echo $each_call['id']; ?>" class="btn btn-info play_btn">Play</button></td>-->
                     <input type="hidden" id="hid_rec_<?php echo $each_call['id']; ?>" value="<?php echo $each_call['recording_url']; ?>" />
                     </tr>
                     <?php
@@ -92,6 +123,16 @@
         .form-lbl{
             padding-top: 4px;
         }
+        
+        #soundDialog button {
+    margin-right: 8px;
+    padding: 2px 9px;
+}
+
+.ui-dialog-titlebar-close {
+  visibility: hidden;
+}
+
     </style>
 
 

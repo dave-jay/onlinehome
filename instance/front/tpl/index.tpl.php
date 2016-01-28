@@ -6,6 +6,7 @@
 
         <title> LeadPropel | <?php print _cg("page_title"); ?></title>
         <link rel="shortcut icon" href="<?php print _MEDIA_URL ?>img/favicon.ico" />
+        <link type="text/css" rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css" />
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="<?php print _MEDIA_URL ?>bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 
@@ -31,7 +32,7 @@
                     <div class="row topbar">
                        
                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
-                          <img src="<?php print _MEDIA_URL ?>img/lead-propel-logo.png" />
+                          <img src="<?php print _MEDIA_URL ?>img/wayne-logo.jpg" />
                         </div>
                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 menu_right">
                             <ul class="nav navbar-nav navbar-right">
