@@ -1,5 +1,13 @@
 <?php
-
+if($_REQUEST['syncUser']){
+    include _PATH.'instance/front/controller/schedulerGetDealUsers.inc.php';
+    die;
+}
+if($_REQUEST['updateUser']){
+    $agents = q("select * From pd_users order by name asc ");
+    include _PATH.'instance/front/tpl/agents_data.php';
+    die;
+}
 if ($_REQUEST['doUpdateAgent']) {
     $agent_id = _escape($_REQUEST['doUpdateAgent']);
     $value = _escape($_REQUEST['value']);
@@ -11,7 +19,7 @@ if ($_REQUEST['doUpdateAgent']) {
     die;
 }
 
-$agents = q("select * From pd_users ");
+$agents = q("select * From pd_users order by name asc ");
 
 _cg("page_title", "Pipedrive Agents List");
 $jsInclude = "agents.js.php";

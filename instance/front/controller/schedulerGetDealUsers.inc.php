@@ -26,6 +26,7 @@ if (!empty($user_list_data)) {
             $fields["is_deleted"] = '0';
             if ($check_user_id != '') {
                 $fields = _escapeArray($fields);
+				unset($fields['phone']);
                 qu("pd_users", $fields, " id = '{$check_user_id}' ");
             } else {
                 $fields["pd_id"] = $user_id;

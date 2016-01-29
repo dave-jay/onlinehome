@@ -31,8 +31,8 @@
                 <div class="container">
                     <div class="row topbar">
                        
-                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
-                          <img src="<?php print _MEDIA_URL ?>img/wayne-logo.jpg" />
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2" style="padding-left: 0px;">
+                            <img style="width:165px;" src="<?php print _MEDIA_URL ?>img/wayne-logo.jpg" />
                         </div>
                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 menu_right">
                             <ul class="nav navbar-nav navbar-right">
