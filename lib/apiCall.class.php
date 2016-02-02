@@ -3,8 +3,8 @@
 class apiCall {
 
     public function doBroadcast($phone_value, $agent_numbers, $dealId) {
-        $account_sid = 'ACaa30ea6de17c65f4407de5a34cbe1efa';
-        $auth_token = '02866ddbbb04c3bea0551ded9f017db9';
+        $account_sid = ACCOUNT_SID;
+        $auth_token = AUTH_TOKEN;
         //$account_sid = 'AC4878ef9ccad9ce3b980fdd4d1d0f42ca';
         //$auth_token = 'ea532dd88a9ee7fb43259da56a40a38f';
 
@@ -40,6 +40,26 @@ class apiCall {
             echo $e;
             die;
         }
+    }
+    
+    public function doMessage($phone_value, $message) {       
+        include _PATH . "/Services/Twilio.php";
+        $client = new Services_Twilio(ACCOUNT_SID, AUTH_TOKEN);
+        $phone_value=  self::ValidateNumber($phone_value);
+        try {
+            $sms = $client->account->messages->sendMessage("+19165121922", $phone_value,$message);
+            echo $sms->sid . "<br>";
+            echo "<br>We are sending message on " . $phone_value;
+            die;
+        } catch (Exception $e) {
+            // Failed calls will throw
+            echo $e;
+            die;
+        }
+    }
+    public static function ValidateNumber($phone_value){
+        $phone_value_new =  str_replace(array("+","(",")"," ","-"),"",$phone_value);
+        return (strlen($phone_value_new)>10?("+".$phone_value_new):$phone_value_new);
     }
 
 }

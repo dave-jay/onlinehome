@@ -1,7 +1,14 @@
 <?php
 
+$apiCall = new apiCall();
+//$apiCall->doMessage($phone_value, $message); 
 
 $apiPD = new apiPipeDrive();
+$person_data = json_decode($apiPD->getPersonInfo('4421'),true);
+$phone = $apiCall->ValidateNumber("973-712-8291");
+echo $phone;
+d($person_data);
+die;
 
 $fields['subject'] = 'Call';
 $fields['done'] = '0';

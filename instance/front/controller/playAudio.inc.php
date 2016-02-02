@@ -37,5 +37,5 @@ if (isset($_REQUEST['call_detail_id']) && $_REQUEST['call_detail_id'] != '') {
 
 die;
 
-//echo <audio controls = ""><source src = "https://api.twilio.com/2010-04-01/Accounts/ACaa30ea6de17c65f4407de5a34cbe1efa/Recordings/RE338a2c7e3153c26600a45d42c6c4b358" type = "audio/mpeg">Your browser does not support the audio element.</audio>
+//echo <audio controls = ""><source src = "https://api.twilio.com/2010-04-01/Accounts/".ACCOUNT_SID"./Recordings/RE338a2c7e3153c26600a45d42c6c4b358" type = "audio/mpeg">Your browser does not support the audio element.</audio>
 ?>

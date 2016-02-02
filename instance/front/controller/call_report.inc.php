@@ -4,7 +4,7 @@ $from_date = '';
 $to_date = '';
 
 if (isset($_REQUEST['download']) && $_REQUEST['download']==3) {    
-    $destination_name_ulaw = "https://api.twilio.com/2010-04-01/Accounts/ACaa30ea6de17c65f4407de5a34cbe1efa/Recordings/RE338a2c7e3153c26600a45d42c6c4b358.wav";
+    $destination_name_ulaw = "https://api.twilio.com/2010-04-01/Accounts/".ACCOUNT_SID."/Recordings/RE338a2c7e3153c26600a45d42c6c4b358.wav";
     $src = $destination_name_ulaw;
     $dest = _PATH."b.wav";
     file_put_contents($dest, file_get_contents($src));
@@ -16,7 +16,7 @@ if (isset($_REQUEST['download']) && $_REQUEST['download']==3) {
 if (isset($_REQUEST['download'])) {
     //$destination_name_ulaw1 = 'a.wav';
     $destination_name_ulaw = _PATH . 'RE338a2c7e3153c26600a45d42c6c4b358.wav';
-    //$destination_name_ulaw = "https://api.twilio.com/2010-04-01/Accounts/ACaa30ea6de17c65f4407de5a34cbe1efa/Recordings/RE338a2c7e3153c26600a45d42c6c4b358";
+    //$destination_name_ulaw = "https://api.twilio.com/2010-04-01/Accounts/".ACCOUNT_SID."/Recordings/RE338a2c7e3153c26600a45d42c6c4b358";
     header('Content-Description: File Transfer');
     header('Content-Type: audio/wave');
     header('Content-Disposition: attachment; filename=' . basename($destination_name_ulaw));
