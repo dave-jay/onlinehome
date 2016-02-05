@@ -1680,5 +1680,10 @@ function GetCityStateFromAddress($string) {
     }
     return $address_format_arr;
 }
+function last10Char($str){
+    $str_new =  str_replace(array("+","(",")"," ","-"),"",$str);
+    return substr($str_new,-10);
+    
+}
 
 ?>

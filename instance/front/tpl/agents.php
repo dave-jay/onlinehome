@@ -13,6 +13,7 @@
                 <td style="font-weight:bold;background-color:#e4f3e5">Agent Name</td>
                 <td style="font-weight:bold;background-color:#e4f3e5">Email</td>
                 <td style="font-weight:bold;background-color:#e4f3e5">Phone</td>
+                <td style="font-weight:bold;background-color:#e4f3e5">Agent Cell Number</td>
             </tr>
             <?php foreach ($agents as $each_agents): ?>
                 <tr>
@@ -21,6 +22,7 @@
                     </td>
                     <td><div><?php print $each_agents['email'] ?></div></td>
                     <td><div><input type="text" class="form-control" value="<?php print $each_agents['phone'] ?>" onblur="doSavePhone(this.value, '<?php print $each_agents['id'] ?>')" /></div></td>
+                    <td><div><input type="text" class="form-control" value="<?php print $each_agents['cell'] ?>" onblur="doSaveCell(this.value, '<?php print $each_agents['id'] ?>')" /></div></td>
                 </tr>
             <?php endforeach; ?>
         </table>
@@ -39,6 +41,21 @@
             success: function(r) {
                 hideWait();
                 _success("Agent phone updated successfully");
+                
+            }
+        });
+    }
+    function doSaveCell(value, id) {
+        if(value == ''){
+            return;
+        }
+        showWait();
+        $.ajax({
+            url: _U + 'agents',
+            data: {doUpdateAgentCell:id,value:value},
+            success: function(r) {
+                hideWait();
+                _success("Agent Cell Number updated successfully");
                 
             }
         });

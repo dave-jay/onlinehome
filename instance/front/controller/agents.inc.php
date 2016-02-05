@@ -15,7 +15,15 @@ if ($_REQUEST['doUpdateAgent']) {
     if ($value) {
         qu('pd_users', array("phone" => $value), " id = '{$agent_id}'  ");
     }
+    die;
+}
+if ($_REQUEST['doUpdateAgentCell']) {
+    $agent_id = _escape($_REQUEST['doUpdateAgentCell']);
+    $value = _escape($_REQUEST['value']);
 
+    if ($value) {
+        qu('pd_users', array("cell" => $value), " id = '{$agent_id}'  ");
+    }
     die;
 }
 
