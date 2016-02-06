@@ -114,3 +114,19 @@
         </div>
     </div>
 </div>
+<style>
+    .modal-header, .modal-footer{
+        background-color: #e4f3e5;
+    }
+    .modal-header{
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+    .modal-footer{
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+    .btn-success{
+        background-color: #5cb85c;
+    }
+</style>

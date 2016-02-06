@@ -47,7 +47,11 @@
     function _error(msg) {
         try {
             $("#error_msg_content").html(msg);
-            $("#error_msg_jquery").slideDown("slow");             
+            $("#error_msg_jquery").slideDown("slow");     
+            
+            setTimeout(function(){
+                $("#error_msg_jquery").slideUp("slow");           
+            },2000)
         } catch (e) {
 
         }

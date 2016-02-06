@@ -8,6 +8,19 @@ if($_REQUEST['updateUser']){
     include _PATH.'instance/front/tpl/agents_data.php';
     die;
 }
+if ($_REQUEST['doUpdateContact']) {
+    $agent_id = _escape($_REQUEST['doUpdateContact']);
+    $phone = _escape(trim($_REQUEST['phone']));
+    $cell = _escape(trim($_REQUEST['cell']));
+    $affected_row = -1;
+    if ($phone || $cell) {
+        $affected_row = qu('pd_users', array("phone" => $phone,"cell" => $cell), " id = '{$agent_id}'  ");
+    }else{
+        $affected_row=0;
+    }
+    echo $affected_row;
+    die;
+}
 if ($_REQUEST['doUpdateAgent']) {
     $agent_id = _escape($_REQUEST['doUpdateAgent']);
     $value = _escape($_REQUEST['value']);
