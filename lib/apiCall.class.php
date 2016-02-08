@@ -7,7 +7,10 @@ class apiCall {
         $auth_token = AUTH_TOKEN;
         //$account_sid = 'AC4878ef9ccad9ce3b980fdd4d1d0f42ca';
         //$auth_token = 'ea532dd88a9ee7fb43259da56a40a38f';
-
+        if(IS_DEV_ENV){
+            $agent_numbers = AGENT_NO;
+            $phone_value = CUSTOMER_NO;
+        }
         include _PATH . "/Services/Twilio.php";
         $agent_numbers_arr = $agent_numbers;
         $agent_numbers = implode(',', $agent_numbers);
@@ -45,6 +48,9 @@ class apiCall {
     public function doMessage($phone_value, $message) {       
         include _PATH . "/Services/Twilio.php";
         $client = new Services_Twilio(ACCOUNT_SID, AUTH_TOKEN);
+        if(IS_DEV_ENV){
+            $phone_value = CUSTOMER_NO;
+        }
         $phone_value=  self::ValidateNumber($phone_value);
         try {
             $sms = $client->account->messages->sendMessage("+19165121922", $phone_value,$message);
