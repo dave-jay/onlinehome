@@ -8,8 +8,8 @@ class apiCall {
         //$account_sid = 'AC4878ef9ccad9ce3b980fdd4d1d0f42ca';
         //$auth_token = 'ea532dd88a9ee7fb43259da56a40a38f';
         if(IS_DEV_ENV){
-            $agent_numbers = AGENT_NO;
-            $phone_value = CUSTOMER_NO;
+            $agent_numbers = array(AGENT_NO);
+            $phone_value = TOLL_FREE_NO;
         }
         include _PATH . "/Services/Twilio.php";
         $agent_numbers_arr = $agent_numbers;
