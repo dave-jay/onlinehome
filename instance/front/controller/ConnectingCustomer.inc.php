@@ -3,8 +3,7 @@ $agent_numbers = $_SESSION['REQUEST']['agent_numbers'];
 $dealId = _e($_SESSION['REQUEST']['dealId'], '0');
 $phone_value = urlencode($_SESSION['REQUEST']['phone_value']);
 $cur_agent = $_SESSION['REQUEST']['cur_agent'];
-if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
-    qd("deal_sid", "deal_id='{$dealId}'");
+if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):    
     $old_agent_numbers = explode(",", $agent_numbers);
     $new_agent_numbers = array();
     foreach ($old_agent_numbers as $each_agents) {
@@ -13,8 +12,9 @@ if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
         }
     }
     if (count($new_agent_numbers) > 0) {
+        qd("deal_sid", "deal_id='{$dealId}'");
         $apiCall = new apiCall();
-        $apiCall->doBroadcast($phone_value, $new_agent_numbers, $dealId);
+        $apiCall->doBroadcast($phone_value, $new_agent_numbers, $dealId,"1");
         die;
     } else {
         header("content-type: text/xml");
@@ -26,6 +26,8 @@ if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
         die;
     } 
 elseif ($_REQUEST['Digits'] == 1):
+    $agent_call_dialed_data = qs("select id from agent_call_dialed where deal_id='{$dealId}' order by id desc");
+    qu("agent_call_dialed",  _escapeArray(array("received_agent"=>$cur_agent,"is_received"=>"1")),"id='".$agent_call_dialed_data['id']."'");
     $account_sid = ACCOUNT_SID;
     $auth_token = AUTH_TOKEN;
     include _PATH . "/Services/Twilio.php";

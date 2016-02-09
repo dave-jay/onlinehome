@@ -2,18 +2,19 @@
 
 class apiCall {
 
-    public function doBroadcast($phone_value, $agent_numbers, $dealId) {
+    public function doBroadcast($phone_value, $agent_numbers, $dealId,$is_redial = "0") {
         $account_sid = ACCOUNT_SID;
         $auth_token = AUTH_TOKEN;
         //$account_sid = 'AC4878ef9ccad9ce3b980fdd4d1d0f42ca';
         //$auth_token = 'ea532dd88a9ee7fb43259da56a40a38f';
-        if(IS_DEV_ENV){
-            $agent_numbers = array(AGENT_NO);
+        if(IS_DEV_ENV && $is_redial=="0"){
+            $agent_numbers = array(TOLL_FREE_NO,AGENT_NO);
             $phone_value = TOLL_FREE_NO;
         }
         include _PATH . "/Services/Twilio.php";
         $agent_numbers_arr = $agent_numbers;
         $agent_numbers = implode(',', $agent_numbers);
+        qi("agent_call_dialed",  _escapeArray(array("agent_numbers"=>$agent_numbers,"deal_id"=>$dealId,"is_redial"=>$is_redial,"customer_phone"=>$phone_value)));
         $client = new Services_Twilio($account_sid, $auth_token);
         try {
 
@@ -29,7 +30,9 @@ class apiCall {
                     "Method" => "GET",
                     "StatusCallback" => $url_agent_calling,
                     "StatusCallbackMethod" => "POST",
-                    "StatusCallbackEvent" => array("ringing"),                    
+                    "StatusCallbackEvent" => array("ringing"),
+                    "IfMachine" => "Hangup",
+                    "Timeout" => "25"
                 ));
                 echo $call->sid . "<br>";
                 //sleep(2);
