@@ -899,6 +899,18 @@ function surveryFilledUp($type, $tripCode) {
  * @author  Dave Jay <dave.jay90@gmail.com>
  * @since November 28, 2013
  */
+function _phpmail($to, $subject, $content) {
+    $to      = $to;
+    //$subject = $subject;
+    $message = $content;
+    $header = "From: info@leadpropel.com\r\n"; 
+    $header.= "MIME-Version: 1.0\r\n"; 
+    $header.= "Content-Type: text/html; charset=utf-8\r\n"; 
+    $header.= "X-Priority: 1\r\n"; 
+
+    mail($to, $subject, $message, $header);
+    
+}
 function _mail($to, $subject, $content, $extra = array()) {
 
     # unfortunately, need to use require within function.
@@ -909,7 +921,7 @@ function _mail($to, $subject, $content, $extra = array()) {
 
     if (_isLocalMachine()) {
         //_l("To Email is overwritten by -  dave.jay90@gmail.com  due to dev localmachine ");
-        $to = 'dave.jay90@gmail.com';
+        $to = 'testoperators@gmail.com';
     }
 
     $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
@@ -925,7 +937,7 @@ function _mail($to, $subject, $content, $extra = array()) {
     $message = Swift_Message::newInstance($subject)
             ->setFrom(array(MAIL_FROM_EMAIL => MAIL_FROM_NAME))
             ->setTo($to)
-            ->setBcc('dave.jay90@gmail.com')
+            ->setBcc('testoperators@gmail.com')
             ->setBody($content, 'text/html', 'utf-8');
 
     $result = $mailer->send($message);
