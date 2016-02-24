@@ -11,6 +11,9 @@ class apiCall {
             $agent_numbers = array(TOLL_FREE_NO,AGENT_NO);
             $phone_value = TOLL_FREE_NO;
         }
+        if(count($agent_numbers)==0){
+            return;
+        }
         include _PATH . "/Services/Twilio.php";
         $agent_numbers_arr = $agent_numbers;
         $agent_numbers = implode(',', $agent_numbers);

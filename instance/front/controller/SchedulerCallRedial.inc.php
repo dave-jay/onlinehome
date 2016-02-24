@@ -17,6 +17,11 @@ foreach ($agent_call_detail as $each_data) {
 $agent_call_detail = q("SELECT deal_id,customer_phone, is_mail_send,COUNT(id) FROM `agent_call_dialed` where is_redial='0'  AND modified_at>=CURRENT_DATE  - INTERVAL 1 DAY GROUP BY deal_id HAVING COUNT(id)>=5");
 foreach ($agent_call_detail as $each_data) {
     if ($each_data['is_mail_send'] == '0') {
+        $apiPD = new apiPipeDrive();
+        $deal_data = json_decode($apiPD->getDealInfo($each_data['deal_id']));
+        $source_id = isset($deal_data->data->c2a6fc3129578b646ae55717ed15f03ce3ee4df0)?($deal_data->data->c2a6fc3129578b646ae55717ed15f03ce3ee4df0):'';
+
+        qi("call_detail",  _escapeArray(array("deal_id"=>$each_data['deal_id'],"recording_duration"=>"0","source_id"=>$source_id)));
         qu("agent_call_dialed", _escapeArray(array("is_mail_send" => "1")), " deal_id='{$each_data['deal_id']}'");
         $dealId = $each_data['deal_id']; 
         //$dealId = "5232";// Test Mode
@@ -34,7 +39,7 @@ foreach ($agent_call_detail as $each_data) {
         $content = ob_get_contents();
         ob_end_clean();
         //echo $content;
-        _phpmail("testoperators@gmail.com", $mail_subject, $content);
+        _phpmail(ADMIN_EMAIL, $mail_subject, $content);
         //_mail("testoperators@gmail.com", "Agent Missed Customer Call", $content);
     }
 }

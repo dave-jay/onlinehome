@@ -1,6 +1,7 @@
 <?php
 
 // For Mail variables 
+define('ADMIN_EMAIL', 'testoperators@gmail.com'); # Admin Mail Sent to This Email Address
 define('SMTP_EMAIL_USER_NAME', 'testoperators@gmail.com'); # smtp service username
 define('SMTP_EMAIL_USER_PASSWORD', 'ilovsprout@@@@'); # smtp service password
 define('MAIL_FROM_EMAIL', 'testoperators@gmail.com'); # email to be used a from email

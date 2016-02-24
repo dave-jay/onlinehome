@@ -127,6 +127,15 @@ class User {
     public static function GetManifestUserInfo($user_id) {
         return qs("SELECT * FROM manifest_user WHERE id = '{$user_id}'");
     }
+    
+    public static function getSources(){
+        $source = q("select * from pd_sources");
+        $source_data = array();
+        foreach ($source as $each_source){
+            $source_data[$each_source['pd_source_id']] = $each_source;
+        }
+        return $source_data;
+    }
 
 }
 

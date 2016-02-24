@@ -1697,5 +1697,10 @@ function last10Char($str){
     return substr($str_new,-10);
     
 }
+function removeCellFormat($str){
+    $str_new =  str_replace(array("+","(",")"," ","-"),"",$str);
+    return $str_new;
+    
+}
 
 ?>

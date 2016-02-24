@@ -14,6 +14,7 @@ $apiPD->assignDeal($dealId, $agent_id);
 $deal_data = json_decode($apiPD->getDealInfo($dealId)); //$deal_data = json_decode($apiPD->getDealInfo('4586'));
 $person_id = isset($deal_data->data->person_id->value)?($deal_data->data->person_id->value):'';
 $org_id = isset($deal_data->data->org_id->value)?($deal_data->data->org_id->value):'';
+$source_id = isset($deal_data->data->c2a6fc3129578b646ae55717ed15f03ce3ee4df0)?($deal_data->data->c2a6fc3129578b646ae55717ed15f03ce3ee4df0):'';
 $apiPD->assignPerson($person_id, $agent_id);
 $apiPD->assignOrganization($org_id, $agent_id);
 
