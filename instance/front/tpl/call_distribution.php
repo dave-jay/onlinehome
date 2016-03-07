@@ -1,4 +1,4 @@
-<div style="padding: 7px; color: #86b414; font-size: 18px; border-bottom: 1px solid #86b414;">
+<div class="MyPageHeader">
     Call Distribution Settings
 </div>
 
@@ -7,9 +7,9 @@
         <form action="" method="post" id="userForm" novalidate="novalidate">
             <table class="table" border='0' style="width:100%;">
                 <tr>
-                    <td style="font-weight:bold;background-color:#e4f3e5">Deal Source</td>
-                    <td style="font-weight:bold;background-color:#e4f3e5">Total Agent</td>
-                    <td style="font-weight:bold;background-color:#e4f3e5">Edit</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white">Deal Source</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white">Total Agent</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white">Edit</td>
                 </tr>
                 <?php if (!empty($source_list)): ?>
                     <?php foreach ($source_list as $each_source): ?>

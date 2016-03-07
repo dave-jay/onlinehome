@@ -165,16 +165,18 @@ a.btn .caret {
 }
 
 ul.dropdown-menu {
-    background-color:#f1f1f1;
+    background-color:#f9f9f9;
 }
 
 ul.dropdown-menu li a {
     padding:3px 10px;
+    color:#565656;
 }
 
 ul.dropdown-menu li a:hover {
-    background-color:#86B414;
-    background-image:none;
+    background-color:#1294d5;
+    background-image:none;    
+    color:white;
 }
 
 ul.dropdown-menu li a i {
@@ -843,4 +845,51 @@ input.error, select.error, textarea.error{
 label.error,td.error{
     font-weight:normal;
     color:red;
+}
+.MyPageHeader{
+    padding: 7px; color: #1294d5; font-size: 18px; border-bottom: 1px solid #1294d5;
+}
+
+#tblAgents div {
+    color: #6f6f6f;
+}
+
+.top-divider{
+    height: 5px; background-color: #1294d5;
+}
+.navbar-inverse{
+    background-color: white;
+    border-color: #7a7a7a;
+}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus{
+    background-color: #1294d5;
+}
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus{
+    color: #1294d5;
+}
+.nav.navbar-nav.navbar-right a{
+    font-size: 14px;
+    font-family: verdana;
+}
+.dropdown-menu{
+    display:none;
+}
+#report-menu:hover .dropdown-menu{
+    display:block;
+}
+.navbar-right .dropdown-menu {
+    left:0;
+    right:auto;
+}
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus{
+    background-color: white;
+}
+.navbar-inverse .navbar-toggle{
+    border-color: #1294d5;
+}
+.navbar-inverse .navbar-toggle .icon-bar{
+    background-color: #1294d5;
+}
+.navbar-inverse .navbar-nav > li > a{
+     color: #565656;
 }

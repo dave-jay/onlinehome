@@ -1,4 +1,4 @@
-<div style="padding: 7px; color: #86b414; font-size: 18px; border-bottom: 1px solid #86b414;">
+<div class="MyPageHeader">
     Call Statistics
 </div>
 <div class="col-md-12 col-sm-12 col-xs-12" style="padding-left:0px;padding-right:0px;">

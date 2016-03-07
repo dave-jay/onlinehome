@@ -27,32 +27,11 @@
         <div class="">            
             <?php if ($no_visible_elements) : ?>
                 <?php include $modulePage; ?>
-            <?php else: ?>                
-                <div class="container">
-                    <div class="row topbar">
-                       
-                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2" style="padding-left: 0px;">
-                            <img style="width:165px;" src="<?php print _MEDIA_URL ?>img/wayne-logo.jpg" />
-                        </div>
-                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 menu_right">
-                            <ul class="nav navbar-nav navbar-right">
-                                <li class="dropdown hidden-xs">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding: 0 22px;">
-                                        admin&nbsp;<i class="fa fa-user" >&nbsp;</i><b class="caret"></b>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="javascript:void(0);"><i class="fa fa-gear"></i> Change Password</a></li>
-                                        <li><a href="<?php print _U ?>?logout=1"><i class="glyphicon glyphicon-off"></i> Logout</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 leftbar">
-                            <?php include_once('left.php'); ?>
-                        </div>
-                        <div id="div_main_content" class="col-lg-10 col-md-9 col-sm-9 col-xs-12 content_body">
+            <?php else: ?> 
+                <?php include_once('left.php'); ?>
+                <div class="container" style="margin-top: 66px;">                    
+                    <div class="row">                        
+                        <div id="div_main_content" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 content_body">
                             <?php if (!(@include $modulePage)) : ?>
                                 <?php include "404.php"; ?>
                             <?php endif; ?>

@@ -1,7 +1,27 @@
 <?php
-
+$urlArgs = _cg("url_vars");
 $apiPD = new apiPipeDrive();
- 
+if($urlArgs[1]=='1'){
+    echo "Activity: ".$urlArgs[0]."<br>";
+$person_data = json_decode($apiPD->getActivityInfo($urlArgs[0]), true);
+d($person_data);
+die;
+}elseif($urlArgs[1]=='2'){
+    echo "Org: ".$urlArgs[0]."<br>";
+$person_data = json_decode($apiPD->getOrganizationInfo($urlArgs[0]), true);
+d($person_data);
+die;
+}elseif($urlArgs[1]=='3'){
+    echo "Per: ".$urlArgs[0]."<br>";
+$person_data = json_decode($apiPD->getPersonInfo($urlArgs[0]), true);
+d($person_data);
+die;
+}
+echo "Deal: ".$urlArgs[0]."<br>";
+$person_data = json_decode($apiPD->getDealInfo($urlArgs[0]), true);
+d($person_data);
+die;
+
 $deal = q("select * from call_detail where source_id!='' order by id asc");
 
 

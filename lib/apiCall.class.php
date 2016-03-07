@@ -34,7 +34,7 @@ class apiCall {
                     "StatusCallback" => $url_agent_calling,
                     "StatusCallbackMethod" => "POST",
                     "StatusCallbackEvent" => array("ringing"),
-                    "IfMachine" => "Hangup",
+                    //"IfMachine" => "Hangup",
                     "Timeout" => "25"
                 ));
                 echo $call->sid . "<br>";

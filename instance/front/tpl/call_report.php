@@ -14,7 +14,7 @@
     </div>
 </div>
 
-<div style="padding: 7px; color: #86b414; font-size: 18px; border-bottom: 1px solid #86b414;">
+<div class="MyPageHeader">
     Call Report
 </div>
 
@@ -38,15 +38,15 @@
         <table class="table gray_table">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Source</th>                    
-                    <th>Customer</th>
-                    <th>Answered by</th>
-                    <th>Date</th>
-                    <th>Response</th>
-                    <th>Duration</th>
-                    <th>Record</th>
-                    <th>Download</th>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;">#</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Source</td>                    
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Customer</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Answered by</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Date</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Response</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Duration</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Record</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Download</td>
 
                 </tr>
             </thead>

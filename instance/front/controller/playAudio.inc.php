@@ -15,8 +15,12 @@ if (isset($_REQUEST['call_detail_id']) && $_REQUEST['call_detail_id'] != '') {
         echo '<audio controls>';
         echo '<source src="' . $call_data['recording_url'] . '" type="audio/mpeg">';
         echo 'Your browser does not support the audio element.';
-        echo '</audio>';
-    } elseif($call_data['status']=='busy') {
+        echo '</audio>';        
+    }   
+    else{
+        echo "<div style='color:red;padding:0 10px;'>No Recording Found!</div>";
+    }
+    /*elseif($call_data['status']=='busy') {
         echo "<div style='color:red;'>Customer was busy at that moment!</div>";
     }
     elseif($call_data['status']=='no-answer') {
@@ -27,10 +31,8 @@ if (isset($_REQUEST['call_detail_id']) && $_REQUEST['call_detail_id'] != '') {
     }
     elseif($call_data['status']=='in-progress') {
         echo "<div style='color:green;'>Call is in-progress!</div>";
-    }
-    else{
-        echo "<div style='color:red;'>No Recording Found!</div>";
-    }
+    }*/
+    
     echo "</body>";
     echo "</html>";
 }
