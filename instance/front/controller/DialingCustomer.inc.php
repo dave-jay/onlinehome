@@ -15,6 +15,8 @@ $deal_data = json_decode($apiPD->getDealInfo($dealId)); //$deal_data = json_deco
 $person_id = isset($deal_data->data->person_id->value)?($deal_data->data->person_id->value):'';
 $org_id = isset($deal_data->data->org_id->value)?($deal_data->data->org_id->value):'';
 $source_id = isset($deal_data->data->c2a6fc3129578b646ae55717ed15f03ce3ee4df0)?($deal_data->data->c2a6fc3129578b646ae55717ed15f03ce3ee4df0):'';
+$cust_name = isset($deal_data->data->person_id->name)?($deal_data->data->person_id->name):'';
+$cust_email = isset($deal_data->data->person_id->email[0]->value)?($deal_data->data->person_id->email[0]->value):'';
 $apiPD->assignPerson($person_id, $agent_id);
 $apiPD->assignOrganization($org_id, $agent_id);
 
@@ -25,9 +27,12 @@ $call_detail_fields['agent_id'] = $agent_id;
 $call_detail_fields['agent_name'] = $agent_name;
 $call_detail_fields['status'] = (isset($_REQUEST['CallStatus'])?$_REQUEST['CallStatus']:'');
 $call_detail_fields['customer_phone'] = $phone_value;
+$call_detail_fields['source_id'] = $source_id;
+$call_detail_fields['customer_name'] = $cust_name;
+$call_detail_fields['customer_email'] = $cust_email;
 $call_detail_fields['deal_id'] = $dealId;
 $call_detail_fields['sid'] = $_REQUEST['CallSid'];
-$call_detail_id = qi('call_detail',$call_detail_fields);
+$call_detail_id = qi('call_detail',  _escapeArray($call_detail_fields));
 
 
 $fields['subject'] = 'Call';
