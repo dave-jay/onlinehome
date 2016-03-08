@@ -1,5 +1,4 @@
 <?php
-
 $api = new apiPipeDrive();
 $data = $api->getAllUsers();
 $data = json_decode($data, true);
@@ -24,9 +23,17 @@ if (!empty($user_list_data)) {
             $fields["email"] = $each_user["email"];
             $fields["phone"] = $each_user["phone"];
             $fields["is_deleted"] = '0';
+            if($each_user['active_flag']){
+                $fields["is_active"] = '1';
+            }else{
+                $fields["phone"] = '';
+                $fields["is_active"] = '0';
+            }
             if ($check_user_id != '') {
                 $fields = _escapeArray($fields);
-				unset($fields['phone']);
+                if($each_user['active_flag']){
+                    unset($fields['phone']);
+                }
                 qu("pd_users", $fields, " id = '{$check_user_id}' ");
             } else {
                 $fields["pd_id"] = $user_id;

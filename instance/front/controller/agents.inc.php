@@ -4,7 +4,7 @@ if($_REQUEST['syncUser']){
     die;
 }
 if($_REQUEST['updateUser']){
-    $agents = q("select * From pd_users order by name asc ");
+    $agents = q("select * From pd_users where is_active='1' order by name asc ");
     include _PATH.'instance/front/tpl/agents_data.php';
     die;
 }
@@ -40,7 +40,7 @@ if ($_REQUEST['doUpdateAgentCell']) {
     die;
 }
 
-$agents = q("select * From pd_users order by name asc ");
+$agents = q("select * From pd_users where is_active='1' order by name asc ");
 
 _cg("page_title", "Pipedrive Agents List");
 $jsInclude = "agents.js.php";

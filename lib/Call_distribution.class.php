@@ -19,7 +19,7 @@ class Call_distribution {
     }
 
     public static function getUserList() {
-        return q("SELECT * FROM pd_users WHERE is_deleted = 0 ORDER BY name ASC");
+        return q("SELECT * FROM pd_users WHERE is_deleted = 0 and is_active='1' ORDER BY name ASC");
     }
 
     public static function AllLeadSorceNull() {
