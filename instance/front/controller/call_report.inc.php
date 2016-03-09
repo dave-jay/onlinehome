@@ -45,7 +45,7 @@ if ($from_date != '' && $to_date != '') {
     $where = " AND DATE(created_at) >= '{$from_date}' AND DATE(created_at) <= '{$to_date}' ";
 }
 
-$call_list = q("SELECT *,(select count(*) from agent_call_dialed ad where ad.deal_id=cd.deal_id and is_redial='0') as no_of_try FROM `call_detail` cd WHERE 1=1 {$where} order by cd.created_at desc");
+$call_list = q("SELECT *,(select count(*) from agent_call_dialed ad where ad.deal_id=cd.deal_id and is_redial='0') as no_of_try FROM `call_detail` cd WHERE 1=1 {$where} order by cd.deal_id desc");
 
 if(!isset($_SESSION['pipedrive_source'])){
     $_SESSION['pipedrive_source'] = User::getSources();

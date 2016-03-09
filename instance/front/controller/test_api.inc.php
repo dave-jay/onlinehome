@@ -1,23 +1,36 @@
 <?php
+
+$apiPD = new apiPipeDrive();
+$deal = q("select * from call_detail order by id desc");
+
+
+foreach ($deal as $each_deal) {
+    $person_data = json_decode($apiPD->getDealInfo($each_deal['deal_id']));
+    $org_name = isset($person_data->data->org_name)?$person_data->data->org_name:'';
+    echo $person_data->data->org_name."<br>";
+    qu("call_detail", array("org_name" => _escape($org_name)), "id='{$each_deal['id']}'");
+}
+die;
+
 $urlArgs = _cg("url_vars");
 $apiPD = new apiPipeDrive();
-if($urlArgs[1]=='1'){
-    echo "Activity: ".$urlArgs[0]."<br>";
-$person_data = json_decode($apiPD->getActivityInfo($urlArgs[0]), true);
-d($person_data);
-die;
-}elseif($urlArgs[1]=='2'){
-    echo "Org: ".$urlArgs[0]."<br>";
-$person_data = json_decode($apiPD->getOrganizationInfo($urlArgs[0]), true);
-d($person_data);
-die;
-}elseif($urlArgs[1]=='3'){
-    echo "Per: ".$urlArgs[0]."<br>";
-$person_data = json_decode($apiPD->getPersonInfo($urlArgs[0]), true);
-d($person_data);
-die;
+if ($urlArgs[1] == '1') {
+    echo "Activity: " . $urlArgs[0] . "<br>";
+    $person_data = json_decode($apiPD->getActivityInfo($urlArgs[0]), true);
+    d($person_data);
+    die;
+} elseif ($urlArgs[1] == '2') {
+    echo "Org: " . $urlArgs[0] . "<br>";
+    $person_data = json_decode($apiPD->getOrganizationInfo($urlArgs[0]), true);
+    d($person_data);
+    die;
+} elseif ($urlArgs[1] == '3') {
+    echo "Per: " . $urlArgs[0] . "<br>";
+    $person_data = json_decode($apiPD->getPersonInfo($urlArgs[0]), true);
+    d($person_data);
+    die;
 }
-echo "Deal: ".$urlArgs[0]."<br>";
+echo "Deal: " . $urlArgs[0] . "<br>";
 $person_data = json_decode($apiPD->getDealInfo($urlArgs[0]), true);
 d($person_data);
 die;
@@ -34,13 +47,13 @@ foreach ($deal as $each_deal) {
 
         if ($customer_name != '' || $customer_email != '') {
             qu("call_detail", array("customer_name" => $customer_name, "customer_email" => $customer_email), "id='{$each_deal['id']}'");
-            echo $customer_name . " - " . $customer_email." - ".$each_deal['id'] . " - set";
+            echo $customer_name . " - " . $customer_email . " - " . $each_deal['id'] . " - set";
         } else {
-            echo $customer_name . " - " . $customer_email." - ".$each_deal['id'] . " - not set";
+            echo $customer_name . " - " . $customer_email . " - " . $each_deal['id'] . " - not set";
         }
         echo "<br>";
-    }else{
-        echo "<br><br>-error-".$each_deal['deal_id'];
+    } else {
+        echo "<br><br>-error-" . $each_deal['deal_id'];
         d($deal_data);
     }
 }

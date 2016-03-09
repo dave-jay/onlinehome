@@ -12,7 +12,7 @@ $payload = file_get_contents('php://input');
 $data = json_decode(@$payload, true);
 
 // store into the database
-qi("pd_push_notification_log", array("payload" => _escape($payload)));
+//qi("pd_push_notification_log", array("payload" => _escape($payload)));
 
 # now, identify if that is hot lead then get the number of customer and start calling the customer
 # c2a6fc3129578b646ae55717ed15f03ce3ee4df0 - this is key for custom attribute/field - "Source"
