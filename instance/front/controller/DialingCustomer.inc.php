@@ -35,6 +35,7 @@ $call_detail_fields['org_name'] = $org_name;
 $call_detail_fields['deal_id'] = $dealId;
 $call_detail_fields['sid'] = $_REQUEST['CallSid'];
 $call_detail_id = qi('call_detail',  _escapeArray($call_detail_fields));
+qu("agent_call_dialed",  _escapeArray(array("is_updated"=>"1")),"deal_id='".$dealId."'");
 
 
 $fields['subject'] = 'Call';
