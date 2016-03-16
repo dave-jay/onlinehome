@@ -1,6 +1,6 @@
 <?php
 if (count($call_list) > 0):
-    $cnt = 1;
+    $cnt = ($start_limit+1);
     foreach ($call_list as $each_call) {
         ?>
         <tr>
@@ -45,7 +45,7 @@ if (count($call_list) > 0):
         <?php
         $cnt++;
     }
-else:
+elseif($start_limit==0):
     ?>
     <td colspan="10" class='error'>No record found!</td>
 <?php endif; ?>

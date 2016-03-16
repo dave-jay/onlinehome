@@ -54,10 +54,10 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 var h = $(window).height();
-                $("#div_main_content").css("min-height", (h - 50) + "px");
+                $("#div_main_content").css("min-height", (h - 70) + "px");
                 $(window).resize(function e() {
                     var h = $(window).height();
-                    $("#div_main_content").css("min-height", (h - 50) + "px");
+                    $("#div_main_content").css("min-height", (h - 70) + "px");
                 });
 
             });
