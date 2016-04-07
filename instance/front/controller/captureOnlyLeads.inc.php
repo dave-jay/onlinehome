@@ -1,8 +1,13 @@
 <?php
+$call_status = qs("select *,value as call_status from config where `key` = 'CALL_STATUS'");
+if(strtolower($call_status['call_status'])!="on"){
+    qi("test",array("t"=>"call distribution is off."));
+    die;
+}
 _errors_on();
 # Get Pipedrive API object
 $apiPD = new apiPipeDrive();
-$apiCall = new apiCall();
+$apiCall = new callWebhook();
 
 # Set default timezone
 date_default_timezone_set('America/New_York');
@@ -41,7 +46,7 @@ if (in_array($deal_source, array('37')) || 1) {
     $agent_numbers = $apiPD->getAgentByDealSource($deal_source);
    
     # Finally call the agents
-    $apiCall->doBroadcast($phone_value, $agent_numbers , $deal_id); 
+    $apiCall->callNow($phone_value, $agent_numbers , $deal_id); 
 }
 //15162004065 - dj
 // 15165249063 - wayne

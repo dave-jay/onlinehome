@@ -109,7 +109,36 @@
             });
         </script>
 
-
+        <script>
+            function  changeCallStatus(curr_status){
+                if(curr_status=="on"){
+                    new_status = "OFF";
+                }else{
+                    new_status = "ON";
+                }
+                if(confirm("Are you sure, you want to Turn "+new_status+" Call Distributor?")){
+                    
+                }else{
+                    return;
+                }
+                if(curr_status=="on"){
+                    $("#call_status_img").html('<i class="fa fa-exclamation-triangle"></i> OFF');
+                    $("#call_status_img").css("background-color","#CC1E1E");
+                    $("#call_status_img").attr("onclick","changeCallStatus('off')");
+                }else{
+                    $("#call_status_img").html('<i class="fa fa-check"></i> ON');
+                    $("#call_status_img").css("background-color","#39891D");
+                    $("#call_status_img").attr("onclick","changeCallStatus('on')");
+                }
+                $.ajax({
+                url: _U + 'call_report',
+                data: {change_call_status: 1,curr_status:curr_status},
+                success: function (r) {
+                
+                }
+            });
+            }
+        </script>
     </body>
 </html>
 <?php

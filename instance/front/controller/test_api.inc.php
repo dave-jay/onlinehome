@@ -176,8 +176,8 @@ echo $urlArgs[0] . "<br>";
 $person_data = json_decode($apiPD->getDealInfo($urlArgs[0]), true);
 d($person_data);
 die;
-$apiCall = new apiCall();
-//$apiCall->doMessage($phone_value, $message); 
+$apiCall = new callWebhook();
+//$apiCall->messageNow($phone_value, $message); 
 
 $apiPD = new apiPipeDrive();
 $person_data = json_decode($apiPD->getPersonInfo('4421'), true);

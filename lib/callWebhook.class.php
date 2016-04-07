@@ -1,15 +1,20 @@
 <?php
 
-class apiCall {
+class callWebhook {
 
-    public function doBroadcast($phone_value, $agent_numbers, $dealId,$is_redial = "0") {
+    public function callNow($phone_value, $agent_numbers, $dealId,$is_redial = "0") {
         $account_sid = ACCOUNT_SID;
         $auth_token = AUTH_TOKEN;
         //$account_sid = 'AC4878ef9ccad9ce3b980fdd4d1d0f42ca';
         //$auth_token = 'ea532dd88a9ee7fb43259da56a40a38f';
+        $call_status = qs("select *,value as call_status from config where `key` = 'CALL_STATUS'");
+        if(strtolower($call_status['call_status'])!="on"){
+            qi("test",array("t"=>"call distribution is off.","payload"=>"someone is trying to call without permission!!!"));
+            die;
+        }
         if(IS_DEV_ENV && $is_redial=="0"){
-            $agent_numbers = array(TOLL_FREE_NO,AGENT_NO);
-            $phone_value = TOLL_FREE_NO;
+            $agent_numbers = array(TOLL_FREE_NO);
+            $phone_value = AGENT_NO;
         }
         if(count($agent_numbers)==0){
             return;
@@ -29,7 +34,7 @@ class apiCall {
                 $url_agent_calling .= $params;
                 $url_agent_received .= $params;
 
-                $call = $client->account->calls->create("+19165121922", $each_agent, $url_agent_received, array(
+                $call = $client->account->calls->create(TWILIO_PHONE_NUMBER, $each_agent, $url_agent_received, array(
                     "Method" => "GET",
                     "StatusCallback" => $url_agent_calling,
                     "StatusCallbackMethod" => "POST",
@@ -51,7 +56,7 @@ class apiCall {
         }
     }
     
-    public function doMessage($phone_value, $message) {       
+    public function messageNow($phone_value, $message) {       
         include _PATH . "/Services/Twilio.php";
         $client = new Services_Twilio(ACCOUNT_SID, AUTH_TOKEN);
         if(IS_DEV_ENV){
@@ -59,7 +64,7 @@ class apiCall {
         }
         $phone_value=  self::ValidateNumber($phone_value);
         try {
-            $sms = $client->account->messages->sendMessage("+19165121922", $phone_value,$message);
+            $sms = $client->account->messages->sendMessage(TWILIO_PHONE_NUMBER, $phone_value,$message);
             echo $sms->sid . "<br>";
             echo "<br>We are sending message on " . $phone_value;
             die;

@@ -2,7 +2,7 @@
 
 _errors_on();
 $apiPD = new apiPipeDrive();
-$apiCall = new apiCall();
+$apiCall = new callWebhook();
 # Set default timezone
 date_default_timezone_set('America/New_York');
 
@@ -53,7 +53,7 @@ if($phone_value=='-1' || $phone_value==''){
     $activityLogArray['phone_value']= $phone_value = $apiCall->ValidateNumber($phone_value);
     $activityLogArray['phone_last10'] = last10Char($phone_value);
     qi('activity_log',$activityLogArray);
-    $apiCall->doMessage($phone_value, $message); 
+    $apiCall->messageNow($phone_value, $message); 
 }
 
 

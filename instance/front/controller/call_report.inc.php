@@ -8,6 +8,14 @@ $fil_duration = '';
 $start_limit = 0;
 $page_size = 20;
 
+if(isset($_REQUEST['change_call_status']) && $_REQUEST['change_call_status']=="1"){
+    if($_REQUEST['curr_status']=="on"){
+        qu("config",array("value"=>"off"),"`key`='CALL_STATUS'");
+    }else{
+        qu("config",array("value"=>"on"),"`key`='CALL_STATUS'");
+    }
+    die;
+}
 if (isset($_REQUEST['download']) && $_REQUEST['download']==3) {    
     $destination_name_ulaw = "https://api.twilio.com/2010-04-01/Accounts/".ACCOUNT_SID."/Recordings/RE338a2c7e3153c26600a45d42c6c4b358.wav";
     $src = $destination_name_ulaw;

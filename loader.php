@@ -40,8 +40,9 @@ include _PATH . "instance/{$instance}/config.inc.php";
 $url = _cg("url"); // set from _getInstance function
 define(_URL, $url);
 
-define("ACCOUNT_SID","ACaa30ea6de17c65f4407de5a34cbe1efa");
-define("AUTH_TOKEN","02866ddbbb04c3bea0551ded9f017db9");        
+define("ACCOUNT_SID","AC0ed3b59448346c77c722e15188fecf31");
+define("AUTH_TOKEN","aedd61ecc2b3c9c858aac794197727b7");
+define("TWILIO_PHONE_NUMBER","+15162102005");
 
 $modulePage = $url . ".php";
 @include _PATH . "instance/{$instance}/controller/{$url}.inc.php";
