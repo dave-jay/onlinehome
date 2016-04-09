@@ -14,7 +14,7 @@ if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
     if (count($new_agent_numbers) > 0) {
         qd("deal_sid", "deal_id='{$dealId}'");
         $apiCall = new callWebhook();
-        $apiCall->callNow($phone_value, $new_agent_numbers, $dealId,"1");
+        //$apiCall->callNow($phone_value, $new_agent_numbers, $dealId,"1");
         die;
     } else {
         header("content-type: text/xml");

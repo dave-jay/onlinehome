@@ -16,6 +16,12 @@ date_default_timezone_set('America/New_York');
 $payload = file_get_contents('php://input');
 $data = json_decode(@$payload, true);
 
+//Getting Deal Info and change stage if pipeline id is '1' (i.e. for "Leads")
+$deal_info = $apiPD->getDealInfo($data['current']['id']);
+$deal_info = json_decode($deal_info, TRUE);
+if($deal_info['data']['pipeline_id']=="1"){
+    $deal_info = $apiPD->modifyDeal($data['current']['id'],array("stage_id"=>"1"));
+}
 // store into the database
 //qi("pd_push_notification_log", array("payload" => _escape($payload)));
 
