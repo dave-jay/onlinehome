@@ -12,7 +12,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">                
-                <li class="<?php print _cg("url") == 'dashboard' ? 'active' : ''  ?>"><a href="<?php l('dashboard'); ?>">Dashboard</a></li>                
+                <li id="dashboard-menu" class="<?php print _cg("url") == 'pipedrive-dashboard-source' ? 'active' : ''  ?>">
+                    <a href="<?php l('pipedrive-dashboard-source'); ?>">Dashboard</a>
+                    <ul class="dropdown-menu" style="width: 100%;">
+                        <li><a href="<?php l('pipedrive-dashboard-source'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>Source Dashboard</a></li>                        
+                    </ul>
+                </li>                
                 <li class="<?php print _cg("url") == 'call_distribution' ? 'active' : ''  ?>"><a href="<?php l('call_distribution'); ?>">Call Distribution</a></li>
                 <li class="<?php print _cg("url") == 'agents' ? 'active' : ''  ?>"><a href="<?php l('agents'); ?>">Agents List</a></li>
                 <li class="<?php print _cg("url") == 'call_report' ? 'active' : ''  ?>"><a href="<?php l('call_report'); ?>">Call Reports</a></li>                

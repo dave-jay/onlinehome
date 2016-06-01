@@ -8,8 +8,13 @@ $_SESSION['REQUEST'] = array("agent_numbers"=> $agent_numbers , "dealId" => $dea
 
 $status = qs("select * from deal_sid where status = 'A' and deal_id = '{$dealId}'  ");
 if(count($status) > 0 ){
-	echo "call is already accepted \r\n";
-	echo 'do nothing';
+        header("content-type: text/xml");
+        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        ?>
+        <Response>
+            <Say>Call is already accepted by Other Agent.</Say>
+        </Response>
+        <?php
 	die;
 }
 

@@ -118,4 +118,18 @@ class apiPipeDrive extends apiCore {
         $this->apiEndpoint = "organizations/{$organization_id}";
         return $this->doCall($this->prepareApiUrl(), $data, 'PUT');
     }
+    
+    public function getFilterDeals($filter_id,$start,$limit = 100) {
+        $this->apiEndpoint = "deals";
+        $this->params["filter_id"] = $filter_id;
+        $this->params["start"] = $start;
+        $this->params["limit"] = $limit;
+        return $this->doCall($this->prepareApiUrl(), array(), 'GET');
+    }
+    public function getAllStage($pipeline_id = 1){
+        $this->apiEndpoint = "stages";
+        $this->params["pipeline_id"] = $pipeline_id;
+        return $this->doCall($this->prepareApiUrl(), array(), 'GET');
+    }
+    
 }

@@ -877,6 +877,9 @@ label.error,td.error{
 #report-menu:hover .dropdown-menu{
     display:block;
 }
+#dashboard-menu:hover .dropdown-menu{
+    display:block;
+}
 .navbar-right .dropdown-menu {
     left:0;
     right:auto;
