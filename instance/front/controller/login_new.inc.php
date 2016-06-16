@@ -29,7 +29,7 @@ if ($_REQUEST['submit']) {
 
 
 if (isset($_SESSION['user'])) {
-    _R(lr('dashboard'));
+    _R(lr('pipedrive-dashboard-source'));
 }
 
 //$login_action_url = lr('login');

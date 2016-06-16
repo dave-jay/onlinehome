@@ -12,6 +12,10 @@ class callWebhook {
             qi("test",array("t"=>"call distribution is off.","payload"=>"someone is trying to call without permission!!!"));
             die;
         }
+        if($phone_value==''){
+            qi("activity_log",  _escapeArray(array("log"=>"Call can not be generated. Phone value is blank","deal_id"=>$dealId)));
+            die;
+        }
         if(IS_DEV_ENV && $is_redial=="0"){
             $agent_numbers = array(TOLL_FREE_NO);
             $phone_value = AGENT_NO;

@@ -4,6 +4,7 @@ $dealId = _e($_SESSION['REQUEST']['dealId'], '0');
 $phone_value = urlencode($_SESSION['REQUEST']['phone_value']);
 $cur_agent = $_SESSION['REQUEST']['cur_agent'];
 if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):    
+    qu("voice_call", array("in_progress" => "0"), "deal_id='" . $dealId . "'"); //Set in_progress=0 because call process is completed
     $old_agent_numbers = explode(",", $agent_numbers);
     $new_agent_numbers = array();
     foreach ($old_agent_numbers as $each_agents) {
@@ -18,6 +19,7 @@ if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
         //$apiCall->callNow($phone_value, $new_agent_numbers, $dealId,"1");
         die;
     } else {
+        qi("voice_call",array("deal_id"=>$dealId,"is_handled"=>"0","curr_agent"=>$cur_agent,"all_agents"=>$agent_numbers,"customer_phone"=>$phone_value));
         header("content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     ?>
@@ -27,6 +29,7 @@ if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
         die;
     } 
 elseif ($_REQUEST['Digits'] == 1):
+    qu("voice_call", array("in_progress" => "0"), "deal_id='" . $dealId . "'"); //Set in_progress=0 because call process is completed
     $agent_call_dialed_data = qs("select id from agent_call_dialed where deal_id='{$dealId}' order by id desc");
     qu("agent_call_dialed",  _escapeArray(array("received_agent"=>$cur_agent,"is_received"=>"1")),"id='".$agent_call_dialed_data['id']."'");
     $account_sid = ACCOUNT_SID;
@@ -81,6 +84,8 @@ elseif ($_REQUEST['Digits'] == 2):
     </Response>
     <?php
 else:
+    qu("voice_call", array("in_progress" => "0"), "deal_id='" . $dealId . "'"); //Set in_progress=0 because call process is completed
+    qi("voice_call",array("deal_id"=>$dealId,"is_handled"=>"0","curr_agent"=>$cur_agent,"all_agents"=>$agent_numbers,"customer_phone"=>$phone_value));
     header("content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     ?>

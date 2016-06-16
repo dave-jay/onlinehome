@@ -39,11 +39,11 @@
             }
         },
            series: [{
-            name: 'May',
+            name: '<?= $curr_graph_label; ?>',
             data: [<?php echo implode($curr_arr, ","); ?>]
 
         }, {
-            name: 'April',
+            name: '<?= $prev_graph_label; ?>',
             data: [<?php echo  implode($prev_arr, ","); ?>]
 
         }]
