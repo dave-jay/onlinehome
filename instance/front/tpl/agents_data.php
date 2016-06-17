@@ -1,20 +1,34 @@
 <tr>
-                <td style="width: 20%;font-weight:bold;background-color:#1294d5;color:white">Agent Name</td>
-                <td style="width: 30%;font-weight:bold;background-color:#1294d5;color:white">Email</td>
-                <td style="width: 20%;font-weight:bold;background-color:#1294d5;color:white">Phone</td>
-                <td style="width: 20%;font-weight:bold;background-color:#1294d5;color:white">Agent Cell Number</td>
-                <td style="width: 10%;font-weight:bold;background-color:#1294d5;color:white">Action</td>
-            </tr>
-<?php foreach ($agents as $each_agents): ?>
+    <td style="width: 20%;font-weight:bold;background-color:#1294d5;color:white;">Agent Name</td>
+    <td style="width: 25%;font-weight:bold;background-color:#1294d5;color:white;">Email</td>
+    <td style="width: 13%;font-weight:bold;background-color:#1294d5;color:white;">Phone</td>
+    <td style="width: 13%;font-weight:bold;background-color:#1294d5;color:white;">Agent Cell Number</td>
+    <td style="width: 19%;font-weight:bold;background-color:#1294d5;color:white;">Mark As Default Owner<br>
+    <span style="font-weight: normal; font-size: 11px;">Note: At a time, only one agent can be mark as default owner</span></td>
+    <td style="width: 10%;font-weight:bold;background-color:#1294d5;color:white;">Action</td>
+</tr>
+<?php foreach ($agents as $each_agents): 
+    if($each_agents['is_default']==1): ?>
+    <tr style="background-color: #E6E6FA;">
+        <td>
+            <div id="<?= "div_" . $each_agents['id'] . "_agent_name"; ?>"><?php print $each_agents['name']; ?>&nbsp;<i style="cursor: pointer;color:black;" class="fa fa-check-circle-o defaultOwner"data-toggle="tooltip" title="Default Owner" data-placement="top"></i></div>
+        </td>
+        <td><div><?php print $each_agents['email'] ?></div></td>
+        <td><div id="<?= "td_" . $each_agents['id'] . "_phone"; ?>"><?php print $each_agents['phone'] == '' ? '-' : $each_agents['phone']  ?></div></td>
+        <td><div id="<?= "td_" . $each_agents['id'] . "_cell"; ?>"><?php print $each_agents['cell'] == '' ? '-' : $each_agents['cell']  ?></div></td>
+        <td><div class="defaultOwner" data-toggle="tooltip" title="Remove From Default Owner" data-placement="top" onclick="RemoceFromDefault('<?php print $each_agents['id'] ?>')" style="cursor: pointer;color:maroon;width: fit-content;width: -moz-fit-content;"><i class="fa fa-minus-square-o"></i>&nbsp;Remove from Default Owner</div></td>
+        <td><div onclick="doOpenEditPopup('<?php print $each_agents['id'] ?>')" style="cursor: pointer;color:#1294d5;"><i class="fa fa-edit"></i>&nbsp;Edit</div></td>
+    </tr>
+    <?php else: ?>
     <tr>
         <td>
-                        <div id="<?=  "div_".$each_agents['id']."_agent_name"; ?>"><?php print $each_agents['name']; ?></div>
-                    </td>
-                    <td><div><?php print $each_agents['email'] ?></div></td>
-                    <td><div id="<?=  "td_".$each_agents['id']."_phone"; ?>"><?php print $each_agents['phone']==''?'-':$each_agents['phone'] ?></div></td>
-                    <td><div id="<?=  "td_".$each_agents['id']."_cell"; ?>"><?php print $each_agents['cell']==''?'-':$each_agents['cell'] ?></div></td>
-                    <td><div onclick="doOpenEditPopup('<?php print $each_agents['id'] ?>')" style="cursor: pointer;color:#1294d5;"><i class="fa fa-edit"></i>&nbsp;Edit</div></td>
-<!--                    <td><div><input type="text" class="form-control" value="<?php print $each_agents['phone'] ?>" onblur="doSavePhone(this.value, '<?php print $each_agents['id'] ?>')" /></div></td>
-                    <td><div><input type="text" class="form-control" value="<?php print $each_agents['cell'] ?>" onblur="doSaveCell(this.value, '<?php print $each_agents['id'] ?>')" /></div></td>-->
+            <div id="<?= "div_" . $each_agents['id'] . "_agent_name"; ?>"><?php print $each_agents['name']; ?></div>
+        </td>
+        <td><div><?php print $each_agents['email'] ?></div></td>
+        <td><div id="<?= "td_" . $each_agents['id'] . "_phone"; ?>"><?php print $each_agents['phone'] == '' ? '-' : $each_agents['phone']  ?></div></td>
+        <td><div id="<?= "td_" . $each_agents['id'] . "_cell"; ?>"><?php print $each_agents['cell'] == '' ? '-' : $each_agents['cell']  ?></div></td>
+        <td><div class="defaultOwner" data-toggle="tooltip" title="Mark As Default" data-placement="top" onclick="MarkAsDefault('<?php print $each_agents['id'] ?>')" style="cursor: pointer;color:green;width: fit-content;width: -moz-fit-content;"><i class="fa fa-check-square-o"></i>&nbsp;Mark As Default</div></td>
+        <td><div onclick="doOpenEditPopup('<?php print $each_agents['id'] ?>')" style="cursor: pointer;color:#1294d5;"><i class="fa fa-edit"></i>&nbsp;Edit</div></td>
     </tr>
+    <?php endif; ?>
 <?php endforeach; ?>

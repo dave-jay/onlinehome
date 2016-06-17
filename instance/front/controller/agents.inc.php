@@ -3,6 +3,19 @@ if($_REQUEST['syncUser']){
     include _PATH.'instance/front/controller/schedulerGetDealUsers.inc.php';
     die;
 }
+if($_REQUEST['MarkAsDefault']){
+    qu("pd_users",array("is_default"=>0),"1=1");
+    qu("pd_users",array("is_default"=>1),"id='{$_REQUEST['user_id']}'");
+    $agents = q("select * From pd_users where is_active='1' order by name asc ");
+    include _PATH.'instance/front/tpl/agents_data.php';
+    die;
+}
+if($_REQUEST['RemoceFromDefault']){
+    qu("pd_users",array("is_default"=>0),"id='{$_REQUEST['user_id']}'");
+    $agents = q("select * From pd_users where is_active='1' order by name asc ");
+    include _PATH.'instance/front/tpl/agents_data.php';
+    die;
+}
 if($_REQUEST['updateUser']){
     $agents = q("select * From pd_users where is_active='1' order by name asc ");
     include _PATH.'instance/front/tpl/agents_data.php';

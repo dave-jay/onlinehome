@@ -29,8 +29,8 @@ include _PATH . "/Services/Twilio.php";
 $client = new Services_Twilio($account_sid, $auth_token);
 
 // call first
-$data = q("select * from deal_sid where deal_id='{$dealId}' AND sid!='{$_REQUEST['CallSid']}'");
-qu("deal_sid", array("status" => 'R'), "deal_id='{$dealId}' AND sid !='{$_REQUEST['CallSid']}'");
+$data = q("select * from deal_sid where deal_id='{$dealId}' AND status!='C' AND sid!='{$_REQUEST['CallSid']}'");
+qu("deal_sid", array("status" => 'R'), "deal_id='{$dealId}' AND status!='C' AND sid !='{$_REQUEST['CallSid']}'");
 
 if (count($data) > 0) {
 	foreach ($data as $each_data) {

@@ -28,6 +28,15 @@ class callWebhook {
         $agent_numbers = implode(',', $agent_numbers);
         qi("agent_call_dialed",  _escapeArray(array("agent_numbers"=>$agent_numbers,"deal_id"=>$dealId,"is_redial"=>$is_redial,"customer_phone"=>$phone_value)));
         $client = new Services_Twilio($account_sid, $auth_token);
+        $deal_sid_data = q("select * from deal_sid where status!='R' AND status!='C' AND deal_id='{$dealId}'");
+        qu("deal_sid", array("status" => "C"), " status!='R' AND status!='C' AND deal_id='{$dealId}'");
+
+        foreach ($deal_sid_data as $each_sid) {
+            $call = $client->account->calls->get($each_sid['sid']);
+            $call->update(array(
+                "Status" => "completed"
+            ));
+        }
         try {
 
             foreach ($agent_numbers_arr as $key => $each_agent) {
