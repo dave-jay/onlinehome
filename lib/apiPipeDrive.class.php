@@ -27,6 +27,10 @@ class apiPipeDrive extends apiCore {
         $this->apiEndpoint = "deals";
         return $this->doCall($this->prepareApiUrl(), $data);
     }
+    public function createNote($data) {
+        $this->apiEndpoint = "notes";
+        return $this->doCall($this->prepareApiUrl(), $data, "POST");
+    }
     public function modifyDeal($deal_id, $dealFields=array()){
         $this->apiEndpoint = "deals/".$deal_id;
         return $this->doCall($this->prepareApiUrl(), $dealFields, 'PUT');

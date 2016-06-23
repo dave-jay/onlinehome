@@ -96,11 +96,10 @@
         <table class="table gray_table">
             <thead>
                 <tr>
-                    <td style="font-weight:bold;background-color:#1294d5;color:white;">#</td>
-                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Source</td>                    
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;display:none;">#</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white; padding-left: 20px;">Deal</td>
                     <td style="font-weight:bold;background-color:#1294d5;color:white;">Customer</td>
-                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Answered by</td>
-                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Deal Id</td>
+                    <td style="font-weight:bold;background-color:#1294d5;color:white;">Call Log</td>
                     <td style="font-weight:bold;background-color:#1294d5;color:white;">Date</td>
                     <td style="font-weight:bold;background-color:#1294d5;color:white;">Duration</td>
                     <td style="font-weight:bold;background-color:#1294d5;color:white;">Record</td>
@@ -153,6 +152,12 @@
         }
     </script>
     <style>
+        #body_detail td{
+            background-color: #E8F6FF;
+        }
+        .log-lbl-seperator{
+            height: 4px;
+        }
         .form-lbl{
             padding-top: 4px;
         }
@@ -191,4 +196,103 @@
 
 
 </div>
+<div class="modal fade" id="TimelinePopup" >
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Time Line - <span id="deal_nm"></span></h4>
+
+            </div>
+            <div class="modal-body" style="height:350px;overflow: auto;" >
+                <div id="user_selection_area" style="margin:0px auto;">
+                    <div class="left-block">&nbsp;</div>
+                    <div class="middle-block" style='height: 70px;'>
+                        <span class="timeline-date">
+                            6 May, 2016
+                        </span>
+                    </div>
+                    <div class="right-block">&nbsp;</div>                    
+                    <div style="clear: both;"></div>
+                    <div class="left-block">
+                        <div class="timeline-log">
+                            Deal created  <br>
+                            Org: Parks handy Service<br>
+                            Customer: Handy service 
+                        </div>
+                    </div>
+                    <div class="middle-block">
+                        <span class="timeline-circle">
+                            &nbsp;
+                        </span>
+                    </div>
+                    <div class="right-block">
+                        <div class="timeline-time">
+                            10:00 AM
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .left-block{
+        width:37%;
+        float: left;
+        text-align: right;
+    }
+    .left-block .timeline-log{
+            background-color: dimgrey; 
+            text-align: left; 
+            padding: 10px; 
+            color: white; 
+            font-size: 15px;
+            display: inline-block;
+            float: right;
+            
+        }    
+    .middle-block{
+        width:26%;
+        float: left;
+        text-align: center;
+        background: url("instance/front/media/img/today_marker.png") no-repeat scroll center center;
+    }
+    .middle-block .timeline-date{
+        background-color: brown; 
+        text-align: center; 
+        border-radius: 100px;
+        padding: 10px; 
+        color: white; 
+        font-size: 18px;
+    }
+    .middle-block .timeline-circle{
+        background-color: white; 
+        border: 1px solid red;
+        border-radius: 100px;
+        display: inline-block;
+        height: 20px;
+        width: 20px;        
+    }
+    .right-block .timeline-time{
+        background-color: dimgrey; 
+        text-align: right; 
+        border-radius: 100px  0 0 100px;
+        padding: 10px; 
+        color: white; 
+        font-size: 15px;
+        display: inline-block;
+        float: left;
+        width: 100px;
+    }
+    .right-block{
+        width:37%;
+        float: left;
+        text-align: left;
+    }
+</style>
 

@@ -16,6 +16,8 @@ $person_id = isset($deal_data->data->person_id->value)?($deal_data->data->person
 $org_id = isset($deal_data->data->org_id->value)?($deal_data->data->org_id->value):'';
 $source_id = isset($deal_data->data->c2a6fc3129578b646ae55717ed15f03ce3ee4df0)?($deal_data->data->c2a6fc3129578b646ae55717ed15f03ce3ee4df0):'';
 $cust_name = isset($deal_data->data->person_id->name)?($deal_data->data->person_id->name):'';
+$add_time = isset($deal_data->data->add_time) ? ($deal_data->data->add_time) : '';
+$add_time = date("Y-m-d H:i:s",  (strtotime($add_time)-(3600*4)));
 $cust_email = isset($deal_data->data->person_id->email[0]->value)?($deal_data->data->person_id->email[0]->value):'';
 $org_name = isset($deal_data->data->org_name)?($deal_data->data->org_name):'';
 $apiPD->assignPerson($person_id, $agent_id);
@@ -33,6 +35,7 @@ $call_detail_fields['customer_name'] = $cust_name;
 $call_detail_fields['customer_email'] = $cust_email;
 $call_detail_fields['org_name'] = $org_name;
 $call_detail_fields['deal_id'] = $dealId;
+$call_detail_fields['deal_added'] = $add_time;
 $call_detail_fields['sid'] = $_REQUEST['CallSid'];
 $call_detail_id = qi('call_detail',  _escapeArray($call_detail_fields));
 qu("agent_call_dialed",  _escapeArray(array("is_updated"=>"1")),"deal_id='".$dealId."'");

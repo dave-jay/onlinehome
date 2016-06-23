@@ -35,7 +35,7 @@ qu("deal_sid", array("status" => 'R'), "deal_id='{$dealId}' AND status!='C' AND 
 if (count($data) > 0) {
 	foreach ($data as $each_data) {
 		//echo "hanging up {$each_data['sid']} <br />\r\n";
-		sleep(1);
+		//sleep(1);
 		$status = qs("select * from deal_sid where sid = '{$each_data['sid']}' ");
 		
 		if($status != 'A'){
@@ -67,11 +67,15 @@ if(isset($agent_detail)){
     ?>
 
 <Response>    
-    <Gather timeout="5" action="<?= _U; ?>ConnectingCustomer" method="GET" numDigits="1">
+    <Gather timeout="10" action="<?= _U; ?>ConnectingCustomer" method="GET" numDigits="1">
         <Say>Hey  <?= $agent_name; ?>, You  have received  Incoming  Lead. 
                 The Name  of  person  is  <?= $Person; ?> from  Organization  <?= $organization ?>. 
                 Requires Loan  Of  <?= $deal_amount; ?> <?= $deal_currency; ?>. </Say>
             <Say>Press 1 to continue.  Press 2 to Repeat.  Press any other key to hangup</Say>	
+    </Gather>
+    <Gather timeout="5" action="<?= _U; ?>ConnectingCustomer" method="GET" numDigits="1">        
+        <Say>You had not press any key.</Say>
+        <Say>Please Press 1 to continue.  Press 2 to Repeat.  Press any other key to hangup</Say>	
     </Gather>
     <Redirect method="POST"><?= _U."ConnectingCustomer"; ?></Redirect>
 </Response>

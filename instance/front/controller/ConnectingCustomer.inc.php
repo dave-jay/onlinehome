@@ -15,7 +15,14 @@ if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
     if (count($new_agent_numbers) > 0) {
         //qd("deal_sid", "deal_id='{$dealId}'");
         qi("voice_call",array("deal_id"=>$dealId,"is_handled"=>"0","curr_agent"=>$cur_agent,"all_agents"=>$agent_numbers,"customer_phone"=>$phone_value));
-        $apiCall = new callWebhook();
+        $agent_name = 'agent';
+        $agent_detail = qs("select * from pd_users where phone like '%" . $cur_agent . "%'");
+        if (isset($agent_detail)) {
+            $agent_name = $agent_detail['name'];
+        }
+        $message = '<b>Note: </b><br>Call went into voicemail of <b>' . $agent_name . "</b>. System will call again in <b>10 minutes</b>.";
+        sendNote($dealId,$message);
+        //$apiCall = new callWebhook();
         //$apiCall->callNow($phone_value, $new_agent_numbers, $dealId,"1");
         die;
     } else {
@@ -26,6 +33,13 @@ if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
 
     <Response><Say>You had not press any key. We have no other agents to call!</Say></Response>
 <?php
+        $agent_name = 'agent';
+        $agent_detail = qs("select * from pd_users where phone like '%" . $cur_agent . "%'");
+        if (isset($agent_detail)) {
+            $agent_name = $agent_detail['name'];
+        }
+        $message = '<b>Note: </b><br>Call went into voicemail of <b>' . $agent_name . "</b>. System will call again in <b>10 minutes</b>.";
+        sendNote($dealId,$message);
         die;
     } 
 elseif ($_REQUEST['Digits'] == 1):
@@ -74,12 +88,16 @@ elseif ($_REQUEST['Digits'] == 2):
     ?>
 
     <Response>        
-        <Gather timeout="5" action="<?= _U; ?>ConnectingCustomer" method="GET" numDigits="1">
+        <Gather timeout="10" action="<?= _U; ?>ConnectingCustomer" method="GET" numDigits="1">
             <Say>Hey  <?= $agent_name; ?>, You  have received  Incoming  Lead. 
                 The Name  of  person  is  <?= $Person; ?> from  Organization  <?= $organization ?>. 
                 Requires Loan  Of  <?= $deal_amount; ?> <?= $deal_currency; ?>. </Say>
             <Say>Press 1 to continue.  Press 2 to Repeat.  Press any other key to hangup</Say>
         </Gather>
+        <Gather timeout="5" action="<?= _U; ?>ConnectingCustomer" method="GET" numDigits="1">        
+        <Say>You had not press any key.</Say>
+        <Say>Please Press 1 to continue.  Press 2 to Repeat.  Press any other key to hangup</Say>	
+    </Gather>
         <Redirect method="POST"><?= _U . "ConnectingCustomer"; ?></Redirect>
     </Response>
     <?php
@@ -90,8 +108,22 @@ else:
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     ?>
 
-    <Response><Say>Good Buy!</Say></Response>
+    <Response><Say>Good Buy!</Say></Response>    
 <?php
+    $agent_name = 'agent';
+    $agent_detail = qs("select * from pd_users where phone like '%" . $cur_agent . "%'");
+    if (isset($agent_detail)) {
+        $agent_name = $agent_detail['name'];
+    }
+    $message = '<b>Note: </b><br>Call went into voicemail of <b>' . $agent_name . "</b>. System will call again in <b>10 minutes</b>.";
+    sendNote($dealId,$message);
 endif;
 die;
+
+function sendNote($deal_id, $message) {
+    $apiPD = new apiPipeDrive();
+    $data['deal_id'] = $deal_id;
+    $data['content'] = $message;
+    $data = $apiPD->createNote($data);
+}
 ?>

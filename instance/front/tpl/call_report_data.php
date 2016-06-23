@@ -3,9 +3,18 @@ if (count($call_list) > 0):
     $cnt = ($start_limit+1);
     foreach ($call_list as $each_call) {
         ?>
-        <tr>
-            <td><?php echo $cnt; ?></td>
-            <td><?php echo $_SESSION['pipedrive_source'][$each_call['source_id']]['source_name']; ?></td>
+        <tr id="tr_<?php echo $cnt; ?>">
+            <td style="display:none;"><?php echo $cnt; ?></td>
+            <td style="display:none;"><?php echo $_SESSION['pipedrive_source'][$each_call['source_id']]['source_name']; ?></td>
+            <td style="max-width: 120px; padding-left: 20px;">
+                <?php 
+                    echo "<a style='color: white; cursor: pointer;' class='label label-primary' title='View Deal in Pipedrive' target='_blank' href='https://sprout2.pipedrive.com/deal/".$each_call['deal_id']."'>". $each_call['deal_id'] . "</a><br>"; 
+                    echo "<div style='height:2px;'></div>";
+                    echo "<a id='deal_name_".$cnt."' style='color: gray; cursor: pointer;'  title='View Deal in Pipedrive' target='_blank' href='https://sprout2.pipedrive.com/deal/".$each_call['deal_id']."'>". $each_call['org_name'] . "</a><br>"; 
+                    echo "<div style='height:2px;'></div>";
+                    echo "<a style='color: gray; cursor: pointer;'  title='View Deal in Pipedrive' target='_blank' href='https://sprout2.pipedrive.com/deal/".$each_call['deal_id']."'>(". $_SESSION['pipedrive_source'][$each_call['source_id']]['source_name'] . ")</a><br>"; 
+                ?>
+            </td>
             <td style="max-width:150px; word-wrap: break-word;"><?php
                 if ($each_call['customer_name'] != '')
                     echo "<a style='color:#1294D5;' title='View Deal in Pipedrive' target='_blank' href='https://sprout2.pipedrive.com/deal/".$each_call['deal_id']."'>". $each_call['customer_name'] . "</a><br>";
@@ -14,14 +23,26 @@ if (count($call_list) > 0):
                 if ($each_call['customer_email'] != '')
                     echo $each_call['customer_email'];
                 ?></td>
-            <td><?php echo ($each_call['agent_id'] == 0 ? '-' : $each_call['agent_name']); ?></td>
-            <td style="max-width: 120px;">
-                <?php 
-                    echo "<a style='color: white; cursor: pointer;' class='label label-primary' title='View Deal in Pipedrive' target='_blank' href='https://sprout2.pipedrive.com/deal/".$each_call['deal_id']."'>". $each_call['deal_id'] . "</a><br>"; 
-                    echo "<div style='height:2px;'></div>";
-                    echo "<a style='color: gray; cursor: pointer;'  title='View Deal in Pipedrive' target='_blank' href='https://sprout2.pipedrive.com/deal/".$each_call['deal_id']."'>". $each_call['org_name'] . "</a><br>"; 
-                ?>
-            </td>
+            <td><?php 
+                echo "<div style='color: white;' class='label label-primary log-lbl'>Deal created at ". date('h:i A',  strtotime($each_call['deal_added'])) . "</div><br><div class='log-lbl-seperator'></div>";
+                $agent_call_detail = q("select * from agent_call_dialed where deal_id='{$each_call['deal_id']}' order by id asc");
+                $call_count = 1;
+                foreach($agent_call_detail as $each_call_detail){
+                    if($each_call_detail['is_received']=='1'){
+                        echo "<div style='color: white;' class='label label-success log-lbl'>{$call_try[$call_count]} call at ". date('h:i A',  strtotime($each_call_detail['created_at'])) . "</div><br><div class='log-lbl-seperator'></div>";
+                    }else{
+                        echo "<div style='color: white;' class='label label-danger log-lbl'> {$call_try[$call_count]} call at ". date('h:i A',  strtotime($each_call_detail['created_at'])) . "</div><br><div class='log-lbl-seperator'></div>";
+                    }$call_count++;
+                }
+                if($each_call['agent_id']==0){
+                    echo "<div style='color: white;' class='label label-danger log-lbl'>Call not handled.</div><br><div class='log-lbl-seperator'></div>";
+                }else{
+                    echo "<div style='color: white;' class='label label-success log-lbl'>Call handled by ".$each_call['agent_name'] . "</div><br><div class='log-lbl-seperator'></div>";
+                } 
+                //echo "<a onclick='openDetailLogPopup(\"".$cnt."\")' style='color:#1294d5;cursor:pointer;'>View More Detail</a>"
+            ?>
+                <input type="hidden" id="hid_deal_<?php echo $cnt; ?>" value="<?php echo $each_call['deal_id']; ?>" />
+            </td>            
             <td><?php echo date('m/d/Y', strtotime($each_call['created_at'])) . "<br>" . date('g:i A', strtotime($each_call['created_at'])); ?></td>
             
             <td><?php echo ($each_call['recording_duration'] == 0 ? '00:00:00' : (gmdate("H:i:s", $each_call['recording_duration']))); ?></td>

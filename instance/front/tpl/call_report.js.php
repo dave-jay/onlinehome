@@ -153,4 +153,22 @@ $("#btnSearch").click(function (e) {
     }
     return true;
 });
+
+function openDetailLogPopup(Id){
+    var dealId = $("#hid_deal_"+Id).val();
+    $("#deal_nm").html($("#deal_name_"+Id).html());
+    $("#TimelinePopup").modal("show");
+    loadTimeLine(dealId);
+}
+
+function loadTimeLine(dealId){
+    $.ajax({
+            url: _U + 'call_report',
+            dataType: "json",
+            data: {loadTimeLine: 1, dealId: dealId},
+            success: function (r) {
+                
+            }
+        });
+    }
 </script>

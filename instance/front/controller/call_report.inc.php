@@ -8,6 +8,12 @@ $fil_duration = '';
 $start_limit = 0;
 $page_size = 20;
 
+$call_try[1]='First';
+$call_try[2]='Second';
+$call_try[3]='Third';
+$call_try[4]='Fourth';
+$call_try[5]='Fifth';
+
 if(isset($_REQUEST['change_call_status']) && $_REQUEST['change_call_status']=="1"){
     if($_REQUEST['curr_status']=="on"){
         qu("config",array("value"=>"off"),"`key`='CALL_STATUS'");
@@ -94,7 +100,7 @@ if (isset($_REQUEST['count_detail'])) {
     $call_list = qs("SELECT count(*) as total_calls,sum(recording_duration) as call_duration,min(created_at) as min_date,max(created_at) as max_date FROM `call_detail` cd WHERE 1=1 {$where}");
     if($call_list['total_calls']>0){
         $res_arr['total_calls'] = $call_list['total_calls'];
-        $res_arr['call_duration'] = (gmdate("H", $call_list['call_duration'])+0)."<br>"."Hours";
+        $res_arr['call_duration'] = floor($call_list['call_duration'] / 3600)."<br>"."Hours";
         if($res_arr['call_duration']==0){
             $res_arr['call_duration'] = (gmdate("i", $call_list['call_duration'])+0)."<br>"."Minutes";
             if($res_arr['call_duration']==0){
