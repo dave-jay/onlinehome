@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "LySoft AutoText",
+  "version": "2.0",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+	  "css": [ "mystyle.css" ],
+      "matches": [
+        "https://sprout2.pipedrive.com/deal/*","http://sprout2.pipedrive.com/deal/*",
+        "https://sprout2.pipedrive.com/deals/*","http://sprout2.pipedrive.com/deals/*"
+      ],
+      "js": ["jquery-2.2.0.min.js", "content.js"],
+	  "run_at": "document_end"
+    }
+  ],
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  "web_accessible_resources": ["dialog.html","call_to_customer.html"]
+}

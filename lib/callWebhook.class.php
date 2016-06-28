@@ -69,6 +69,30 @@ class callWebhook {
         }
     }
     
+    public function click_to_call($click_to_call_id = 0) {
+        $account_sid = ACCOUNT_SID;
+        $auth_token = AUTH_TOKEN;
+        $click_to_call = qs("select * from click_to_call where id='{$click_to_call_id}'");
+        if(empty($click_to_call)){
+            return '';
+        }
+
+        $url_agent_calling = _U . "click_to_call_complete?";
+        $url_agent_received = _U . "click_to_call_first?";
+        $params = ("agent_number=" . $click_to_call['agent_phone']."&click_to_call_id=". $click_to_call_id. "&dealId=" . $click_to_call['deal_id'] . "&phone_value=" . $click_to_call['customer_phone']);
+        $url_agent_calling .= $params;
+        $url_agent_received .= $params;
+        include _PATH . "/Services/Twilio.php";
+        $client = new Services_Twilio($account_sid, $auth_token);
+        $call = $client->account->calls->create(TWILIO_PHONE_NUMBER, $click_to_call['agent_phone'], $url_agent_received, array(
+            "Method" => "GET",
+            "StatusCallback" => $url_agent_calling,
+            "StatusCallbackMethod" => "POST",
+            "Timeout" => "25"
+        ));
+        return $call->sid;
+    }
+    
     public function messageNow($phone_value, $message) {       
         include _PATH . "/Services/Twilio.php";
         $client = new Services_Twilio(ACCOUNT_SID, AUTH_TOKEN);

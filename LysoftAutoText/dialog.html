@@ -1,0 +1,30 @@
+<div id="popupbg"></div>
+<div id="popupcontent">
+    <div id="popupHeader">
+        Text Magic
+    </div>
+    <div id="popupBody">
+        <iframe id="my-popup-iframe" src="" style="height: 395px;width: 100%;"></iframe>
+    </div>
+    <div id="popupFooter">
+        <button id="my-custom-popup-close" type="button" class="my-custom-btn">Close</button>
+    </div>
+</div>
+<script>
+    document.getElementById('my-custom-popup-close').addEventListener('click', closeMyCustomPopup);    
+    var dealId=window.location.href.substring(window.location.href.lastIndexOf("deal/")+5);
+    var count=1;
+    var phone="";
+    $(".personFields .fieldsList div").each(function(){
+        if($(this).data("field-key")=="phone"){
+          $(this).find(".phoneField .singleRow a").each(function(){
+            console.log($(this).html());
+            phone+="&phone_"+count+"="+$(this).html();
+            count++;
+          });
+        }
+    });
+    count--;
+    document.getElementById("my-popup-iframe").src="https://leadpropel.com/admin/conversation_list?dealId="+dealId+"&phone_count="+count+""+phone;    
+    //document.getElementById('my-popup-iframe').addEventListener('load', testpopup);    
+</script>

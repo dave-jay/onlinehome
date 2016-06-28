@@ -1,0 +1,30 @@
+<div id="popupbgcall"></div>
+<div id="popupcontentcall">
+    <div id="popupHeaderCall">
+        Call To Customer
+    </div>
+    <div id="popupBodyCall">
+        <iframe id="call-to-customer-iframe" src="" style="height: 395px;width: 100%;"></iframe>
+    </div>
+    <div id="popupFooterCall">
+        <button id="call-to-customer-popup-close" type="button" class="close-blue-btn">Close</button>
+    </div>
+</div>
+<script>
+    document.getElementById('call-to-customer-popup-close').addEventListener('click', closeMyCallToCustomerPopup);    
+    var dealId=window.location.href.substring(window.location.href.lastIndexOf("deal/")+5);
+    var count=1;
+    var phone="";
+    var agent_name=$(".userInfo .name").html();
+    $(".personFields .fieldsList div").each(function(){
+        if($(this).data("field-key")=="phone"){
+          $(this).find(".phoneField .singleRow a").each(function(){
+            console.log($(this).html());
+            phone+="&phone_"+count+"="+$(this).html();
+            count++;
+          });
+        }
+    });
+    count--;
+    document.getElementById("call-to-customer-iframe").src="https://leadpropel.com/admin/click_to_call?dealId="+dealId+"&agent_name="+agent_name+"&phone_count="+count+""+phone;    
+</script>

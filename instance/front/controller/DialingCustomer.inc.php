@@ -49,7 +49,8 @@ $fields['person_id'] = $person_id;
 $fields['org_id'] = $org_id;
 
 $param = http_build_query(array('call_detail_id'=>$call_detail_id));
-$fields['note'] = "<iframe src='https://www.leadpropel.com/".FOLDER_RUN."playAudio?".$param."' width='380' height='110'></iframe>";
+//$fields['note'] = "<iframe src='https://www.leadpropel.com/".FOLDER_RUN."playAudio?".$param."' width='380' height='110'></iframe>";
+$fields['note'] = "<span call-recording-id-{$call_detail_id}>Call Recording: <br>We are loading call recording.</span>";
 $data = $apiPD->createActivity($fields);
 $activity_data = json_decode($data);
 if(isset($activity_data->success) && $activity_data->success){    
