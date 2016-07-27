@@ -32,6 +32,17 @@
                     </div>
                     <div style="clear: both;height: 18px;"></div>
                     <div class="col-lg-3 col-lg-offset-1" style='text-align: right;'>
+                        <label>Group</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <select id="ddlGroup" name="ddlGroup"  class="form-control">
+                            <option value="A">A - Higher Level</option>
+                            <option value="B">B - Middle Level</option>
+                            <option value="C">C - Lower Level</option>
+                        </select>
+                    </div>
+                    <div style="clear: both;height: 18px;"></div>
+                    <div class="col-lg-3 col-lg-offset-1" style='text-align: right;'>
                         <label>Agent Phone Number</label>
                     </div>
                     <div class="col-lg-7">
@@ -59,6 +70,16 @@
     </div>
 </div>
 <style>
+    #tblAgents div.group-A{
+        background-color: darkgreen; display: inline-block; border-radius: 89px; color: white; height: 20px; padding: 0px 6px;
+    }
+    #tblAgents div.group-B{
+        background-color: #1d991d; display: inline-block; border-radius: 89px; color: white; height: 20px; padding: 0px 6px;
+    }
+    #tblAgents div.group-C{
+        background-color: lightgreen; display: inline-block; border-radius: 89px; color: black; height: 20px; padding: 0px 6px;
+    }
+    
     .modal-header, .modal-footer{
         background-color: #e4f3e5;
     }

@@ -21,7 +21,6 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
                 ?>
                 <Number url="<?= _U."website_number_dial_status?params=".$insertId."--".$each ?>"><?= $each; ?></Number>
             <?php endforeach; ?>
-            <Number url="<?= _U."website_number_dial_status?params=".$insertId."--919737128291"; ?>"><?= "919737128291"; ?></Number>
         </Dial>
     <?php endif; ?>
 </Response>

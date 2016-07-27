@@ -1,6 +1,7 @@
 <tr>
-    <td style="width: 20%;font-weight:bold;background-color:#1294d5;color:white;">Agent Name</td>
-    <td style="width: 25%;font-weight:bold;background-color:#1294d5;color:white;">Email</td>
+    <td style="width: 18%;font-weight:bold;background-color:#1294d5;color:white;">Agent Name</td>
+    <td style="width: 5%;font-weight:bold;background-color:#1294d5;color:white;">Group</td>
+    <td style="width: 22%;font-weight:bold;background-color:#1294d5;color:white;">Email</td>
     <td style="width: 13%;font-weight:bold;background-color:#1294d5;color:white;">Phone</td>
     <td style="width: 13%;font-weight:bold;background-color:#1294d5;color:white;">Agent Cell Number</td>
     <td style="width: 19%;font-weight:bold;background-color:#1294d5;color:white;">Mark As Default Owner<br>
@@ -13,6 +14,7 @@
         <td>
             <div id="<?= "div_" . $each_agents['id'] . "_agent_name"; ?>"><?php print $each_agents['name']; ?>&nbsp;<i style="cursor: pointer;color:black;" class="fa fa-check-circle-o defaultOwner"data-toggle="tooltip" title="Default Owner" data-placement="top"></i></div>
         </td>
+        <td><div id="<?= "div_" . $each_agents['id'] . "_group"; ?>" class="group-<?php print $each_agents['group']; ?>"><?php print $each_agents['group']; ?></div></td>
         <td><div><?php print $each_agents['email'] ?></div></td>
         <td><div id="<?= "td_" . $each_agents['id'] . "_phone"; ?>"><?php print $each_agents['phone'] == '' ? '-' : $each_agents['phone']  ?></div></td>
         <td><div id="<?= "td_" . $each_agents['id'] . "_cell"; ?>"><?php print $each_agents['cell'] == '' ? '-' : $each_agents['cell']  ?></div></td>
@@ -24,6 +26,7 @@
         <td>
             <div id="<?= "div_" . $each_agents['id'] . "_agent_name"; ?>"><?php print $each_agents['name']; ?></div>
         </td>
+        <td><div id="<?= "div_" . $each_agents['id'] . "_group"; ?>" class="group-<?php print $each_agents['group']; ?>"><?php print $each_agents['group']; ?></div></td>
         <td><div><?php print $each_agents['email'] ?></div></td>
         <td><div id="<?= "td_" . $each_agents['id'] . "_phone"; ?>"><?php print $each_agents['phone'] == '' ? '-' : $each_agents['phone']  ?></div></td>
         <td><div id="<?= "td_" . $each_agents['id'] . "_cell"; ?>"><?php print $each_agents['cell'] == '' ? '-' : $each_agents['cell']  ?></div></td>

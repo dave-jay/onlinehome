@@ -22,68 +22,68 @@
     <form action="" method="post">
         <div class="col-lg-5">
             <div  style="border: 1px solid #1294d5;border-radius: 7px;padding:10px;">
-            <div class="col-lg-12">
-                <label>Source: </label>
-                <select class="form-control" id="ddlSource" name="ddlSource">
-                    <option value="">Select Source</option>
-                    <?php foreach($_SESSION['pipedrive_source'] as $each_source): ?>
-                            <option value="<?=$each_source['pd_source_id'];?>" <?php _cprint($fil_source,$each_source['pd_source_id'] , "selected"); ?>><?=$each_source['source_name'];?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div style="clear:both;height: 10px;">&nbsp;</div>
-            <div class="col-lg-12">
-                <label>Agent: </label>
-                <input type="text" id="txtAgent" name="txtAgent" class="form-control" value="<?=$fil_agents;?>" />
-            </div>
-            <div style="clear:both;height: 10px;">&nbsp;</div>
-            <div class="col-lg-12">
-                <label>Duration: </label>
-                <select class="form-control" id="ddlDateRange" name="ddlDateRange">
-                    <option value="ALL_TIME" <?php _cprint($fil_duration,"ALL_TIME" , "selected"); ?>>All Time</option>
-                    <option value="TODAY" <?php _cprint($fil_duration,"TODAY" , "selected"); ?>>Today</option>
-                    <option value="YESTERDAY" <?php _cprint($fil_duration,"YESTERDAY" , "selected"); ?>>Yesterday</option>
-                    <option value="CURRENT_WEEK" <?php _cprint($fil_duration,"CURRENT_WEEK" , "selected"); ?>>Current Week</option>
-                    <option value="CURRENT_MONTH" <?php _cprint($fil_duration,"CURRENT_MONTH" , "selected"); ?>>Current Month</option>
-                    <option value="CUSTOM" <?php _cprint($fil_duration,"CUSTOM" , "selected"); ?>>Select Dates</option>
-                </select>
-            </div>
-            <div style="clear:both;height: 10px;">&nbsp;</div>
-            <div class="col-lg-12">
-                <div id="CustomDateBlock" style="<?php echo ($fil_duration=="CUSTOM"?"":"display:none;"); ?>">
-                    <input class="form-control" type="text" name="start_date" id="start_date" value="<?php print $fil_from_date; ?>" placeholder="Start Date"/>
-                    <div class="line-break" style="height: 10px;"></div>
-                    <input class="form-control" type="text" name="end_date" id="end_date" value="<?php print $fil_to_date; ?>" placeholder="End Date"/>
-                    <div class="line-break"></div>
-                    <div>&nbsp;</div>
+                <div class="col-lg-12">
+                    <label>Source: </label>
+                    <select class="form-control" id="ddlSource" name="ddlSource">
+                        <option value="">Select Source</option>
+                        <?php foreach ($_SESSION['pipedrive_source'] as $each_source): ?>
+                            <option value="<?= $each_source['pd_source_id']; ?>" <?php _cprint($fil_source, $each_source['pd_source_id'], "selected"); ?>><?= $each_source['source_name']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-            </div>  
-            <div style="clear:both;"></div>
-            <div style="" class="col-lg-12">
-                <div style="" class="col-lg-6">
-                    <button type="submit" class="btn btn-info" style='width: 100%;background-color: #1294D5;border-color: #1294D5;' id="btnSearch">Search</button>
+                <div style="clear:both;height: 10px;">&nbsp;</div>
+                <div class="col-lg-12">
+                    <label>Agent: </label>
+                    <input type="text" id="txtAgent" name="txtAgent" class="form-control" value="<?= $fil_agents; ?>" />
                 </div>
-                <div style="" class="col-lg-6">
-                    <button type="button" onclick="return ResetPage()" style='width: 100%;' class="btn btn-default">Reset</button>
+                <div style="clear:both;height: 10px;">&nbsp;</div>
+                <div class="col-lg-12">
+                    <label>Duration: </label>
+                    <select class="form-control" id="ddlDateRange" name="ddlDateRange">
+                        <option value="ALL_TIME" <?php _cprint($fil_duration, "ALL_TIME", "selected"); ?>>All Time</option>
+                        <option value="TODAY" <?php _cprint($fil_duration, "TODAY", "selected"); ?>>Today</option>
+                        <option value="YESTERDAY" <?php _cprint($fil_duration, "YESTERDAY", "selected"); ?>>Yesterday</option>
+                        <option value="CURRENT_WEEK" <?php _cprint($fil_duration, "CURRENT_WEEK", "selected"); ?>>Current Week</option>
+                        <option value="CURRENT_MONTH" <?php _cprint($fil_duration, "CURRENT_MONTH", "selected"); ?>>Current Month</option>
+                        <option value="CUSTOM" <?php _cprint($fil_duration, "CUSTOM", "selected"); ?>>Select Dates</option>
+                    </select>
                 </div>
+                <div style="clear:both;height: 10px;">&nbsp;</div>
+                <div class="col-lg-12">
+                    <div id="CustomDateBlock" style="<?php echo ($fil_duration == "CUSTOM" ? "" : "display:none;"); ?>">
+                        <input class="form-control" type="text" name="start_date" id="start_date" value="<?php print $fil_from_date; ?>" placeholder="Start Date"/>
+                        <div class="line-break" style="height: 10px;"></div>
+                        <input class="form-control" type="text" name="end_date" id="end_date" value="<?php print $fil_to_date; ?>" placeholder="End Date"/>
+                        <div class="line-break"></div>
+                        <div>&nbsp;</div>
+                    </div>
+                </div>  
+                <div style="clear:both;"></div>
+                <div style="" class="col-lg-12">
+                    <div style="" class="col-lg-6">
+                        <button type="submit" class="btn btn-info" style='width: 100%;background-color: #1294D5;border-color: #1294D5;' id="btnSearch">Search</button>
+                    </div>
+                    <div style="" class="col-lg-6">
+                        <button type="button" onclick="return ResetPage()" style='width: 100%;' class="btn btn-default">Reset</button>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
             </div>
-            <div style="clear:both;"></div>
-        </div>
         </div>
         <div class="col-lg-7">
             <div  style="border: 1px solid #1294d5;border-radius: 7px;padding:10px;">
                 <div class="col-lg-4 my_circle">
                     <div class='my_circle_number'><div id="circle_no_call">--</div></div>
                     <div class='my_circle_label'>Calls</div>
-              	</div>
+                </div>
                 <div class="col-lg-4 my_circle">
                     <div class='my_circle_number'><div id="circle_no_day">--</div></div>
                     <div class='my_circle_label'>Days</div>
-              	</div>
+                </div>
                 <div class="col-lg-4 my_circle">
                     <div class='my_circle_number' style='font-size:26px;'><div id="circle_call_duration">--</div></div>
                     <div class='my_circle_label'>Call Duration</div>
-              	</div>
+                </div>
                 <div style="clear:both;"></div>
             </div>
         </div>
@@ -108,7 +108,7 @@
                 </tr>
             </thead>
             <tbody id="body_detail">
-                <?php include  _PATH."instance/front/tpl/call_report_data.php"; ?>
+                <?php include _PATH . "instance/front/tpl/call_report_data.php"; ?>
             </tbody>
         </table>
         <div id="divDataLoading" style="text-align: center; margin-top: -25px;display:none;">
@@ -206,31 +206,67 @@
             </div>
             <div class="modal-body" style="height:350px;overflow: auto;" >
                 <div id="user_selection_area" style="margin:0px auto;">
-                    <div class="left-block">&nbsp;</div>
-                    <div class="middle-block" style='height: 70px;'>
-                        <span class="timeline-date">
-                            6 May, 2016
-                        </span>
-                    </div>
-                    <div class="right-block">&nbsp;</div>                    
-                    <div style="clear: both;"></div>
-                    <div class="left-block">
-                        <div class="timeline-log">
-                            Deal created  <br>
-                            Org: Parks handy Service<br>
-                            Customer: Handy service 
-                        </div>
-                    </div>
-                    <div class="middle-block">
-                        <span class="timeline-circle">
-                            &nbsp;
-                        </span>
-                    </div>
-                    <div class="right-block">
-                        <div class="timeline-time">
-                            10:00 AM
-                        </div>
-                    </div>
+                    <table style="margin: 0 auto;">
+                        <tr>
+                            <td></td>
+                            <td style="text-align: center;">
+                                <div class="timeline-date">
+                                    6 May,<br>2016
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="middle-block">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="left-block">
+                                <div class="timeline-log">
+                                    Deal created  <br>
+                                    Org: Parks handy Service<br>
+                                    Customer: Handy service 
+                                </div>
+                            </td>
+                            <td class="middle-block">
+                                <div class="timeline-circle">
+                                    &nbsp;
+                                </div>
+                                <div class="timeline-line">
+                                    &nbsp;
+                                </div>
+                            </td>
+                            <td class="right-block">
+                                <div class="timeline-time">
+                                    10:00 AM
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="middle-block">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="left-block">
+                                <div class="timeline-time">
+                                    10:20 AM
+                                </div>                                
+                            </td>
+                            <td class="middle-block">
+                                <div class="timeline-circle">
+                                    &nbsp;
+                                </div>
+                                <div class="timeline-line">
+                                    &nbsp;
+                                </div>
+                            </td>
+                            <td class="right-block">
+                                <div class="timeline-log">
+                                    First Call Dialed
+                                    <br>
+                                    No one received
+                                </div>
+                            </td>
+                        </tr>
+                    </table>                   
                     <div style="clear: both;"></div>
                 </div>
             </div>
@@ -241,36 +277,41 @@
     </div>
 </div>
 <style>
+    .timeline-date{
+        background-color: brown;
+        border-radius: 1000px;
+        color: white;
+        font-size: 18px;
+        height: 100px;
+        width: 100px;
+        padding-top: 25px;
+        text-align: center;
+    }
     .left-block{
-        width:37%;
-        float: left;
+        width:250px;
         text-align: right;
     }
-    .left-block .timeline-log{
-            background-color: dimgrey; 
-            text-align: left; 
-            padding: 10px; 
-            color: white; 
-            font-size: 15px;
-            display: inline-block;
-            float: right;
-            
-        }    
+    
     .middle-block{
-        width:26%;
-        float: left;
+        width:100px;
         text-align: center;
         background: url("instance/front/media/img/today_marker.png") no-repeat scroll center center;
     }
-    .middle-block .timeline-date{
-        background-color: brown; 
-        text-align: center; 
-        border-radius: 100px;
+    .right-block{
+        width:250px;
+        text-align: left;
+    }    
+    .timeline-log{
+        background-color: dimgrey; 
+        text-align: left; 
         padding: 10px; 
         color: white; 
-        font-size: 18px;
-    }
-    .middle-block .timeline-circle{
+        font-size: 15px;
+        display: inline-block;
+        width: 210px;
+
+    }    
+    .timeline-circle{
         background-color: white; 
         border: 1px solid red;
         border-radius: 100px;
@@ -278,21 +319,38 @@
         height: 20px;
         width: 20px;        
     }
-    .right-block .timeline-time{
+    .timeline-line{
+        height: 1px; 
+        display: block; 
+        width: 100px; 
+        border: 0px none; 
+        margin-top: -10px; 
+        background-color: black;
+    }
+    .timeline-time{
         background-color: dimgrey; 
-        text-align: right; 
-        border-radius: 100px  0 0 100px;
+        text-align: center;         
         padding: 10px; 
         color: white; 
         font-size: 15px;
         display: inline-block;
-        float: left;
         width: 100px;
+        margin-top: 7px;
     }
-    .right-block{
-        width:37%;
-        float: left;
-        text-align: left;
+    
+    .right-block .timeline-time{
+        border-radius: 100px  100px 100px 100px;
     }
+    .left-block .timeline-time{
+        border-radius:  100px 100px 100px 100px;
+    }
+    
+    .left-block .timeline-log,.left-block .timeline-time{
+        margin-right: -8px;
+    }
+    .right-block .timeline-log,.right-block .timeline-time{
+        margin-left: -8px;
+    }
+    
 </style>
 

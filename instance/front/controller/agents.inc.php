@@ -25,12 +25,14 @@ if ($_REQUEST['doUpdateContact']) {
     $agent_id = _escape($_REQUEST['doUpdateContact']);
     $phone = _escape(trim($_REQUEST['phone']));
     $cell = _escape(trim($_REQUEST['cell']));
+    $group = _escape(trim($_REQUEST['group']));
     $affected_row = -1;
-    if ($phone || $cell) {
-        $affected_row = qu('pd_users', array("phone" => $phone,"cell" => $cell), " id = '{$agent_id}'  ");
+    /*if ($phone || $cell) {
+        $affected_row = qu('pd_users', array("phone" => $phone,"cell" => $cell,"group" => $group), " id = '{$agent_id}'  ");
     }else{
         $affected_row=0;
-    }
+    }*/
+    $affected_row = qu('pd_users', array("phone" => $phone,"cell" => $cell,"group" => $group), " id = '{$agent_id}'  ");
     echo $affected_row;
     die;
 }

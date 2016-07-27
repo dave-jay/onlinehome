@@ -59,6 +59,7 @@
     function doOpenEditPopup(id) {
         $("#pd_user_id").val(id);
         $("#txtAgentName").html($("#div_" + id + "_agent_name").html());
+        $("#ddlGroup").val($("#div_" + id + "_group").html());
         $("#txtPhone").val($("#td_" + id + "_phone").html() == "-" ? '' : $("#td_" + id + "_phone").html());
         $("#txtCell").val($("#td_" + id + "_cell").html() == "-" ? '' : $("#td_" + id + "_cell").html());
         $("#selectAgentPopup").modal("show");
@@ -69,14 +70,17 @@
         var id = $("#pd_user_id").val();
         var phone = $("#txtPhone").val();
         var cell = $("#txtCell").val();
+        var group = $("#ddlGroup").val();
         $.ajax({
             url: _U + 'agents',
-            data: {doUpdateContact: id, phone: phone, cell: cell},
+            data: {doUpdateContact: id, phone: phone, cell: cell, group: group},
             success: function (r) {
                 hideWait();
                 if (r.toString() == "1") {
                     $("#td_" + id + "_phone").html(phone == '' ? '-' : phone);
                     $("#td_" + id + "_cell").html(cell == '' ? '-' : cell);
+                    $("#div_" + id + "_group").html(group);
+                    $("#div_" + id + "_group").attr('class','group-'+group);
                     $("#selectAgentPopup").modal("hide");
                     _success("Agent Detail updated successfully");
                 } else if (r.toString() == "0") {
