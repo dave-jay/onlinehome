@@ -2,7 +2,7 @@
 
 class callWebhook {
 
-    public function callNow($phone_value, $agent_numbers, $dealId,$is_redial = "0") {
+    public function callNow($phone_value, $agent_numbers, $dealId,$is_redial = "0",$group = "A") {
         $account_sid = ACCOUNT_SID;
         $auth_token = AUTH_TOKEN;
         //$account_sid = 'AC4878ef9ccad9ce3b980fdd4d1d0f42ca';
@@ -26,7 +26,12 @@ class callWebhook {
         include _PATH . "/Services/Twilio.php";
         $agent_numbers_arr = $agent_numbers;
         $agent_numbers = implode(',', $agent_numbers);
-        qi("agent_call_dialed",  _escapeArray(array("agent_numbers"=>$agent_numbers,"deal_id"=>$dealId,"is_redial"=>$is_redial,"customer_phone"=>$phone_value)));
+        $filter_agent_number = self::filterAgentsByGroup($agent_numbers, $group);
+        if(empty($filter_agent_number['agent'])){
+            qi("activity_log",  _escapeArray(array("log"=>"We have no agents for group '$group' or any lower level. ","deal_id"=>$dealId)));
+            die;
+        }
+        qi("agent_call_dialed",  _escapeArray(array("agent_numbers"=>$agent_numbers,"deal_id"=>$dealId,"is_redial"=>$is_redial,"customer_phone"=>$phone_value,"category"=>$filter_agent_number['group'])));
         $client = new Services_Twilio($account_sid, $auth_token);
         $deal_sid_data = q("select * from deal_sid where status!='R' AND status!='C' AND deal_id='{$dealId}'");
         qu("deal_sid", array("status" => "C"), " status!='R' AND status!='C' AND deal_id='{$dealId}'");
@@ -39,7 +44,8 @@ class callWebhook {
         }
         try {
 
-            foreach ($agent_numbers_arr as $key => $each_agent) {
+            foreach ($filter_agent_number['agent'] as $key => $each_agent) {
+                //foreach ($agent_numbers_arr as $key => $each_agent) {
                 //echo $each_agent."<br>";
                 $url_agent_calling = _U."DialingAgent?";
                 $url_agent_received = _U."ReceivedAgent?";
@@ -114,6 +120,30 @@ class callWebhook {
     public static function ValidateNumber($phone_value){
         $phone_value_new =  str_replace(array("+","(",")"," ","-"),"",$phone_value);
         return (strlen($phone_value_new)>10?("+".$phone_value_new):$phone_value_new);
+    }
+    
+    public static function filterAgentsByGroup($agent_numbers,$group){
+        $filter_agent = array();
+        $agent_data = q("select * from pd_users where is_active='1' and `group`='{$group}' and phone in ('$agent_numbers')");
+        if(empty($agent_data)){
+            if($group=='A'){
+                $group ='B';
+            }else{
+                $group = 'C';
+            }
+            $agent_data = q("select * from pd_users where is_active='1' and `group`='{$group}' and phone in ('$agent_numbers')");
+            if(empty($agent_data)){
+                $group = 'C';                
+                $agent_data = q("select * from pd_users where is_active='1' and `group`='{$group}' and phone in ('$agent_numbers')");
+            }
+        }
+        foreach($agent_data as $each_agents){
+            $filter_agent[] = $each_agents['phone'];
+        }
+        $data['agent'] = $filter_agent;
+        $data['group'] = $group;
+        return $data;
+        
     }
 
 }

@@ -2,14 +2,31 @@
 
 $calls = q("select distinct(deal_id) as deal_id from voice_call where is_handled='0' AND is_aborted='0' AND in_progress='0' AND  DATE(`created_at`) = CURDATE() AND created_at<=NOW() - INTERVAL 5 MINUTE order by id asc");
 foreach ($calls as $each_call) {
-    $agent_call_dialed = q("select * from agent_call_dialed where is_received='1' and deal_id='" . $each_call['deal_id'] . "'");
+    $agent_call_dialed = q("select * from agent_call_dialed where is_received='1' and deal_id='" . $each_call['deal_id'] . "'  order by id asc");
+    $agent_call_dialed_data = q("select * from agent_call_dialed where deal_id='" . $each_call['deal_id'] . "'  order by id asc");
+    $count = count($agent_call_dialed_data);
+    $cate = $agent_call_dialed_data[$count-1]['category'];
     if (count($agent_call_dialed) == 0) {
         sleep(10);
+        $count = qs("select count(*) as count from agent_call_dialed where deal_id='" . $each_call['deal_id'] . "' and category='{$cate}' ");
         $voice_calls = qs("select group_concat(curr_agent) as curr_agent ,group_concat(all_agents) as all_agents from voice_call where deal_id='" . $each_call['deal_id'] . "'");
         $first_voice_call = q("select * from voice_call where deal_id='" . $each_call['deal_id'] . "' order by id asc");
-        if (count($first_voice_call) >= 3) {
+        if (count($first_voice_call) >= 9) {
             qu("voice_call", array("is_aborted" => "1"), "deal_id='" . $each_call['deal_id'] . "'");
-        } else {
+        }
+        elseif($count['count']==3 && $cate!='A' && $cate!='B'){
+            qu("voice_call", array("is_aborted" => "1"), "deal_id='" . $each_call['deal_id'] . "'");
+        }
+        else {
+            if($count['count']==3 && $cate=='A'){
+                $cate = 'B';
+            }elseif($count['count']==3 && $cate=='B'){
+                $cate = 'C';
+            }
+            if($cate!='A' || $cate!='B' || $cate!='C'){
+                $cate = 'A';
+            }
+            
             $curr_agent_arr = explode(",", $voice_calls['curr_agent']);
             $all_agent_arr = explode(",", $voice_calls['all_agents']);
             $all_agent_arr_unique = array_unique($all_agent_arr);
@@ -28,7 +45,7 @@ foreach ($calls as $each_call) {
                 echo "cust: " . $first_voice_call[0]['customer_phone'] . "<br>";
                 echo "Agents: <br>";
                 d($new_agent_numbers);
-                $apiCall->callNow($first_voice_call[0]['customer_phone'], $new_agent_numbers, $each_call['deal_id'], "1");
+                $apiCall->callNow($first_voice_call[0]['customer_phone'], $new_agent_numbers, $each_call['deal_id'], "1", $cate);
             }else{
                 qu("voice_call", array("is_aborted" => "2"), "deal_id='" . $each_call['deal_id'] . "'");
             }

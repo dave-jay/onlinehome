@@ -52,7 +52,7 @@ if (in_array($deal_source, array('37')) || 1) {
     $agent_numbers = $apiPD->getAgentByDealSource($deal_source);
    
     # Finally call the agents
-    $apiCall->callNow($phone_value, $agent_numbers , $deal_id); 
+    $apiCall->callNow($phone_value, $agent_numbers , $deal_id, "0", "A"); 
 }
 //15162004065 - dj
 // 15165249063 - wayne
