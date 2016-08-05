@@ -12,7 +12,11 @@ if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
             $new_agent_numbers[] = $each_agents;
         }
     }
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     if (count($new_agent_numbers) > 0) {
+        ?>
+        <Response><Say>sorry, You had not press any key. Good Bye!</Say></Response>
+        <?php
         //qd("deal_sid", "deal_id='{$dealId}'");
         qi("voice_call",array("deal_id"=>$dealId,"is_handled"=>"0","curr_agent"=>$cur_agent,"all_agents"=>$agent_numbers,"customer_phone"=>$phone_value));
         $agent_name = 'agent';
@@ -28,7 +32,6 @@ if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
     } else {
         qi("voice_call",array("deal_id"=>$dealId,"is_handled"=>"0","curr_agent"=>$cur_agent,"all_agents"=>$agent_numbers,"customer_phone"=>$phone_value));
         header("content-type: text/xml");
-    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     ?>
 
     <Response><Say>You had not press any key. We have no other agents to call!</Say></Response>

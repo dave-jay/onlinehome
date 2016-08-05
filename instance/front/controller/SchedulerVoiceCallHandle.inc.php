@@ -6,16 +6,57 @@ foreach ($calls as $each_call) {
     $agent_call_dialed_data = q("select * from agent_call_dialed where deal_id='" . $each_call['deal_id'] . "'  order by id asc");
     $count = count($agent_call_dialed_data);
     $cate = $agent_call_dialed_data[$count-1]['category'];
-    if (count($agent_call_dialed) == 0) {
+    if($agent_call_dialed_data[$count-1]['is_aborted']=='1'){
+        qu("voice_call", array("is_aborted" => "1"), "deal_id='" . $each_call['deal_id'] . "'");
+            $dealId = $each_call['deal_id'];
+            $data = qs("select * From pd_users where is_active='1' and is_default='1' order by name asc");
+            if(!empty($data)){
+                $apiPD = new apiPipeDrive();
+                $agent_id = $data['pd_id'];
+                $deal_data = json_decode($apiPD->getDealInfo($dealId)); 
+                $person_id = isset($deal_data->data->person_id->value)?($deal_data->data->person_id->value):'';
+                $org_id = isset($deal_data->data->org_id->value)?($deal_data->data->org_id->value):'';
+                $apiPD->assignDeal($dealId, $agent_id);
+                $apiPD->assignPerson($person_id, $agent_id);
+                $apiPD->assignOrganization($org_id, $agent_id);
+                die;
+            }
+    } else if (count($agent_call_dialed) == 0) {
         sleep(10);
         $count = qs("select count(*) as count from agent_call_dialed where deal_id='" . $each_call['deal_id'] . "' and category='{$cate}' ");
         $voice_calls = qs("select group_concat(curr_agent) as curr_agent ,group_concat(all_agents) as all_agents from voice_call where deal_id='" . $each_call['deal_id'] . "'");
         $first_voice_call = q("select * from voice_call where deal_id='" . $each_call['deal_id'] . "' order by id asc");
-        if (count($first_voice_call) >= 9) {
+        if (count($first_voice_call) >= 9 || $count['count']>=9) {
             qu("voice_call", array("is_aborted" => "1"), "deal_id='" . $each_call['deal_id'] . "'");
+            $data = qs("select * From pd_users where is_active='1' and is_default='1' order by name asc");
+            $dealId = $each_call['deal_id'];
+            if(!empty($data)){
+                $apiPD = new apiPipeDrive();
+                $agent_id = $data['pd_id'];
+                $deal_data = json_decode($apiPD->getDealInfo($dealId)); 
+                $person_id = isset($deal_data->data->person_id->value)?($deal_data->data->person_id->value):'';
+                $org_id = isset($deal_data->data->org_id->value)?($deal_data->data->org_id->value):'';
+                $apiPD->assignDeal($dealId, $agent_id);
+                $apiPD->assignPerson($person_id, $agent_id);
+                $apiPD->assignOrganization($org_id, $agent_id);
+                die;
+            }
         }
         elseif($count['count']==3 && $cate!='A' && $cate!='B'){
             qu("voice_call", array("is_aborted" => "1"), "deal_id='" . $each_call['deal_id'] . "'");
+            $data = qs("select * From pd_users where is_active='1' and is_default='1' order by name asc");
+            $dealId = $each_call['deal_id'];
+            if(!empty($data)){
+                $apiPD = new apiPipeDrive();
+                $agent_id = $data['pd_id'];
+                $deal_data = json_decode($apiPD->getDealInfo($dealId)); 
+                $person_id = isset($deal_data->data->person_id->value)?($deal_data->data->person_id->value):'';
+                $org_id = isset($deal_data->data->org_id->value)?($deal_data->data->org_id->value):'';
+                $apiPD->assignDeal($dealId, $agent_id);
+                $apiPD->assignPerson($person_id, $agent_id);
+                $apiPD->assignOrganization($org_id, $agent_id);
+                die;
+            }
         }
         else {
             if($count['count']==3 && $cate=='A'){
@@ -23,7 +64,7 @@ foreach ($calls as $each_call) {
             }elseif($count['count']==3 && $cate=='B'){
                 $cate = 'C';
             }
-            if($cate!='A' || $cate!='B' || $cate!='C'){
+            if($cate!='A' && $cate!='B' && $cate!='C'){
                 $cate = 'A';
             }
             
@@ -48,6 +89,19 @@ foreach ($calls as $each_call) {
                 $apiCall->callNow($first_voice_call[0]['customer_phone'], $new_agent_numbers, $each_call['deal_id'], "1", $cate);
             }else{
                 qu("voice_call", array("is_aborted" => "2"), "deal_id='" . $each_call['deal_id'] . "'");
+                $data = qs("select * From pd_users where is_active='1' and is_default='1' order by name asc");
+                $dealId = $each_call['deal_id'];
+                if(!empty($data)){
+                    $apiPD = new apiPipeDrive();
+                    $agent_id = $data['pd_id'];
+                    $deal_data = json_decode($apiPD->getDealInfo($dealId)); 
+                    $person_id = isset($deal_data->data->person_id->value)?($deal_data->data->person_id->value):'';
+                    $org_id = isset($deal_data->data->org_id->value)?($deal_data->data->org_id->value):'';
+                    $apiPD->assignDeal($dealId, $agent_id);
+                    $apiPD->assignPerson($person_id, $agent_id);
+                    $apiPD->assignOrganization($org_id, $agent_id);
+                    die;
+                }
             }
             break;
         }

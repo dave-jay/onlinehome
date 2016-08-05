@@ -25,12 +25,19 @@ class callWebhook {
         }
         include _PATH . "/Services/Twilio.php";
         $agent_numbers_arr = $agent_numbers;
-        $agent_numbers = implode(',', $agent_numbers);
-        $filter_agent_number = self::filterAgentsByGroup($agent_numbers, $group);
+        $agent_numbers = implode(",", $agent_numbers_arr);
+        $agent_numbers_search = implode("','", $agent_numbers_arr);
+        $filter_agent_number = self::filterAgentsByGroup($agent_numbers_search, $group);
+		//d($agent_numbers);
+		//d($filter_agent_number);
         if(empty($filter_agent_number['agent'])){
             qi("activity_log",  _escapeArray(array("log"=>"We have no agents for group '$group' or any lower level. ","deal_id"=>$dealId)));
+            qu("agent_call_dialed",  array("is_aborted"=>"1"),"deal_id='".$dealId."'");
+            qu("voice_call",  array("in_progress"=>"0"),"deal_id='".$dealId."'");
             die;
         }
+		
+		
         qi("agent_call_dialed",  _escapeArray(array("agent_numbers"=>$agent_numbers,"deal_id"=>$dealId,"is_redial"=>$is_redial,"customer_phone"=>$phone_value,"category"=>$filter_agent_number['group'])));
         $client = new Services_Twilio($account_sid, $auth_token);
         $deal_sid_data = q("select * from deal_sid where status!='R' AND status!='C' AND deal_id='{$dealId}'");
@@ -57,7 +64,7 @@ class callWebhook {
                     "Method" => "GET",
                     "StatusCallback" => $url_agent_calling,
                     "StatusCallbackMethod" => "POST",
-                    "StatusCallbackEvent" => array("ringing"),
+                    "StatusCallbackEvent" => array("ringing","completed"),
                     //"IfMachine" => "Hangup",
                     "Timeout" => "25"
                 ));
@@ -124,7 +131,10 @@ class callWebhook {
     
     public static function filterAgentsByGroup($agent_numbers,$group){
         $filter_agent = array();
-        $agent_data = q("select * from pd_users where is_active='1' and `group`='{$group}' and phone in ('$agent_numbers')");
+		print $query = "select * from pd_users where is_active='1' and `group`='{$group}' and phone in ('$agent_numbers')";
+        $agent_data = q($query);
+		d($agent_data);
+		
         if(empty($agent_data)){
             if($group=='A'){
                 $group ='B';
