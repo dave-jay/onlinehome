@@ -206,66 +206,7 @@
             </div>
             <div class="modal-body" style="height:350px;overflow: auto;" >
                 <div id="user_selection_area" style="margin:0px auto;">
-                    <table style="margin: 0 auto;">
-                        <tr>
-                            <td></td>
-                            <td style="text-align: center;">
-                                <div class="timeline-date">
-                                    6 May,<br>2016
-                                </div>
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="middle-block">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td class="left-block">
-                                <div class="timeline-log">
-                                    Deal created  <br>
-                                    Org: Parks handy Service<br>
-                                    Customer: Handy service 
-                                </div>
-                            </td>
-                            <td class="middle-block">
-                                <div class="timeline-circle">
-                                    &nbsp;
-                                </div>
-                                <div class="timeline-line">
-                                    &nbsp;
-                                </div>
-                            </td>
-                            <td class="right-block">
-                                <div class="timeline-time">
-                                    10:00 AM
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="middle-block">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td class="left-block">
-                                <div class="timeline-time">
-                                    10:20 AM
-                                </div>                                
-                            </td>
-                            <td class="middle-block">
-                                <div class="timeline-circle">
-                                    &nbsp;
-                                </div>
-                                <div class="timeline-line">
-                                    &nbsp;
-                                </div>
-                            </td>
-                            <td class="right-block">
-                                <div class="timeline-log">
-                                    First Call Dialed
-                                    <br>
-                                    No one received
-                                </div>
-                            </td>
-                        </tr>
+                    <table style="margin: 0 auto;" id="timeline">                        
                     </table>                   
                     <div style="clear: both;"></div>
                 </div>
@@ -302,7 +243,7 @@
         text-align: left;
     }    
     .timeline-log{
-        background-color: dimgrey; 
+        background-color: #1294d5; 
         text-align: left; 
         padding: 10px; 
         color: white; 
@@ -328,7 +269,7 @@
         background-color: black;
     }
     .timeline-time{
-        background-color: dimgrey; 
+        background-color: green; 
         text-align: center;         
         padding: 10px; 
         color: white; 

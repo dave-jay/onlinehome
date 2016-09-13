@@ -13,6 +13,11 @@ $call_try[2]='Second';
 $call_try[3]='Third';
 $call_try[4]='Fourth';
 $call_try[5]='Fifth';
+$call_try[6]='Sixth';
+$call_try[7]='Seventh';
+$call_try[8]='Eighth';
+$call_try[9]='Ninth';
+$call_try[10]='Tenth';
 
 if(isset($_REQUEST['change_call_status']) && $_REQUEST['change_call_status']=="1"){
     if($_REQUEST['curr_status']=="on"){
@@ -130,6 +135,36 @@ if(isset($_REQUEST['load_detail']) && $_REQUEST['load_detail']==1){
     //sleep(1);
     
     include _PATH.'instance/front/tpl/call_report_data.php';
+    die;
+}
+if(isset($_REQUEST['loadTimeLine']) && $_REQUEST['loadTimeLine']==1){
+    $dealId= $_REQUEST['dealId'];
+    $deal_data = qs("select * from call_detail where deal_id='{$dealId}'");
+    $date = date("d M, ",strtotime($deal_data['deal_added']))."<br>".date("Y",strtotime($deal_data['deal_added']));;
+    $time = date("h:i a",strtotime($deal_data['deal_added']));
+    $timeline['date'] = $date;
+    $timeline['first_data'] = 'Deal Created';
+    $timeline['first_time'] = $time;
+    if($deal_data['org_name']!=''){
+        $timeline['first_data'] .= '<br>Org: '.$deal_data['org_name'];
+    }
+    if($deal_data['customer_name']!=''){
+        $timeline['first_data'] .= '<br>Customer: '.$deal_data['customer_name'].(" (".$deal_data['customer_phone'].")");
+    }
+    $timeline_call = q("select * from agent_call_dialed where deal_id='{$dealId}' order by id asc");
+
+    $call_count = 1;
+    foreach($timeline_call as $each_timeline_call){
+        $time = date("h:i a",strtotime($each_timeline_call['created_at']));
+        $agent_numbers = explode(",", $each_timeline_call['agent_numbers']);
+        $agent_numbers = implode(", ", $agent_numbers);
+        $timeline[$date][$time] = $call_try[$call_count]." Call Dialed to ".$agent_numbers;
+        if($each_timeline_call['is_received']=='1'){
+            $timeline[$date][$time] .= "<br>Call Recieved By: ".$deal_data['agent_name'].(" (".$each_timeline_call['received_agent'].")");
+        }
+        $call_count++;
+    }
+    include _PATH.'instance/front/tpl/time_line_data.php';
     die;
 }
 include _PATH.'instance/front/controller/updateDeal.inc.php'; //Update Deal which is not handled by any agents

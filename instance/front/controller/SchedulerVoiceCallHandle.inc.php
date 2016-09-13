@@ -1,6 +1,6 @@
 <?php
 
-$calls = q("select distinct(deal_id) as deal_id from voice_call where is_handled='0' AND is_aborted='0' AND in_progress='0' AND  DATE(`created_at`) = CURDATE() AND created_at<=NOW() - INTERVAL 5 MINUTE order by id asc");
+$calls = q("select distinct(deal_id) as deal_id from voice_call where is_handled='0' AND is_aborted='0' AND in_progress='0' AND  DATE(`created_at`) = CURDATE() AND created_at<=NOW() - INTERVAL 1 MINUTE order by id asc");
 foreach ($calls as $each_call) {
     $agent_call_dialed = q("select * from agent_call_dialed where is_received='1' and deal_id='" . $each_call['deal_id'] . "'  order by id asc");
     $agent_call_dialed_data = q("select * from agent_call_dialed where deal_id='" . $each_call['deal_id'] . "'  order by id asc");

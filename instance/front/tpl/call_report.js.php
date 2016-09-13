@@ -164,10 +164,9 @@ function openDetailLogPopup(Id){
 function loadTimeLine(dealId){
     $.ajax({
             url: _U + 'call_report',
-            dataType: "json",
             data: {loadTimeLine: 1, dealId: dealId},
             success: function (r) {
-                
+                $("#timeline").html(r);
             }
         });
     }

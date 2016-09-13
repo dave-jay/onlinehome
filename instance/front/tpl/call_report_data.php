@@ -39,7 +39,7 @@ if (count($call_list) > 0):
                 }else{
                     echo "<div style='color: white;' class='label label-success log-lbl'>Call handled by ".$each_call['agent_name'] . "</div><br><div class='log-lbl-seperator'></div>";
                 } 
-                //echo "<a onclick='openDetailLogPopup(\"".$cnt."\")' style='color:#1294d5;cursor:pointer;'>View More Detail</a>"
+                echo "<a onclick='openDetailLogPopup(\"".$cnt."\")' style='color:#1294d5;cursor:pointer;'>View More Detail</a>"
             ?>
                 <input type="hidden" id="hid_deal_<?php echo $cnt; ?>" value="<?php echo $each_call['deal_id']; ?>" />
             </td>            
