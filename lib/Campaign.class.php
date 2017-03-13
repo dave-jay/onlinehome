@@ -34,15 +34,13 @@ class Campaign {
     public static $contact_org = '';
     public static $tag = '';
 #Cutome Fields
-    public static $jan_5th_code = '';
-
-    #Cutome Fields
-    public static $contact_TF;
-    public static $contact_MQ;
-    public static $contact_YQ;
-    public static $contact_LWQ;
-    public static $contact_TOTAL_QUOTES;
-    public static $contact_LAST_LOGIN;
+    public static $PIPEDRIVE_ID = '';
+    public static $PIPEDRIVE_STAGE = '';
+    public static $AGENT_NAME = '';
+    public static $DEAL_AMOUNT = '';
+    public static $ALTERNATE_PHONE = '';
+    public static $PIPEDRIVE_DEAL_LINK = '';
+    
 
     public function __construct() {
         $this->acObj = new ActiveCampaign(Campaign::$ac_api_url, Campaign::$ac_api_key);
@@ -57,6 +55,13 @@ class Campaign {
             "last_name" => Campaign::$contact_lname,
             "phone" => Campaign::$contact_phone,
             "orgname" => Campaign::$contact_org,
+            "tags" => Campaign::$tag,
+          "field[%PIPEDRIVE_ID%,0]" => Campaign::$PIPEDRIVE_ID,
+          "field[%PIPEDRIVE_STAGE%,0]" => Campaign::$PIPEDRIVE_STAGE,
+          "field[%AGENT_NAME%,0]" => Campaign::$AGENT_NAME,
+          "field[%PD_DEAL_AMOUNT%,0]" => Campaign::$DEAL_AMOUNT,
+          "field[%ALTERNATE_PHONE%,0]" => Campaign::$ALTERNATE_PHONE,
+          "field[%PIPEDRIVE_DEAL_LINK%,0]" => Campaign::$PIPEDRIVE_DEAL_LINK,
             /*"tags" => Campaign::$tag,
             "field[%JAN5THCODE%,0]" => Campaign::$jan_5th_code,
               #Custom Fields
@@ -71,55 +76,6 @@ class Campaign {
 # Sync contact
         return $this->acObj->api("contact/sync", $contact);
     }
-
-    public function mailData($email, $name, $phone, $TF, $MQ, $YQ, $LWQ, $TQ, $LL) {
-        if (_isLocalMachine()) {
-            return;
-        }
-
-        Campaign::$contact_email = $email;
-        $nameContact = explode("_", $name);
-        Campaign::$contact_fname = $nameContact[0];
-        Campaign::$contact_lname = $nameContact[1];
-        Campaign::$contact_phone = $phone;
-        /*  #Custom Fields */
-        Campaign::$contact_TF = $TF;
-        Campaign::$contact_MQ = $MQ;
-        Campaign::$contact_YQ = $YQ;
-        Campaign::$contact_LWQ = $LWQ;
-        Campaign::$contact_TOTAL_QUOTES = $TQ;
-        if ($LL == "0000-00-00 00:00:00") {
-            Campaign::$contact_LAST_LOGIN = "";
-        } else {
-            Campaign::$contact_LAST_LOGIN = date("m/d/Y", strtotime($LL));
-        }
-        $contact_sync = $this->Contact();
-
-        if (!(int) $contact_sync->success) {
-            return "Not Done";
-//            _ls("Syncing contact failed. Error returned: " . $contact_sync->error);
-        } else {
-            return "Done";
-        }
-    }
-
-    public function Contact() {
-        # create contact
-        $contact = array(
-            "email" => Campaign::$contact_email,
-            "first_name" => Campaign::$contact_fname,
-            "last_name" => Campaign::$contact_lname,
-            "phone" => Campaign::$contact_phone,
-            /*  #Custom Fields */
-            "field[%TOTALFLEET%,0]" => Campaign::$contact_TF,
-            "field[%MONTHLY_QUOTE%,0]" => Campaign::$contact_MQ,
-            "field[%YESTERDAY_QUOTE%,0]" => Campaign::$contact_YQ,
-            "field[%LAST_WEEK_QUOTE%,0]" => Campaign::$contact_LWQ,
-            "field[%TOTAL_QUOTES%,0]" => Campaign::$contact_TOTAL_QUOTES,
-            "field[%LAST_LOGIN%,0]" => Campaign::$contact_LAST_LOGIN
-        );
-# Sync contact
-        return $this->acObj->api("contact/sync", $contact);
-    }
+   
 
 }

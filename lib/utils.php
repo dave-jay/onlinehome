@@ -1702,5 +1702,8 @@ function removeCellFormat($str){
     return $str_new;
     
 }
+function ac_tag_generate($tag){
+    return "pd_".str_replace(" ", "_", strtolower($tag));
+}
 
 ?>
