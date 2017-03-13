@@ -3,7 +3,6 @@
 //$_REQUEST['From']="+918460422312";
 //$_REQUEST['Body']="Test Static Data";
 $apiPD = new apiPipeDrive();
-$apiCall = new apiCall();
 
 $phone_value = urldecode($_REQUEST['From']);
 $phone_value = last10Char($phone_value);
@@ -23,6 +22,21 @@ if (isset($activity_data)) {
     $fields['note'] = _escape(urldecode($_REQUEST['Body']));
     $data = $apiPD->createActivity($fields);
     qi('test', array('payload' => $data));
+}else{
+    $activity_data = qs("select * from active_campaign_contact where last10phone like '%{$phone_value}%' order by id desc");
+    qi('test', array('payload' => $payload, 't' => "1"));
+    if (isset($activity_data)) {
+        $fields['subject'] = 'SMS - Replied By Customer';
+        $fields['done'] = '1';
+        $fields['type'] = 'text';
+        $fields['deal_id'] = $activity_data['last_deal_id']; // Test Deal Id - $fields['deal_id'] = '4586';        
+        $fields['note'] = _escape(urldecode($_REQUEST['Body']));
+        $data = $apiPD->createActivity($fields);
+        qi('test', array('payload' => $data));
+        qi('test', array('payload' => $payload, 't' => "2"));
+    } else{
+        qi('test', array('payload' => $payload, 't' => "3"));
+    }
 }
 qi('test', array('payload' => $payload, 't' => $_REQUEST['From']));
 

@@ -1,5 +1,7 @@
 <?php
+
 $apiPD = new apiPipeDrive();
+$apiCore = new apiCore();
 date_default_timezone_set('America/New_York');
 
 
@@ -11,6 +13,7 @@ $data = json_decode(@$payload, true);
 $deal_info = $apiPD->getDealInfo($data['current']['id']);
 $deal_info = json_decode($deal_info, TRUE);
 $tag = $agent = $deal_amount = $phone2 = $active_campaign_contact_id = $fname = $lname = $email = $phone = $org = $pipedrive_id = $pipedrive_stage = '';
+$phone_arr = array();
 if (isset($deal_info['data']['id'])) {
     $name = explode(" ", $deal_info['data']['person_id']['name']);
     $fname = $name[0];
@@ -28,17 +31,17 @@ if (isset($deal_info['data']['id'])) {
     }
     foreach ($deal_info['data']['person_id']['phone'] as $each) {
         if (isset($each['value']) && $each['value'] != '') {
-            if($phone!=''){
+            $phone_arr[] = array('phone' => $each['value'], 'type' => 'NOT CHECK');
+            if ($phone != '') {
                 $phone2 = $each['value'];
-                break;
-            }else{
+            } else {
                 $phone = $each['value'];
             }
         }
     }
     $org = $deal_info['data']['org_id']['name'];
     $org_id = $deal_info['data']['org_id']['value'];
-    $agent = ($deal_info['data']['user_id']['name']=="Dave Jay (Programmer)"?"Sprout Lending Team":$deal_info['data']['user_id']['name']);
+    $agent = ($deal_info['data']['user_id']['name'] == "Dave Jay (Programmer)" ? "Sprout Lending Team" : $deal_info['data']['user_id']['name']);
     $deal_amount = $deal_info['data']['value'];
     $pipedrive_id = $deal_info['data']['id'];
     $pipedrive_stage = $deal_info['data']['stage_id'];
@@ -47,6 +50,27 @@ if (isset($deal_info['data']['id'])) {
     die;
 }
 
+$mobile_number_found = 0;
+foreach ($phone_arr as $key => $each_phone) {
+    $phone_carrier_data = $apiCore->getPhoneNumbersCarrier($each_phone['phone']);
+    $phone_carrier_data = json_decode($phone_carrier_data, true);
+    if (isset($phone_carrier_data['carrier']['type'])) {
+        $phone_arr[$key]['type'] = $phone_carrier_data['carrier']['type'];
+    }
+    if (isset($phone_carrier_data['carrier']['type']) && strtolower($phone_carrier_data['carrier']['type'] == 'mobile')) {
+        $mobile_number_found = 1;
+        if ($phone != $each_phone['phone']) {
+            if ($phone2 == $each_phone['phone']) {
+                $phone2 = $phone;
+                $phone = $each_phone['phone'];
+                qi('active_campaign_log', array("log" => "Phone number swap"));
+            } else {
+                $phone = $each_phone['phone'];
+            }
+        }
+        break;
+    }
+}
 $stage_data = $apiPD->getAllStage();
 $stage_data = json_decode($stage_data, "true");
 $stage = array();
@@ -62,6 +86,9 @@ $ac_data['email'] = $email;
 $ac_data['last_deal_id'] = $pipedrive_id;
 $ac_data['last_stage_id'] = $pipedrive_stage;
 $ac_data['last_stage_name'] = $stage[$pipedrive_stage]['name'];
+$ac_data['phone'] = $phone;
+$ac_data['last10phone'] = last10Char($phone);
+$ac_data['phone_detail'] = json_encode($phone_arr);
 $tag = $ac_data['tags'] = ac_tag_generate($stage[$pipedrive_stage]['name']);
 
 if (empty($tbl_camp_data)) {
@@ -78,22 +105,22 @@ $campaing_class::$contact_fname = $fname;
 $campaing_class::$contact_lname = $lname;
 $campaing_class::$contact_phone = $phone;
 $campaing_class::$contact_org = $org;
-$campaing_class::$tag = trim($tag,",");
+$campaing_class::$tag = trim($tag, ",");
 
 $campaing_class::$PIPEDRIVE_ID = $pipedrive_id;
 $campaing_class::$PIPEDRIVE_STAGE = $stage[$pipedrive_stage]['name'];
 $campaing_class::$AGENT_NAME = $agent;
 $campaing_class::$DEAL_AMOUNT = $deal_amount;
 $campaing_class::$ALTERNATE_PHONE = $phone2;
-$campaing_class::$PIPEDRIVE_DEAL_LINK = "https://sprout2.pipedrive.com/deal/".$pipedrive_id;
+$campaing_class::$PIPEDRIVE_DEAL_LINK = "https://sprout2.pipedrive.com/deal/" . $pipedrive_id;
 $deal_info = $apiPD->getDealInfo($data['current']['id']);
-try{
+try {
     $data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);
-}  catch (Exception $e){
-    qi('active_campaign_log', _escapeArray(array("log" => "6-Exce-".$e->getMessage())));
+} catch (Exception $e) {
+    qi('active_campaign_log', _escapeArray(array("log" => "6-Exce-" . $e->getMessage())));
 }
 
-qi('active_campaign_log', _escapeArray(array("log" => "5-".json_encode($data_camp))));
+qi('active_campaign_log', _escapeArray(array("log" => "5-" . json_encode($data_camp))));
 if (isset($data_camp->success) && ($data_camp->success || $data_camp->success == '1')) {
     $active_campaign_contact_id = qu('active_campaign_contact', array("campaign_contact_id" => $data_camp->subscriber_id), "id='{$active_campaign_contact_id}'");
     qi('active_campaign_log', _escapeArray(array("log" => "Active Campaign Contact Id: " . $data_camp->subscriber_id . "<br>Message:" . $data_camp->result_message)));
@@ -115,15 +142,21 @@ $use_of_fund[41] = 'Working Capital';
 $org_data = $apiPD->getOrganizationInfo($org_id);
 $org_data = json_decode($org_data, "true");
 $org_for = 'Working Capital';
-if(isset($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44'])){
-    qi('active_campaign_log',array("log"=>"yes".$org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']));
+if (isset($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44'])) {
+    qi('active_campaign_log', array("log" => "yes" . $org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']));
     $org_for = $use_of_fund[$org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']];
-}else{
-    qi('active_campaign_log',  _escapeArray(array("log"=> "No.{$org_id}".json_encode($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']))));
+} else {
+    qi('active_campaign_log', _escapeArray(array("log" => "No.{$org_id}" . json_encode($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']))));
 }
-$apiCall = new callWebhook();
-$message = "Hi ".trim($fname.' ' .$lname).", it's {$agent}. I just received your request for funding for your business {$org}. and I should be able to get you the $".$deal_amount." that you requested for {$org_for}. Can you chat for 2 minutes now to discuss?";
-$apiCall->messageNow($phone, $message);
-qi('active_campaign_log', _escapeArray(array("log" =>"Trying to message sending on ".$phone)));
+
+if ($mobile_number_found == 1) {
+    $message = "Hi " . trim($fname . ' ' . $lname) . ", it's {$agent}. I just received your request for funding for your business {$org}. and I should be able to get you the $" . $deal_amount . " that you requested for {$org_for}. Can you chat for 2 minutes now to discuss?";
+    $note_data['deal_id'] = $pipedrive_id;
+    $note_data['content'] = "Welcome Text was sent on {$phone}.<br><br>Text: {$message}";
+    $data = $apiPD->createNote($note_data);
+    $apiCall = new callWebhook();
+    $apiCall->messageNow($phone, $message);
+    qi('active_campaign_log', _escapeArray(array("log" => "Trying to message sending on " . $phone)));
+}
 die;
 ?>

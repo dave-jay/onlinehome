@@ -33,7 +33,20 @@ class apiCore {
         }
         return $this->apiURL . $this->apiEndpoint . "?" . (implode("&", $params));
     }
-    
+
+    public function getPhoneNumbersCarrier($phone) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://lookups.twilio.com/v1/PhoneNumbers/{$phone}?Type=carrier");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($ch, CURLOPT_USERPWD, ACCOUNT_SID . ":" . AUTH_TOKEN);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        $data = curl_exec($ch);
+        return $data;
+    }
+
 }
 
 ?>
