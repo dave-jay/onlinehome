@@ -8,7 +8,10 @@ date_default_timezone_set('America/New_York');
 # receive the payload
 $payload = file_get_contents('php://input');
 $data = json_decode(@$payload, true);
-
+$deal_source = $data['current']['c2a6fc3129578b646ae55717ed15f03ce3ee4df0'];
+if (!in_array($deal_source, array('44'))) {
+    die;
+}
 //Getting Deal Info and change stage if pipeline id is '1' (i.e. for "Leads")
 $deal_info = $apiPD->getDealInfo($data['current']['id']);
 $deal_info = json_decode($deal_info, TRUE);
@@ -150,6 +153,11 @@ if (isset($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44'])) {
 }
 
 if ($mobile_number_found == 1) {
+    $sms_seq_data = qs("select * from sms_sequence where last10phone='".last10Char($phone)."'");
+    if(!empty($sms_seq_data)){
+        qd("sms_sequence","id='{$sms_seq_data['id']}'");
+    }
+    qi("sms_sequence",array("phone"=>$phone,"last10phone"=>last10Char($phone),"last_deal_id"=>$pipedrive_id, "day1_1_sent"=>"1"));
     $message = "Hi " . trim($fname . ' ' . $lname) . ", it's {$agent}. I just received your request for funding for your business {$org}. and I should be able to get you the $" . $deal_amount . " that you requested for {$org_for}. Can you chat for 2 minutes now to discuss?";
     $note_data['deal_id'] = $pipedrive_id;
     $note_data['content'] = "Welcome Text was sent on {$phone}.<br><br>Text: {$message}";

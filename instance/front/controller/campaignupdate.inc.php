@@ -3,6 +3,10 @@ sleep(5);
 $apiPD = new apiPipeDrive();
 $payload = file_get_contents('php://input');
 $data = json_decode(@$payload, true);
+$deal_source = $data['current']['c2a6fc3129578b646ae55717ed15f03ce3ee4df0'];
+if (!in_array($deal_source, array('44'))) {
+    die;
+}
 if (isset($data['current']['stage_id'])) {
     $deal_info = $apiPD->getDealInfo($data['current']['id']);
     $deal_info = json_decode($deal_info, TRUE);

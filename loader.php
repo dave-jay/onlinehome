@@ -16,6 +16,7 @@ define("_PATH", str_replace("loader.php", "", __FILE__));
 function __autoload($class_name) {
     include_once(_PATH . 'lib/' . $class_name . '.class.php');
 }
+date_default_timezone_set("America/New_York");
 
 include "lib/utils.php"; # includes general function
 //include "lib/utils_checklist.php";

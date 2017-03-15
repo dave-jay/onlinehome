@@ -1706,4 +1706,41 @@ function ac_tag_generate($tag){
     return "pd_".str_replace(" ", "_", strtolower($tag));
 }
 
+function getSMSText($pd_data = array()) {
+    $success = 0;
+    $sequence = array("day1_1_sent" => "Hi [MERCHANTS NAME], it's [AGENTS NAME]. I just received your request for funding for your business [COMPANY NAME]. and I should be able to get you the $[AMOUNT REQUESTED] that you requested for [USE OF FUNDS}. Can you chat for 2 minutes now to discuss?",
+        "day1_2_sent" => "Is there a better time we should arrange to chat so I can go to work on your behalf?",
+        "day2_1_sent" => "Hi [MERCHANTS NAME], I didn't hear back from you yesterday but maybe you just got busy. Is there a good time today I can call you for a 5-minute conversation to discuss the $[AMOUNT REQUESTED] pre-approval I have on the table?",
+        "day2_2_sent" => "Hey [MERCHANTS NAME], I don't want to bother you but I would like to get some additional info and get you the funding you just requested yesterday and go to work for you.",
+        "day3_1_sent" => "Hi [MERCHANTS NAME], are you still interested to get funds for your business? Reply YES if you are still interested. NO if you wished to be removed from our databases.",
+        "day4_1_sent" => "Hey [MERCHANTS NAME], we have been trying to reach you in regards to your interest in funding for your business. Are you still interested in the $[AMOUNT REQUESTED] pre-approval we have on the table for you?",
+        "day5_1_sent" => "I'm sorry! I can't reach you! I would really like to discuss the options we have available for your business. Is there a better time to discuss?");
+    foreach ($sequence as $key => $value) {
+        if ($pd_data[$key] == '0') {
+            $next_seq = $key;
+            $success = 1;
+            break;
+        }
+    }
+    if ($success == 0)
+        return array("success" => 0);
+    else
+        return array("success" => 1, "next_seq" => $next_seq, "message" => $sequence[$next_seq]);
+}
+
+function IsTimeToSendSMS($last_time, $next_seq) {
+    $current_time = time();
+    $sequence = array("day1_1_sent" => 0,
+        "day1_2_sent" => 7200,
+        "day2_1_sent" => 86400,
+        "day2_2_sent" => 7200,
+        "day3_1_sent" => 86400,
+        "day4_1_sent" => 86400,
+        "day5_1_sent" => 86400);
+    if ($sequence[$next_seq] < ($current_time - $last_time)) {
+        return true;
+    }
+    return false;
+}
+
 ?>
