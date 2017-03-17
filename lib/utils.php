@@ -1730,13 +1730,20 @@ function getSMSText($pd_data = array()) {
 
 function IsTimeToSendSMS($last_time, $next_seq) {
     $current_time = time();
-    $sequence = array("day1_1_sent" => 0,
+    /*$sequence = array("day1_1_sent" => 0,
         "day1_2_sent" => 7200,
         "day2_1_sent" => 86400,
         "day2_2_sent" => 7200,
         "day3_1_sent" => 86400,
         "day4_1_sent" => 86400,
-        "day5_1_sent" => 86400);
+        "day5_1_sent" => 86400);*/
+    $sequence = array("day1_1_sent" => 0,
+        "day1_2_sent" => 7200,
+        "day2_1_sent" => 7200,
+        "day2_2_sent" => 7200,
+        "day3_1_sent" => 7200,
+        "day4_1_sent" => 7200,
+        "day5_1_sent" => 7200);
     if ($sequence[$next_seq] < ($current_time - $last_time)) {
         return true;
     }

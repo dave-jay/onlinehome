@@ -53,6 +53,19 @@ if (isset($deal_info['data']['id'])) {
     die;
 }
 
+$org_data = $apiPD->getOrganizationInfo($org_id);
+$org_data = json_decode($org_data, "true");
+if (isset($org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'])) {
+    $deal_amount = $org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'];
+}
+$deal_amount = number_format($deal_amount);
+if(isset($deal_info['data']['person_id']['value'])){
+    $personal_info_data = $apiPD->getPersonInfo($deal_info['data']['person_id']['value']);
+    $personal_info_data = json_decode($personal_info_data,true);
+    if(isset($personal_info_data['data']['d02fbfc390b8bec4159df2146340e8468a2c3d10'])){
+        $phone_arr[] = array('phone' => $personal_info_data['data']['d02fbfc390b8bec4159df2146340e8468a2c3d10'], 'type' => 'NOT CHECK');
+    }
+}
 $mobile_number_found = 0;
 foreach ($phone_arr as $key => $each_phone) {
     $phone_carrier_data = $apiCore->getPhoneNumbersCarrier($each_phone['phone']);
@@ -120,10 +133,8 @@ $deal_info = $apiPD->getDealInfo($data['current']['id']);
 try {
     $data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);
 } catch (Exception $e) {
-    qi('active_campaign_log', _escapeArray(array("log" => "6-Exce-" . $e->getMessage())));
 }
 
-qi('active_campaign_log', _escapeArray(array("log" => "5-" . json_encode($data_camp))));
 if (isset($data_camp->success) && ($data_camp->success || $data_camp->success == '1')) {
     $active_campaign_contact_id = qu('active_campaign_contact', array("campaign_contact_id" => $data_camp->subscriber_id), "id='{$active_campaign_contact_id}'");
     qi('active_campaign_log', _escapeArray(array("log" => "Active Campaign Contact Id: " . $data_camp->subscriber_id . "<br>Message:" . $data_camp->result_message)));
@@ -142,14 +153,10 @@ $use_of_fund[8] = 'Get Through a Slow Period';
 $use_of_fund[9] = 'Remodeling Location';
 $use_of_fund[10] = 'Have In The Bank';
 $use_of_fund[41] = 'Working Capital';
-$org_data = $apiPD->getOrganizationInfo($org_id);
-$org_data = json_decode($org_data, "true");
+
 $org_for = 'Working Capital';
 if (isset($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44'])) {
-    qi('active_campaign_log', array("log" => "yes" . $org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']));
     $org_for = $use_of_fund[$org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']];
-} else {
-    qi('active_campaign_log', _escapeArray(array("log" => "No.{$org_id}" . json_encode($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']))));
 }
 
 if ($mobile_number_found == 1) {
@@ -157,8 +164,8 @@ if ($mobile_number_found == 1) {
     if(!empty($sms_seq_data)){
         qd("sms_sequence","id='{$sms_seq_data['id']}'");
     }
-    qi("sms_sequence",array("phone"=>$phone,"last10phone"=>last10Char($phone),"last_deal_id"=>$pipedrive_id, "day1_1_sent"=>"1"));
-    $message = "Hi " . trim($fname . ' ' . $lname) . ", it's {$agent}. I just received your request for funding for your business {$org}. and I should be able to get you the $" . $deal_amount . " that you requested for {$org_for}. Can you chat for 2 minutes now to discuss?";
+    qi("sms_sequence",array("phone"=>$phone,"deal_amount"=>$deal_amount,"last10phone"=>last10Char($phone),"last_deal_id"=>$pipedrive_id, "day1_1_sent"=>"1"));
+    $message = "Hi " . trim($fname) . ", it's {$agent}. I just received your request for funding for your business {$org}. and I should be able to get you the $" . $deal_amount . " that you requested for {$org_for}. Can you chat for 2 minutes now to discuss?";
     $note_data['deal_id'] = $pipedrive_id;
     $note_data['content'] = "Welcome Text was sent on {$phone}.<br><br>Text: {$message}";
     $data = $apiPD->createNote($note_data);

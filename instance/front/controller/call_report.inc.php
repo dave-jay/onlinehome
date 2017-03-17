@@ -131,7 +131,7 @@ if (isset($_REQUEST['count_detail'])) {
 }
 if(isset($_REQUEST['load_detail']) && $_REQUEST['load_detail']==1){
     $start_limit = $_REQUEST['hidLastRecord'];
-    $call_list = q("SELECT * FROM `call_detail` cd WHERE 1=1 {$where} order by cd.deal_id desc limit {$start_limit},{$page_size}");
+    $call_list = q("SELECT * FROM `call_detail` cd WHERE 1=1 {$where} order by CAST(cd.deal_id AS UNSIGNED ) desc limit {$start_limit},{$page_size}");
     //sleep(1);
     
     include _PATH.'instance/front/tpl/call_report_data.php';
@@ -168,7 +168,7 @@ if(isset($_REQUEST['loadTimeLine']) && $_REQUEST['loadTimeLine']==1){
     die;
 }
 include _PATH.'instance/front/controller/updateDeal.inc.php'; //Update Deal which is not handled by any agents
-$call_list = q("SELECT * FROM `call_detail` cd WHERE 1=1 {$where} order by cd.deal_id desc limit {$start_limit},{$page_size}");
+$call_list = q("SELECT * FROM `call_detail` cd WHERE 1=1 {$where} order by CAST(cd.deal_id AS UNSIGNED ) desc limit {$start_limit},{$page_size}");
 
 if(!isset($_SESSION['pipedrive_source'])){
     $_SESSION['pipedrive_source'] = User::getSources();

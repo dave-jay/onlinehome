@@ -10,6 +10,15 @@ if (!in_array($deal_source, array('44'))) {
 if (isset($data['current']['stage_id'])) {
     $deal_info = $apiPD->getDealInfo($data['current']['id']);
     $deal_info = json_decode($deal_info, TRUE);
+    $sms_seq_data = qs("select * from sms_sequence where last_deal_id='{$data['current']['id']}'");
+    if(!empty($sms_seq_data) && !empty($deal_info)){
+        if($sms_seq_data['need_to_send_sms']==1 && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']=='196'){
+            qu("sms_sequence",array("need_to_send_sms"=>"0"),"id='{$sms_seq_data["id"]}'");
+        }
+        if($sms_seq_data['need_to_send_sms']==0 && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']!='196'){
+            qu("sms_sequence",array("need_to_send_sms"=>"1"),"id='{$sms_seq_data["id"]}'");
+        }
+    }
     $tag = $agent = $deal_amount = $phone2 = $active_campaign_contact_id = $fname = $lname = $email = $phone = $org = $pipedrive_id = $pipedrive_stage = '';
     if (isset($deal_info['data']['id'])) {
         $name = explode(" ", $deal_info['data']['person_id']['name']);
@@ -35,6 +44,7 @@ if (isset($data['current']['stage_id'])) {
             }
         }
         $org = $deal_info['data']['org_id']['name'];
+        $org_id = $deal_info['data']['org_id']['value'];
         $agent = ($deal_info['data']['user_id']['name']=="Dave Jay (Programmer)"?"Sprout Lending Team":$deal_info['data']['user_id']['name']);
         $deal_amount = $deal_info['data']['value'];
         $pipedrive_id = $deal_info['data']['id'];
@@ -47,6 +57,14 @@ if (isset($data['current']['stage_id'])) {
     qi('active_campaign_log', array("log" => "Stage id not found. Details:" . json_encode($data)));
 }
 
+
+$org_data = $apiPD->getOrganizationInfo($org_id);
+$org_data = json_decode($org_data, "true");
+if (isset($org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'])) {
+    $deal_amount = $org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'];
+}
+$deal_amount = number_format($deal_amount);
+qu("sms_sequence",array("deal_amount"=>$deal_amount),"last_deal_id='".$pipedrive_id);
 
 $stage_data = $apiPD->getAllStage();
 $stage_data = json_decode($stage_data, "true");

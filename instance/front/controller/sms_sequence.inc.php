@@ -13,8 +13,10 @@ foreach ($sms_sequence_data as $each_sms) {
             $deal_info = json_decode($deal_info, true);
             if (isset($deal_info['data']['stage_id']) && ($deal_info['data']['stage_id'] == '28' || $deal_info['data']['stage_id'] == '1') && $deal_info['data']['status'] == 'open') {
                 echo "<br><br><div style='font-size:30px;color:green;font-weight:bold;'>SMS Sent</div>";
-                $message = str_ireplace("[MERCHANTS NAME]", $deal_info['data']['person_id']['name'], $message);
-                $message = str_ireplace("[AMOUNT REQUESTED]", $deal_info['data']['value'], $message);
+                $name = explode(" ", $deal_info['data']['person_id']['name']);
+                $fname = $name[0];
+                $message = str_ireplace("[MERCHANTS NAME]", $fname, $message);
+                $message = str_ireplace("[AMOUNT REQUESTED]", $each_sms['deal_amount'], $message);
                 echo "Following Message sent: " . $message;
 
                 qu("sms_sequence", array($req_sms_detail['next_seq'] => '1'), "id='{$each_sms['id']}'");
