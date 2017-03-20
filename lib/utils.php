@@ -1738,16 +1738,37 @@ function IsTimeToSendSMS($last_time, $next_seq) {
         "day4_1_sent" => 86400,
         "day5_1_sent" => 86400);*/
     $sequence = array("day1_1_sent" => 0,
-        "day1_2_sent" => 7200,
-        "day2_1_sent" => 7200,
-        "day2_2_sent" => 7200,
-        "day3_1_sent" => 7200,
-        "day4_1_sent" => 7200,
-        "day5_1_sent" => 7200);
+        "day1_2_sent" => 3600,
+        "day2_1_sent" => 3600,
+        "day2_2_sent" => 3600,
+        "day3_1_sent" => 3600,
+        "day4_1_sent" => 3600,
+        "day5_1_sent" => 3600);
     if ($sequence[$next_seq] < ($current_time - $last_time)) {
         return true;
     }
     return false;
+}
+
+function getSMSReply($pd_data = array()) {
+    $sequence = array(
+        "day5_1_sent" => "day5_1_replied",
+        "day4_1_sent" => "day4_1_replied",
+        "day3_1_sent" => "day3_1_replied",
+        "day2_2_sent" => "day2_2_replied",
+        "day2_1_sent" => "day2_1_replied",
+        "day1_2_sent" => "day1_2_replied",
+        "day1_1_sent" =>"day1_1_replied"
+        );
+    $next_seq = "day1_1_sent";
+    foreach ($sequence as $key => $value) {
+        if ($pd_data[$key] == '1') {
+            $next_seq = $key;
+            $success = 1;
+            break;
+        }
+    }
+    return array("success" => 1, "next_seq" => $sequence[$next_seq]);
 }
 
 ?>

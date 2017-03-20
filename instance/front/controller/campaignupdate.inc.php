@@ -63,6 +63,9 @@ $org_data = json_decode($org_data, "true");
 if (isset($org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'])) {
     $deal_amount = $org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'];
 }
+if($deal_amount=='' || $deal_amount==0){
+    $deal_amount = 50000;
+}
 $deal_amount = number_format($deal_amount);
 qu("sms_sequence",array("deal_amount"=>$deal_amount),"last_deal_id='".$pipedrive_id);
 
