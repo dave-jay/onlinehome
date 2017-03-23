@@ -173,7 +173,7 @@ if ($mobile_number_found == 1) {
     $note_data['content'] = "Welcome Text was sent on {$phone}.<br><br>Text: {$message}";
     $data = $apiPD->createNote($note_data);
     $apiCall = new callWebhook();
-    $apiCall->messageNow($phone, $message);
+    $apiCall->messageNow($phone, $message, "2");
     qi('active_campaign_log', _escapeArray(array("log" => "Trying to message sending on " . $phone)));
 }
 die;

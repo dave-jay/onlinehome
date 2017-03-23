@@ -1729,25 +1729,52 @@ function getSMSText($pd_data = array()) {
 }
 
 function IsTimeToSendSMS($last_time, $next_seq) {
+    $sms_seq_time_arr = qs("select * from sms_seq_time where is_active='1' and sequence_name='{$next_seq}'");    
+    echo $next_seq;
     $current_time = time();
-    /*$sequence = array("day1_1_sent" => 0,
+    $sequence = array("day1_1_sent" => 0,
         "day1_2_sent" => 7200,
         "day2_1_sent" => 86400,
         "day2_2_sent" => 7200,
         "day3_1_sent" => 86400,
         "day4_1_sent" => 86400,
-        "day5_1_sent" => 86400);*/
-    $sequence = array("day1_1_sent" => 0,
+        "day5_1_sent" => 86400);
+    /*$sequence = array("day1_1_sent" => 0,
         "day1_2_sent" => 3600,
         "day2_1_sent" => 3600,
         "day2_2_sent" => 3600,
-        "day3_1_sent" => 3600,
+        "day3_1_sent" => 600,
         "day4_1_sent" => 3600,
-        "day5_1_sent" => 3600);
-    if ($sequence[$next_seq] < ($current_time - $last_time)) {
-        return true;
+        "day5_1_sent" => 3600);*/    
+    $seq_day_diff = array("day1_1_sent" => 0,
+        "day1_2_sent" => 0,
+        "day2_1_sent" => 1,
+        "day2_2_sent" => 0,
+        "day3_1_sent" => 1,
+        "day4_1_sent" => 1,
+        "day5_1_sent" => 1);
+    if (isset($sms_seq_time_arr['time'])) {
+        if (strtotime(date("H:i:s")) >= strtotime($sms_seq_time_arr['time'])) {
+            $date1 = date("Y-m-d",strtotime("+".$seq_day_diff[$next_seq]." day ". date("Y-m-d",$last_time)));
+            if($date1 <=  date("Y-m-d")){
+                echo "need to send";
+                return true;
+            }else{
+                echo "Please wait for ".$seq_day_diff[$next_seq]."  day";
+                return false;
+            }
+        } else {
+            $diff = (strtotime($sms_seq_time_arr['time']) - strtotime(date("H:i:s")));
+            $diff = ($diff / 60);
+            echo "Please wait for " . $diff . "minutes";
+            return false;
+        }
+    } else {
+        if ($sequence[$next_seq] < ($current_time - $last_time)) {
+            return true;
+        }
+        return false;
     }
-    return false;
 }
 
 function getSMSReply($pd_data = array()) {

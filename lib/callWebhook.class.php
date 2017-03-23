@@ -106,15 +106,20 @@ class callWebhook {
         return $call->sid;
     }
     
-    public function messageNow($phone_value, $message) {       
+    public function messageNow($phone_value, $message, $use_number='') {       
         include _PATH . "/Services/Twilio.php";
         $client = new Services_Twilio(ACCOUNT_SID, AUTH_TOKEN);
         if(IS_DEV_ENV){
             $phone_value = CUSTOMER_NO;
         }
         $phone_value=  self::ValidateNumber($phone_value);
+        if($use_number=='2'){
+            $company_phone = TWILIO_PHONE_NUMBER2;
+        }else{
+            $company_phone = TWILIO_PHONE_NUMBER;            
+        }
         try {
-            $sms = $client->account->messages->sendMessage(TWILIO_PHONE_NUMBER, $phone_value,$message);
+            $sms = $client->account->messages->sendMessage($company_phone, $phone_value,$message);
             echo $sms->sid . "<br>";
             echo "<br>We are sending message on " . $phone_value;
             die;

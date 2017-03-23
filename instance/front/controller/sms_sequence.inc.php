@@ -37,7 +37,7 @@ foreach ($sms_sequence_data as $each_sms) {
                 $note_data['content'] = "Text was sent on {$each_sms['phone']}.<br><br>Text: {$message}";
                 $data = $apiPD->createNote($note_data);
                 $apiCall = new callWebhook();
-                $apiCall->messageNow($each_sms['phone'], $message);
+                $apiCall->messageNow($each_sms['phone'], $message, "2");
                 die;
             } else {
                 echo "Contact Is Made or Deal is closed";
