@@ -168,6 +168,9 @@ if ($mobile_number_found == 1) {
         qd("sms_sequence","id='{$sms_seq_data['id']}'");
     }
     qi("sms_sequence",array("phone"=>$phone,"deal_amount"=>$deal_amount,"last10phone"=>last10Char($phone),"last_deal_id"=>$pipedrive_id, "day1_1_sent"=>"1"));
+    $deal_detail['e585bd988070d2bdfb2af36d968521c3f9aa949a']='ON';
+    $apiPD->modifyDeal($pipedrive_id,$deal_detail);
+                
     $message = "Hi " . trim($fname) . ", it's {$agent}. I just received your request for funding for your business {$org}. and I should be able to get you the $" . $deal_amount . " that you requested for {$org_for}. Can you chat for 2 minutes now to discuss?";
     $note_data['deal_id'] = $pipedrive_id;
     $note_data['content'] = "Welcome Text was sent on {$phone}.<br><br>Text: {$message}";
