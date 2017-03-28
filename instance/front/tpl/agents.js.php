@@ -73,7 +73,7 @@
         var group = $("#ddlGroup").val();
         var linkdin = $("#txtlinkdin").val();
         var role = $("#txtroleno").val();
-        alert(linkdin+"="+role );
+  
         $.ajax({
             url: _U + 'agents',
             data: {doUpdateContact: id, phone: phone, cell: cell, group: group, linkdin: linkdin, role: role},
