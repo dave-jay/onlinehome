@@ -10,12 +10,22 @@ if (!in_array($deal_source, array('44'))) {
 if (isset($data['current']['stage_id'])) {
     $deal_info = $apiPD->getDealInfo($data['current']['id']);
     $deal_info = json_decode($deal_info, TRUE);
+    qi("test",  _escapeArray(array("payload"=> json_encode($data))));
+    qi("test",  _escapeArray(array("payload"=> json_encode($deal_info))));
     $sms_seq_data = qs("select * from sms_sequence where last_deal_id='{$data['current']['id']}'");
     if(!empty($sms_seq_data) && !empty($deal_info)){
         if($sms_seq_data['need_to_send_sms']==1 && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']=='196'){
+            $user_detail = qs("select * from pd_users where pd_id='{$data['meta']['user_id']}'");
+            $note_data['deal_id'] = $data['current']['id'];            
+            $note_data['content'] = "SMS Sequence(FOLLOW-UP SEQUENCE) has been set to 'OFF'".(isset($user_detail['name'])?" by {$user_detail['name']} ":"").".";
+            $apiPD->createNote($note_data);
             qu("sms_sequence",array("need_to_send_sms"=>"0"),"id='{$sms_seq_data["id"]}'");
         }
         if($sms_seq_data['need_to_send_sms']==0 && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']!='196'){
+            $user_detail = qs("select * from pd_users where pd_id='{$data['meta']['user_id']}'");
+            $note_data['deal_id'] = $data['current']['id'];            
+            $note_data['content'] = "SMS Sequence(FOLLOW-UP SEQUENCE) has been set to 'ON'".(isset($user_detail['name'])?" by {$user_detail['name']} ":"").".";
+            $apiPD->createNote($note_data);
             qu("sms_sequence",array("need_to_send_sms"=>"1"),"id='{$sms_seq_data["id"]}'");
         }
     }
