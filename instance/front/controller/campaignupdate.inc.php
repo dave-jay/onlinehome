@@ -30,6 +30,7 @@ if (isset($data['current']['stage_id'])) {
         }
     }
     $tag = $agent = $deal_amount = $phone2 = $active_campaign_contact_id = $fname = $lname = $email = $phone = $org = $pipedrive_id = $pipedrive_stage = '';
+    $agent_id = $agent_linkedin_link = $agent_phone = '';
     if (isset($deal_info['data']['id'])) {
         $name = explode(" ", $deal_info['data']['person_id']['name']);
         $fname = $name[0];
@@ -56,6 +57,7 @@ if (isset($data['current']['stage_id'])) {
         $org = $deal_info['data']['org_id']['name'];
         $org_id = $deal_info['data']['org_id']['value'];
         $agent = ($deal_info['data']['user_id']['name']=="Dave Jay (Programmer)"?"Sprout Lending Team":$deal_info['data']['user_id']['name']);
+        $agent_id = $deal_info['data']['user_id']['value'];
         $deal_amount = $deal_info['data']['value'];
         $pipedrive_id = $deal_info['data']['id'];
         $pipedrive_stage = $deal_info['data']['stage_id'];
@@ -77,7 +79,7 @@ if($deal_amount=='' || $deal_amount==0){
     $deal_amount = 50000;
 }
 $deal_amount = number_format($deal_amount);
-qu("sms_sequence",array("deal_amount"=>$deal_amount),"last_deal_id='".$pipedrive_id);
+q("update sms_sequence set deal_amount='".$deal_amount."' where last_deal_id='".$pipedrive_id."'");
 
 $stage_data = $apiPD->getAllStage();
 $stage_data = json_decode($stage_data, "true");
@@ -101,13 +103,16 @@ if (empty($tbl_camp_data)) {
 } else {
     if ($tbl_camp_data['last_stage_id'] == $pipedrive_stage) {
         qi('active_campaign_log', array("log" => "Stage id not changed."));
-        die;
+    }else{
+        $tag .= ",".$tbl_camp_data['tags'];
     }
-    $tag .= ",".$tbl_camp_data['tags'];
     $active_campaign_contact_id = qu('active_campaign_contact', _escapeArray($ac_data), "id='{$tbl_camp_data['id']}'");
     $active_campaign_contact_id = $tbl_camp_data['id'];
 }
 
+if($agent_id!=''){
+    $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
+}
 $stage_mapping_arr = json_decode(STAGE_MAPPING, true);
 $campaing_class = new Campaign();
 $campaing_class::$contact_email = $email;
@@ -123,6 +128,11 @@ $campaing_class::$AGENT_NAME = $agent;
 $campaing_class::$DEAL_AMOUNT = $deal_amount;
 $campaing_class::$ALTERNATE_PHONE = $phone2;
 $campaing_class::$PIPEDRIVE_DEAL_LINK = "https://sprout2.pipedrive.com/deal/".$pipedrive_id;
+if(!empty($agent_data)){
+    $campaing_class::$AGENT_PHONE = formatCellDash($agent_data['phone']);    
+    $campaing_class::$AGENT_ROLE = $agent_data['role'];    
+    $campaing_class::$AGENT_LINKEDIN_LINK = $agent_data['linkedin_link'];
+}
 $data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);
 if (isset($data_camp->success) && ($data_camp->success || $data_camp->success == '1')) {
     $active_campaign_contact_id = qu('active_campaign_contact', array("campaign_contact_id" => $data_camp->subscriber_id), "id='{$active_campaign_contact_id}'");

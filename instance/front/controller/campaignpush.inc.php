@@ -16,6 +16,7 @@ if (!in_array($deal_source, array('44'))) {
 $deal_info = $apiPD->getDealInfo($data['current']['id']);
 $deal_info = json_decode($deal_info, TRUE);
 $tag = $agent = $deal_amount = $phone2 = $active_campaign_contact_id = $fname = $lname = $email = $phone = $org = $pipedrive_id = $pipedrive_stage = '';
+$agent_id = $agent_linkedin_link = $agent_phone = '';
 $phone_arr = array();
 if (isset($deal_info['data']['id'])) {
     $name = explode(" ", $deal_info['data']['person_id']['name']);
@@ -45,6 +46,7 @@ if (isset($deal_info['data']['id'])) {
     $org = $deal_info['data']['org_id']['name'];
     $org_id = $deal_info['data']['org_id']['value'];
     $agent = ($deal_info['data']['user_id']['name'] == "Dave Jay (Programmer)" ? "Sprout Lending Team" : $deal_info['data']['user_id']['name']);
+    $agent_id = $deal_info['data']['user_id']['value'];
     $deal_amount = $deal_info['data']['value'];
     $pipedrive_id = $deal_info['data']['id'];
     $pipedrive_stage = $deal_info['data']['stage_id'];
@@ -117,6 +119,10 @@ if (empty($tbl_camp_data)) {
     $active_campaign_contact_id = qu('active_campaign_contact', _escapeArray($ac_data), "id='{$tbl_camp_data['id']}'");
     $active_campaign_contact_id = $tbl_camp_data['id'];
 }
+
+if($agent_id!=''){
+    $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
+}
 $stage_mapping_arr = json_decode(STAGE_MAPPING, true);
 $campaing_class = new Campaign();
 $campaing_class::$contact_email = $email;
@@ -132,6 +138,11 @@ $campaing_class::$AGENT_NAME = $agent;
 $campaing_class::$DEAL_AMOUNT = $deal_amount;
 $campaing_class::$ALTERNATE_PHONE = $phone2;
 $campaing_class::$PIPEDRIVE_DEAL_LINK = "https://sprout2.pipedrive.com/deal/" . $pipedrive_id;
+if(!empty($agent_data)){
+    $campaing_class::$AGENT_PHONE = formatCellDash($agent_data['phone']);    
+    $campaing_class::$AGENT_ROLE = $agent_data['role'];    
+    $campaing_class::$AGENT_LINKEDIN_LINK = $agent_data['linkedin_link'];
+}
 $deal_info = $apiPD->getDealInfo($data['current']['id']);
 try {
     $data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);

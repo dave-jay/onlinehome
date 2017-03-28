@@ -40,6 +40,10 @@ class Campaign {
     public static $DEAL_AMOUNT = '';
     public static $ALTERNATE_PHONE = '';
     public static $PIPEDRIVE_DEAL_LINK = '';
+    public static $AGENT_PHONE = '';
+    public static $AGENT_ROLE = '';
+    public static $AGENT_LINKEDIN_LINK = '';
+    public static $FOLLOWUP_SEQUENCE = 'ON';
     
 
     public function __construct() {
@@ -62,6 +66,10 @@ class Campaign {
           "field[%PD_DEAL_AMOUNT%,0]" => Campaign::$DEAL_AMOUNT,
           "field[%ALTERNATE_PHONE%,0]" => Campaign::$ALTERNATE_PHONE,
           "field[%PIPEDRIVE_DEAL_LINK%,0]" => Campaign::$PIPEDRIVE_DEAL_LINK,
+          "field[%AGENT_PHONE%,0]" => Campaign::$AGENT_PHONE,
+          "field[%AGENT_ROLE%,0]" => Campaign::$AGENT_ROLE,
+          "field[%AGENT_LINKEDIN_LINK%,0]" => Campaign::$AGENT_LINKEDIN_LINK,
+          "field[%FOLLOWUP_SEQUENCE%,0]" => Campaign::$FOLLOWUP_SEQUENCE,
             /*"tags" => Campaign::$tag,
             "field[%JAN5THCODE%,0]" => Campaign::$jan_5th_code,
               #Custom Fields
