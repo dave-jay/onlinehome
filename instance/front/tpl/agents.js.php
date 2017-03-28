@@ -71,16 +71,19 @@
         var phone = $("#txtPhone").val();
         var cell = $("#txtCell").val();
         var group = $("#ddlGroup").val();
+        var linkdin = $("#txtlinkdin").val();
+        var role = $("#txtroleno").val();
+        alert(linkdin+"="+role );
         $.ajax({
             url: _U + 'agents',
-            data: {doUpdateContact: id, phone: phone, cell: cell, group: group},
+            data: {doUpdateContact: id, phone: phone, cell: cell, group: group, linkdin: linkdin, role: role},
             success: function (r) {
                 hideWait();
                 if (r.toString() == "1") {
                     $("#td_" + id + "_phone").html(phone == '' ? '-' : phone);
                     $("#td_" + id + "_cell").html(cell == '' ? '-' : cell);
                     $("#div_" + id + "_group").html(group);
-                    $("#div_" + id + "_group").attr('class','group-'+group);
+                    $("#div_" + id + "_group").attr('class', 'group-' + group);
                     $("#selectAgentPopup").modal("hide");
                     _success("Agent Detail updated successfully");
                 } else if (r.toString() == "0") {
@@ -117,6 +120,6 @@
             }
         });
     }
-    
+
 
 </script>

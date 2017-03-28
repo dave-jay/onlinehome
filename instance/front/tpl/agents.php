@@ -1,15 +1,15 @@
 <div class="MyPageHeader">
     Pipedrive Agents List
     <div class="TopRight" onclick="syncUser()">
-    <i class="glyphicon glyphicon-refresh"></i>
-      Sync User With Pipedrive
-  </div>
+        <i class="glyphicon glyphicon-refresh"></i>
+        Sync User With Pipedrive
+    </div>
 </div>
 
 <div class="page_body">
     <div class="panel-body" style="padding-left:0px;padding-right:0px;">   
         <table class="table" border='0' style="width:100%;" id="tblAgents">
-            <?php include _PATH.'instance/front/tpl/agents_data.php'; ?>
+            <?php include _PATH . 'instance/front/tpl/agents_data.php'; ?>
         </table>
     </div>
 </div>
@@ -58,6 +58,23 @@
                         <label class="helptext">On this number customer will reply to SMS</label>
                     </div>
                     <div style="clear: both;height: 12px;"></div>
+
+                    <div class="col-lg-3 col-lg-offset-1" style='text-align: right;'>
+                        <label>Agent LinkedIn Link</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control" id="txtlinkdin" name="txtlinkdin" />
+                        <label class="helptext">Agent LinkedIn Profile URL</label>
+                    </div>
+                    <div style="clear: both;height: 12px;"></div>
+                    <div class="col-lg-3 col-lg-offset-1" style='text-align: right;'>
+                        <label>Agent Role</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control" id="txtroleno" name="txtroleno" />
+                        <label class="helptext">Agent Role (i.e. Sales Agent, Sales Manager etc)</label>
+                    </div>
+                    <div style="clear: both;height: 12px;"></div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -79,7 +96,7 @@
     #tblAgents div.group-C{
         background-color: lightgreen; display: inline-block; border-radius: 89px; color: black; height: 20px; padding: 0px 6px;
     }
-    
+
     .modal-header, .modal-footer{
         background-color: #e4f3e5;
     }
