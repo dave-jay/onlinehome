@@ -39,7 +39,7 @@
         unset($_SESSION['error_msg']);
     }
     ?>    
-<div class="top_msg_error top_msg"  id="error_msg_div_new" style="">
+<div class="top_msg_error top_msg"  id="error_msg_div_new" style="z-index: 10000;">
     <div class="msg_content"><i class="fa fa-exclamation-triangle"></i>&nbsp;Sorry!&nbsp;<?php print $error ?></div>
     <div class="msg_close" onclick="closeMessage();"><i class="glyphicon glyphicon-remove"></i></div>
     <div style="clear:both;"></div>
@@ -54,7 +54,7 @@
         unset($_SESSION['greetings_msg']);
     }
     ?>    
-    <div class="top_msg_success top_msg"  id="success_msg_div_new" style="">
+    <div class="top_msg_success top_msg"  id="success_msg_div_new" style="z-index: 10000;">
         <div class="msg_content"><i class="fa fa-check-square-o"></i>&nbsp;Success!&nbsp;<?php print $greetings; ?></div>
         <div class="msg_close" onclick="closeMessage();"><i class="glyphicon glyphicon-remove"></i></div>
         <div style="clear:both;"></div>
@@ -63,12 +63,12 @@
 
 
 
-<div class="top_msg_success top_msg"  id="success_msg_jquery" style="display: none;">
+<div class="top_msg_success top_msg"  id="success_msg_jquery" style="display: none;z-index: 10000;">
     <div class="msg_content"><i class="fa fa-check-square-o"></i>&nbsp;Success!&nbsp;<span id="success_msg_content"></span></div>
     <div class="msg_close" onclick="closeMessage();"><i class="glyphicon glyphicon-remove"></i></div>
     <div style="clear:both;"></div>
 </div>
-<div class="top_msg_error top_msg"  id="error_msg_jquery" style="display: none;">
+<div class="top_msg_error top_msg"  id="error_msg_jquery" style="display: none;z-index: 10000;">
     <div class="msg_content"><i class="fa fa-exclamation-triangle"></i>&nbsp;Sorry!&nbsp;<span id="error_msg_content">There is error!</span></div>
     <div class="msg_close" onclick="closeMessage();"><i class="glyphicon glyphicon-remove"></i></div>
     <div style="clear:both;"></div>

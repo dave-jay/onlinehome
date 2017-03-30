@@ -18,6 +18,8 @@
         <td><div><?php print $each_agents['email'] ?></div></td>
         <td><div id="<?= "td_" . $each_agents['id'] . "_phone"; ?>"><?php print $each_agents['phone'] == '' ? '-' : $each_agents['phone']  ?></div></td>
         <td><div id="<?= "td_" . $each_agents['id'] . "_cell"; ?>"><?php print $each_agents['cell'] == '' ? '-' : $each_agents['cell']  ?></div></td>
+        <input type="hidden" id="<?= "hid_" . $each_agents['id'] . "_linkdin"; ?>" value="<?php print $each_agents['linkedin_link']; ?>" />
+        <input type="hidden" id="<?= "hid_" . $each_agents['id'] . "_roleno"; ?>" value="<?php print $each_agents['role']; ?>" />
         <td><div class="defaultOwner" data-toggle="tooltip" title="Remove From Default Owner" data-placement="top" onclick="RemoceFromDefault('<?php print $each_agents['id'] ?>')" style="cursor: pointer;color:maroon;width: fit-content;width: -moz-fit-content;"><i class="fa fa-minus-square-o"></i>&nbsp;Remove from Default Owner</div></td>
         <td><div onclick="doOpenEditPopup('<?php print $each_agents['id'] ?>')" style="cursor: pointer;color:#1294d5;"><i class="fa fa-edit"></i>&nbsp;Edit</div></td>
     </tr>
@@ -30,6 +32,8 @@
         <td><div><?php print $each_agents['email'] ?></div></td>
         <td><div id="<?= "td_" . $each_agents['id'] . "_phone"; ?>"><?php print $each_agents['phone'] == '' ? '-' : $each_agents['phone']  ?></div></td>
         <td><div id="<?= "td_" . $each_agents['id'] . "_cell"; ?>"><?php print $each_agents['cell'] == '' ? '-' : $each_agents['cell']  ?></div></td>
+        <input type="hidden" id="<?= "hid_" . $each_agents['id'] . "_linkdin"; ?>" value="<?php print $each_agents['linkedin_link']; ?>" />
+        <input type="hidden" id="<?= "hid_" . $each_agents['id'] . "_roleno"; ?>" value="<?php print $each_agents['role']; ?>" />
         <td><div class="defaultOwner" data-toggle="tooltip" title="Mark As Default" data-placement="top" onclick="MarkAsDefault('<?php print $each_agents['id'] ?>')" style="cursor: pointer;color:green;width: fit-content;width: -moz-fit-content;"><i class="fa fa-check-square-o"></i>&nbsp;Mark As Default</div></td>
         <td><div onclick="doOpenEditPopup('<?php print $each_agents['id'] ?>')" style="cursor: pointer;color:#1294d5;"><i class="fa fa-edit"></i>&nbsp;Edit</div></td>
     </tr>

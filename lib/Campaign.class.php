@@ -34,6 +34,7 @@ class Campaign {
     public static $contact_org = '';
     public static $tag = '';
 #Cutome Fields
+    public static $SEQUENCE_STATUS = 'OLD';
     public static $PIPEDRIVE_ID = '';
     public static $PIPEDRIVE_STAGE = '';
     public static $AGENT_NAME = '';
@@ -70,6 +71,7 @@ class Campaign {
           "field[%AGENT_ROLE%,0]" => Campaign::$AGENT_ROLE,
           "field[%AGENT_LINKEDIN_LINK%,0]" => Campaign::$AGENT_LINKEDIN_LINK,
           "field[%FOLLOWUP_SEQUENCE%,0]" => Campaign::$FOLLOWUP_SEQUENCE,
+          "field[%SEQUENCE_STATUS%,0]" => Campaign::$SEQUENCE_STATUS,
             /*"tags" => Campaign::$tag,
             "field[%JAN5THCODE%,0]" => Campaign::$jan_5th_code,
               #Custom Fields

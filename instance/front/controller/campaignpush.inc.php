@@ -132,6 +132,7 @@ $campaing_class::$contact_phone = $phone;
 $campaing_class::$contact_org = $org;
 $campaing_class::$tag = trim($tag, ",");
 
+$campaing_class::$SEQUENCE_STATUS = "NEW";
 $campaing_class::$PIPEDRIVE_ID = $pipedrive_id;
 $campaing_class::$PIPEDRIVE_STAGE = $stage[$pipedrive_stage]['name'];
 $campaing_class::$AGENT_NAME = $agent;
@@ -140,8 +141,8 @@ $campaing_class::$ALTERNATE_PHONE = $phone2;
 $campaing_class::$PIPEDRIVE_DEAL_LINK = "https://sprout2.pipedrive.com/deal/" . $pipedrive_id;
 if(!empty($agent_data)){
     $campaing_class::$AGENT_PHONE = formatCellDash($agent_data['phone']);    
-    $campaing_class::$AGENT_ROLE = $agent_data['role'];    
-    $campaing_class::$AGENT_LINKEDIN_LINK = $agent_data['linkedin_link'];
+    $campaing_class::$AGENT_ROLE = $agent_data['role'];        
+    $campaing_class::$AGENT_LINKEDIN_LINK = "<a href='{$agent_data['linkedin_link']}'><img alt='My LinkedIn Profile' src='http://sprout.img-us10.com/public/332ea34c4e46abd2f2d3c65e788c4f22.png?r=761035395' /></a>";
 }
 $deal_info = $apiPD->getDealInfo($data['current']['id']);
 try {

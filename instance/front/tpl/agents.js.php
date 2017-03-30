@@ -62,6 +62,8 @@
         $("#ddlGroup").val($("#div_" + id + "_group").html());
         $("#txtPhone").val($("#td_" + id + "_phone").html() == "-" ? '' : $("#td_" + id + "_phone").html());
         $("#txtCell").val($("#td_" + id + "_cell").html() == "-" ? '' : $("#td_" + id + "_cell").html());
+        $("#txtlinkdin").val($("#hid_" + id + "_linkdin").val() == "" ? '' : $("#hid_" + id + "_linkdin").val());
+        $("#txtroleno").val($("#hid_" + id + "_roleno").val() == "" ? '' : $("#hid_" + id + "_roleno").val());
         $("#selectAgentPopup").modal("show");
 
     }
@@ -83,6 +85,8 @@
                     $("#td_" + id + "_phone").html(phone == '' ? '-' : phone);
                     $("#td_" + id + "_cell").html(cell == '' ? '-' : cell);
                     $("#div_" + id + "_group").html(group);
+                    $("#hid_" + id + "_linkdin").val(linkdin);
+                    $("#hid_" + id + "_roleno").val(role);
                     $("#div_" + id + "_group").attr('class', 'group-' + group);
                     $("#selectAgentPopup").modal("hide");
                     _success("Agent Detail updated successfully");

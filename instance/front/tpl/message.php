@@ -28,7 +28,7 @@
 <div style="display:none;" class="bottom-message alert-error" id="error_msg_jquery">
     <strong>Sorry!</strong> &nbsp;&nbsp;<span id="error_msg_content"></span>
 </div>
-<div style="display:none;" class="bottom-message alert-success" id="success_msg_jquery">
+<div style="display:none;z-index: 10000" class="bottom-message alert-success" id="success_msg_jquery">
     <strong>Success!</strong> &nbsp;&nbsp;<span id="success_msg_content"></span>
 </div>
 
