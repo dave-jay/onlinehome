@@ -56,7 +56,7 @@ if (isset($data['current']['stage_id'])) {
         }
         $org = $deal_info['data']['org_id']['name'];
         $org_id = $deal_info['data']['org_id']['value'];
-        $agent = ($deal_info['data']['user_id']['name']=="Dave Jay (Programmer)"?"Sprout Lending Team":$deal_info['data']['user_id']['name']);
+        $agent = $deal_info['data']['user_id']['name'];
         $agent_id = $deal_info['data']['user_id']['value'];
         $deal_amount = $deal_info['data']['value'];
         $pipedrive_id = $deal_info['data']['id'];
@@ -110,15 +110,18 @@ if (empty($tbl_camp_data)) {
     $active_campaign_contact_id = $tbl_camp_data['id'];
 }
 
-if($agent_id!=''){
+if($agent_id!='' && $agent_id != "990918"){
     $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
+}else{
+    $agent_data = qs("select * from pd_users where is_default='1'");
 }
+$agent = $agent_data['name'];
 $stage_mapping_arr = json_decode(STAGE_MAPPING, true);
 $campaing_class = new Campaign();
 $campaing_class::$contact_email = $email;
 $campaing_class::$contact_fname = $fname;
 $campaing_class::$contact_lname = $lname;
-$campaing_class::$contact_phone = $phone;
+$campaing_class::$contact_phone = formatPhone($phone,6);
 $campaing_class::$contact_org = $org;
 $campaing_class::$tag = trim($tag,",");
 
@@ -127,10 +130,10 @@ $campaing_class::$PIPEDRIVE_ID = $pipedrive_id;
 $campaing_class::$PIPEDRIVE_STAGE = $stage[$pipedrive_stage]['name'];
 $campaing_class::$AGENT_NAME = $agent;
 $campaing_class::$DEAL_AMOUNT = $deal_amount;
-$campaing_class::$ALTERNATE_PHONE = $phone2;
+$campaing_class::$ALTERNATE_PHONE = formatPhone($phone2,6);
 $campaing_class::$PIPEDRIVE_DEAL_LINK = "https://sprout2.pipedrive.com/deal/".$pipedrive_id;
 if(!empty($agent_data)){
-    $campaing_class::$AGENT_PHONE = formatCellDash($agent_data['phone']);    
+    $campaing_class::$AGENT_PHONE = formatPhone($agent_data['phone'],6);    
     $campaing_class::$AGENT_ROLE = $agent_data['role'];    
     $campaing_class::$AGENT_LINKEDIN_LINK = "<a href='{$agent_data['linkedin_link']}'><img alt='My LinkedIn Profile' src='http://sprout.img-us10.com/public/332ea34c4e46abd2f2d3c65e788c4f22.png?r=761035395' /></a>";
 }

@@ -261,7 +261,7 @@ function _errors_off() {
 }
 
 function clearNumber($number) {
-    return str_replace(array("-", "(", ")", " "), array("", "", "", ""), $number);
+    return str_replace(array("-", ".", "(", ")", " "), array("", "", "", ""), $number);
 }
 
 function doScheduleDispatchCall($data, $message, $order = 0) {
@@ -314,6 +314,44 @@ function getTimeZoneTime($timeZone, $time = '') {
     $current_time = new DateTime($current_time->format("Y-m-d H:i:s"));
 
     return $current_time;
+}
+
+function getTimeZoneByPhone($phone, $return_as_array = '0') {
+    $phone = last10Char($phone);
+    $area_code = substr($phone, 0,3);
+    $timezone = getStateCodeByAreaCode($area_code, $return_as_array);
+    return $timezone;
+}
+
+function getStateCodeByAreaCode($area_code, $return_as_array = '0') {
+    $state_data = qs("select * from state_area where area_code='{$area_code}'");
+    if (!isset($state_data['state_code'])) {
+        $state_code = 'ny';
+        $state = 'New York';
+    } else {
+        $state_code = $state_data['state_code'];
+        $state = $state_data['state'];
+    }
+    $timezones = getTimeZoneFromState($state_code);
+    if ($return_as_array == '0') {
+        return $timezones;
+    } else {
+        return array("state_code" => $state_code, "state" => $state, "area_code" => $area_code, "timezone" => $timezones);
+    }
+}
+
+function getTimeZoneFromState($state_code) {
+
+    if (!$state_code) {
+        $state_code = "ny";
+    }
+    $timezones = json_decode('{"on":"Canada\/Eastern","ak":"America\/Anchorage","id":"America\/Boise","al":"America\/Chicago","ar":"America\/Chicago","il":"America\/Chicago","ia":"America\/Chicago","ks":"America\/Chicago","la":"America\/Chicago","mn":"America\/Chicago","ms":"America\/Chicago","mo":"America\/Chicago","ne":"America\/Chicago","ok":"America\/Chicago","sd":"America\/Chicago","tn":"America\/Chicago","tx":"America\/Chicago","wi":"America\/Chicago","co":"America\/Denver","mt":"America\/Denver","nm":"America\/Denver","ut":"America\/Denver","wy":"America\/Denver","mi":"America\/Detroit","in":"America\/Indiana\/Indianapolis","ky":"America\/Kentucky\/Louisville","ca":"America\/Los_Angeles","nv":"America\/Los_Angeles","or":"America\/Los_Angeles","wa":"America\/Los_Angeles","ct":"America\/New_York","de":"America\/New_York","fl":"America\/New_York","ga":"America\/New_York","me":"America\/New_York","md":"America\/New_York","ma":"America\/New_York","nh":"America\/New_York","nj":"America\/New_York","ny":"America\/New_York","nc":"America\/New_York","oh":"America\/New_York","pa":"America\/New_York","ri":"America\/New_York","sc":"America\/New_York","vt":"America\/New_York","va":"America\/New_York","dc":"America\/New_York","wv":"America\/New_York","nd":"America\/North_Dakota","az":"America\/Phoenix","hi":"Pacific\/Honolulu"}', true);
+    $state_code = strtolower($state_code);
+    if (isset($timezones[$state_code])) {
+        return $timezones[$state_code];
+    } else {
+        return $timezones['ny'];
+    }
 }
 
 function doScheduleDriverCall($data) {
@@ -524,6 +562,39 @@ function formatCellDash($data) {
     $data = clearNumber($data);
 
     return $data ? "(" . substr($data, 0, 3) . ") " . substr($data, 3, 3) . "-" . substr($data, 6) : "--";
+}
+
+function formatPhone($data,$format=1) {    
+    /*Example for phone +1 222 333 4444
+     * $format = 1 returns like 222-333-4444 (DEFAULT)
+     * $format = 2 returns like 222.333.4444
+     * $format = 3 returns like (222) 333-4444
+     * $format = 4 returns like +1 222-333-4444 
+     * $format = 5 returns like +1 222.333.4444
+     * $format = 6 returns like +1 (222) 333-4444
+    */
+    $data = clearNumber($data);
+    $phone_len = strlen($data);
+    if(!$data || $phone_len<10)
+        return "--";
+    $phone1 = substr($data, 0,($phone_len-10));
+    $phone2 = substr($data, ($phone_len-10),3);
+    $phone3 = substr($data, ($phone_len-7),3);
+    $phone4 = substr($data, ($phone_len-4),4);
+    if($format==1)
+        return $phone2 ."-". $phone3 ."-". $phone4;
+    elseif($format==2)
+        return $phone2 .".". $phone3 .".". $phone4;
+    elseif($format==3)
+        return "(" . $phone2 .") ". $phone3 ."-". $phone4;
+    elseif($format==4)
+        return trim($phone1 . " " . $phone2 ."-". $phone3 ."-". $phone4);
+    elseif($format==5)        
+        return trim($phone1 . " " . $phone2 .".". $phone3 .".". $phone4);
+    elseif($format==6)
+        return trim($phone1 . " (" . $phone2 .") ". $phone3 ."-". $phone4);
+    else
+        return $phone2 ."-". $phone3 ."-". $phone4;
 }
 
 function getFirstDispatcherCall($tripCode) {
@@ -1708,7 +1779,7 @@ function ac_tag_generate($tag){
 
 function getSMSText($pd_data = array()) {
     $success = 0;
-    $sequence = array("day1_1_sent" => "Hi [MERCHANTS NAME], it's [AGENTS NAME]. I just received your request for funding for your business [COMPANY NAME]. and I should be able to get you the $[AMOUNT REQUESTED] that you requested for [USE OF FUNDS}. Can you chat for 2 minutes now to discuss?",
+    $sequence = array("day1_1_sent" => "Hi [MERCHANTS NAME], it's [AGENTS NAME] from Sprout. I just received your request for funding for your business [COMPANY NAME]. and I should be able to get you the $[AMOUNT REQUESTED] that you requested for [USE OF FUNDS}. Can you chat for 2 minutes now to discuss?",
         "day1_2_sent" => "Is there a better time we should arrange to chat so I can go to work on your behalf?",
         "day2_1_sent" => "Hi [MERCHANTS NAME], I didn't hear back from you yesterday but maybe you just got busy. Is there a good time today I can call you for a 5-minute conversation to discuss the $[AMOUNT REQUESTED] pre-approval I have on the table?",
         "day2_2_sent" => "Hey [MERCHANTS NAME], I don't want to bother you but I would like to get some additional info and get you the funding you just requested yesterday and go to work for you.",
@@ -1728,7 +1799,7 @@ function getSMSText($pd_data = array()) {
         return array("success" => 1, "next_seq" => $next_seq, "message" => $sequence[$next_seq]);
 }
 
-function IsTimeToSendSMS($last_time, $next_seq) {
+function IsTimeToSendSMS($last_time, $next_seq, $timezone) {
     $sms_seq_time_arr = qs("select * from sms_seq_time where is_active='1' and sequence_name='{$next_seq}'");    
     echo $next_seq;
     $current_time = time();
@@ -1754,9 +1825,11 @@ function IsTimeToSendSMS($last_time, $next_seq) {
         "day4_1_sent" => 1,
         "day5_1_sent" => 1);
     if (isset($sms_seq_time_arr['time'])) {
-        if (strtotime(date("H:i:s")) >= strtotime($sms_seq_time_arr['time'])) {
-            $date1 = date("Y-m-d",strtotime("+".$seq_day_diff[$next_seq]." day ". date("Y-m-d",$last_time)));
-            if($date1 <=  date("Y-m-d")){
+        $current_tz = getTimeZoneTime($timezone);
+        if (strtotime($current_tz->format("Y-m-d H:i:s")) >= strtotime($sms_seq_time_arr['time'])) {
+            $last_time_tz = getTimeZoneTime($timezone,date("Y-m-d H:i:s",$last_time));
+            $date1 = date("Y-m-d",strtotime("+".$seq_day_diff[$next_seq]." day ". $last_time_tz->format("Y-m-d")));
+            if($date1 <=  $current_tz->format("Y-m-d")){
                 echo "need to send";
                 return true;
             }else{
@@ -1764,7 +1837,7 @@ function IsTimeToSendSMS($last_time, $next_seq) {
                 return false;
             }
         } else {
-            $diff = (strtotime($sms_seq_time_arr['time']) - strtotime(date("H:i:s")));
+            $diff = (strtotime($sms_seq_time_arr['time']) - strtotime($current_tz->format("Y-m-d H:i:s")));
             $diff = ($diff / 60);
             echo "Please wait for " . $diff . "minutes";
             return false;

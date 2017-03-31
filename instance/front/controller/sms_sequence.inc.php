@@ -6,7 +6,7 @@ foreach ($sms_sequence_data as $each_sms) {
     $deal_info = $seq_data = array();
     $req_sms_detail = getSMSText($each_sms);
     if ($req_sms_detail['success'] == 1) {
-        if (IsTimeToSendSMS(strtotime($each_sms['modified_at']), $req_sms_detail['next_seq'])) {
+        if (IsTimeToSendSMS(strtotime($each_sms['modified_at']), $req_sms_detail['next_seq'],$each_sms['timezone'])) {
             $message = $req_sms_detail['message'];
             $phone = $each_sms['phone'];
             $deal_info = $apiPD->getDealInfo($each_sms['last_deal_id']);
@@ -34,7 +34,7 @@ foreach ($sms_sequence_data as $each_sms) {
                 qu("sms_sequence", array($req_sms_detail['next_seq'] => '1'), "id='{$each_sms['id']}'");
                 $note_data = array();
                 $note_data['deal_id'] = $each_sms['last_deal_id'];
-                $note_data['content'] = "Text was sent on {$each_sms['phone']}.<br><br>Text: {$message}";
+                $note_data['content'] = "Text was sent on ".formatPhone($each_sms['phone'],4).".<br><br>Text: {$message}";
                 $data = $apiPD->createNote($note_data);
                 $apiCall = new callWebhook();
                 $apiCall->messageNow($each_sms['phone'], $message, "2");

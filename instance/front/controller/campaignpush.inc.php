@@ -45,7 +45,7 @@ if (isset($deal_info['data']['id'])) {
     }
     $org = $deal_info['data']['org_id']['name'];
     $org_id = $deal_info['data']['org_id']['value'];
-    $agent = ($deal_info['data']['user_id']['name'] == "Dave Jay (Programmer)" ? "Sprout Lending Team" : $deal_info['data']['user_id']['name']);
+    $agent = $deal_info['data']['user_id']['name'];
     $agent_id = $deal_info['data']['user_id']['value'];
     $deal_amount = $deal_info['data']['value'];
     $pipedrive_id = $deal_info['data']['id'];
@@ -107,7 +107,7 @@ $ac_data['email'] = $email;
 $ac_data['last_deal_id'] = $pipedrive_id;
 $ac_data['last_stage_id'] = $pipedrive_stage;
 $ac_data['last_stage_name'] = $stage[$pipedrive_stage]['name'];
-$ac_data['phone'] = $phone;
+$ac_data['phone'] = formatPhone($phone,4);
 $ac_data['last10phone'] = last10Char($phone);
 $ac_data['phone_detail'] = json_encode($phone_arr);
 $tag = $ac_data['tags'] = ac_tag_generate($stage[$pipedrive_stage]['name']);
@@ -120,15 +120,18 @@ if (empty($tbl_camp_data)) {
     $active_campaign_contact_id = $tbl_camp_data['id'];
 }
 
-if($agent_id!=''){
+if($agent_id!='' && $agent_id != "990918"){
     $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
+}else{
+    $agent_data = qs("select * from pd_users where is_default='1'");
 }
+$agent = $agent_data['name'];
 $stage_mapping_arr = json_decode(STAGE_MAPPING, true);
 $campaing_class = new Campaign();
 $campaing_class::$contact_email = $email;
 $campaing_class::$contact_fname = $fname;
 $campaing_class::$contact_lname = $lname;
-$campaing_class::$contact_phone = $phone;
+$campaing_class::$contact_phone = formatPhone($phone,6);
 $campaing_class::$contact_org = $org;
 $campaing_class::$tag = trim($tag, ",");
 
@@ -137,14 +140,13 @@ $campaing_class::$PIPEDRIVE_ID = $pipedrive_id;
 $campaing_class::$PIPEDRIVE_STAGE = $stage[$pipedrive_stage]['name'];
 $campaing_class::$AGENT_NAME = $agent;
 $campaing_class::$DEAL_AMOUNT = $deal_amount;
-$campaing_class::$ALTERNATE_PHONE = $phone2;
+$campaing_class::$ALTERNATE_PHONE = formatPhone($phone2,6);
 $campaing_class::$PIPEDRIVE_DEAL_LINK = "https://sprout2.pipedrive.com/deal/" . $pipedrive_id;
 if(!empty($agent_data)){
-    $campaing_class::$AGENT_PHONE = formatCellDash($agent_data['phone']);    
+    $campaing_class::$AGENT_PHONE = formatPhone($agent_data['phone']);    
     $campaing_class::$AGENT_ROLE = $agent_data['role'];        
     $campaing_class::$AGENT_LINKEDIN_LINK = "<a href='{$agent_data['linkedin_link']}'><img alt='My LinkedIn Profile' src='http://sprout.img-us10.com/public/332ea34c4e46abd2f2d3c65e788c4f22.png?r=761035395' /></a>";
 }
-$deal_info = $apiPD->getDealInfo($data['current']['id']);
 try {
     $data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);
 } catch (Exception $e) {
@@ -179,17 +181,22 @@ if ($mobile_number_found == 1) {
     if(!empty($sms_seq_data)){
         qd("sms_sequence","id='{$sms_seq_data['id']}'");
     }
-    qi("sms_sequence",array("phone"=>$phone,"deal_amount"=>$deal_amount,"last10phone"=>last10Char($phone),"last_deal_id"=>$pipedrive_id, "day1_1_sent"=>"1"));
+    $time_zone_arr = getTimeZoneByPhone($phone,"1");
+    qi("sms_sequence",array("phone"=>$phone,"deal_amount"=>$deal_amount,"last10phone"=>last10Char($phone),"state_code"=>$time_zone_arr['state_code'],"state"=>$time_zone_arr['state'],"area_code"=>$time_zone_arr['area_code'],"timezone"=>$time_zone_arr['timezone'],"last_deal_id"=>$pipedrive_id, "day1_1_sent"=>"1"));
     $deal_detail['e585bd988070d2bdfb2af36d968521c3f9aa949a']='ON';
     $apiPD->modifyDeal($pipedrive_id,$deal_detail);
                 
-    $message = "Hi " . trim($fname) . ", it's {$agent}. I just received your request for funding for your business {$org}. and I should be able to get you the $" . $deal_amount . " that you requested for {$org_for}. Can you chat for 2 minutes now to discuss?";
+    $agent_arr = explode(" ", $agent);
+    $agent = $agent_arr[0];
+    $message = "Hi " . trim($fname) . ", it's {$agent} from Sprout. I just received your request for funding for your business {$org}. and I should be able to get you the $" . $deal_amount . " that you requested for {$org_for}. Can you chat for 2 minutes now to discuss?";
     $note_data['deal_id'] = $pipedrive_id;
-    $note_data['content'] = "Welcome Text was sent on {$phone}.<br><br>Text: {$message}";
+    $note_data['content'] = "Welcome Text was sent on ".  formatPhone($phone,4).".<br><br>Text: {$message}";
+    $data = $apiPD->createNote($note_data);
+    $note_data['content'] = "SMS Sequence is executing on {$time_zone_arr['timezone']} Timezone. <br>Customer State: {$time_zone_arr['state']} ({$time_zone_arr['state_code']})<br>Area Code: {$time_zone_arr['area_code']}";
     $data = $apiPD->createNote($note_data);
     $apiCall = new callWebhook();
     $apiCall->messageNow($phone, $message, "2");
-    qi('active_campaign_log', _escapeArray(array("log" => "Trying to message sending on " . $phone)));
+    qi('active_campaign_log', _escapeArray(array("log" => "Trying to message sending on " . formatPhone($phone,4))));
 }
 die;
 ?>
