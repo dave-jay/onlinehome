@@ -99,7 +99,9 @@ $ac_data['last_stage_name'] = $stage[$pipedrive_stage]['name'];
 $tag = $ac_data['tags'] = ac_tag_generate($stage[$pipedrive_stage]['name']);
 
 if (empty($tbl_camp_data)) {
-    $active_campaign_contact_id = qi('active_campaign_contact', _escapeArray($ac_data));
+    qi('active_campaign_log', array("log" => "Update: no need to add."));
+    die;
+    //$active_campaign_contact_id = qi('active_campaign_contact', _escapeArray($ac_data));
 } else {
     if ($tbl_camp_data['last_stage_id'] == $pipedrive_stage) {
         qi('active_campaign_log', array("log" => "Stage id not changed."));
