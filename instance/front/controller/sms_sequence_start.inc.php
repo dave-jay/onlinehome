@@ -1,8 +1,8 @@
 <?php
 $need_to_start_data = qs("select * from active_campaign_contact where need_to_start='1' order by created_at desc");
 if(!empty($need_to_start_data)){
-    if(time()>(strtotime($need_to_start_data['modified_at'])+60)){
-        qi('active_campaign_log', _escapeArray(array("log" => "One new deal found")));    
+    if(time()>(strtotime($need_to_start_data['need_to_start_time']))){
+        qi('active_campaign_log', _escapeArray(array("log" => "SMS:One new deal found")));    
         qu("active_campaign_contact",array("need_to_start"=>"0"),"id='{$need_to_start_data['id']}'");            
     }else{
         echo "please wait for ".((strtotime($need_to_start_data['modified_at'])+60)-time())." sec";
@@ -102,7 +102,7 @@ if (!empty($agent_data)) {
     $campaing_class::$AGENT_LINKEDIN_LINK = "<a href='{$agent_data['linkedin_link']}'><img alt='My LinkedIn Profile' src='http://sprout.img-us10.com/public/332ea34c4e46abd2f2d3c65e788c4f22.png?r=761035395' /></a>";
 }
 try {
-    $data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);
+    //$data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);
 } catch (Exception $e) {
     
 }

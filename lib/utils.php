@@ -982,7 +982,7 @@ function _phpmail($to, $subject, $content) {
     mail($to, $subject, $message, $header);
     
 }
-function _mail($to, $subject, $content, $extra = array()) {
+function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_FROM_EMAIL,$mail_from_email=MAIL_FROM_NAME) {
 
     # unfortunately, need to use require within function.
     # swift lib overrides the autoloader 
@@ -992,11 +992,12 @@ function _mail($to, $subject, $content, $extra = array()) {
 
     if (_isLocalMachine()) {
         //_l("To Email is overwritten by -  dave.jay90@gmail.com  due to dev localmachine ");
-        $to = 'testoperators@gmail.com';
+        $to = 'davej@lysoft.com';
     }
 
     $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
             ->setUsername(SMTP_EMAIL_USER_NAME)
+            ->setSourceIp('0.0.0.0')
             ->setPassword(SMTP_EMAIL_USER_PASSWORD);
 
     $mailer = Swift_Mailer::newInstance($transport);
@@ -1004,16 +1005,28 @@ function _mail($to, $subject, $content, $extra = array()) {
     if (!is_array($to)) {
         $to = array($to);
     }
-
+echo "<br>Email To: ".$to;
+echo "<br>Email FromMAil: ".MAIL_FROM_EMAIL;
+echo "<br>Email FromName: ".MAIL_FROM_NAME;
+echo "<br>Email UN: ".SMTP_EMAIL_USER_NAME;
+echo "<br>Email pw: ".SMTP_EMAIL_USER_PASSWORD;
     $message = Swift_Message::newInstance($subject)
             ->setFrom(array(MAIL_FROM_EMAIL => MAIL_FROM_NAME))
             ->setTo($to)
-            ->setBcc('testoperators@gmail.com')
             ->setBody($content, 'text/html', 'utf-8');
 
     $result = $mailer->send($message);
 
     return $result;
+}
+function customMail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_FROM_EMAIL,$mail_from_name=MAIL_FROM_NAME){
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type: text/html; charset=iso-8859-1" . "\r\n";
+    $headers .= "From:".$mail_from_name."  " . $mail_from_email . "\r\n";
+    $headers .= "Reply-To: ".$mail_from_email."\r\n";
+    $headers .= "X-Mailer: PHP/" . phpversion();
+    $headers .= "X-Priority: 1" . "\r\n";
+    mail($to, $subject, $content, $headers);
 }
 
 /**
@@ -1869,6 +1882,66 @@ function getSMSReply($pd_data = array()) {
         }
     }
     return array("success" => 1, "next_seq" => $sequence[$next_seq]);
+}
+
+function getEmailTemplateName($pd_data = array()) {
+    $success = 0;
+    $sequence = array("day1_1_sent" => array("subject"=>"Welcome to Sprout Lending","template_name"=>"day1_1_email.php"),
+        "day2_1_sent" => array("subject"=>"Lead FU #1","template_name"=>"day2_1_email.php"),
+        "day3_1_sent" => array("subject"=>"Lead FU #2","template_name"=>"day3_1_email.php"),
+        "day4_1_sent" => array("subject"=>"Lead FU #3","template_name"=>"day4_1_email.php"),
+        "day5_1_sent" => array("subject"=>"Lead FU #4","template_name"=>"day5_1_email.php"));
+    foreach ($sequence as $key => $value) {
+        if ($pd_data[$key] == '0') {
+            $next_seq = $key;
+            $success = 1;
+            break;
+        }
+    }
+    if ($success == 0)
+        return array("success" => 0);
+    else
+        return array("success" => 1, "next_seq" => $next_seq, "subject" => $sequence[$next_seq]['subject'], "template_name" => $sequence[$next_seq]['template_name']);
+}
+
+function IsTimeToSendEmail($last_time, $next_seq, $timezone) {
+    $email_seq_time_arr = qs("select * from email_seq_time where is_active='1' and sequence_name='{$next_seq}'");
+    echo $next_seq;
+    $current_time = time();
+    $sequence = array("day1_1_sent" => 0,
+        "day2_1_sent" => 3600,
+        "day3_1_sent" => 3600,
+        "day4_1_sent" => 3600,
+        "day5_1_sent" => 3600);
+    $seq_day_diff = array("day1_1_sent" => 0,
+        "day2_1_sent" => 1,
+        "day3_1_sent" => 1,
+        "day4_1_sent" => 1,
+        "day5_1_sent" => 1);
+    if (isset($email_seq_time_arr['time'])) {
+        $current_tz = getTimeZoneTime($timezone);
+        if (strtotime($current_tz->format("Y-m-d H:i:s")) >= strtotime($email_seq_time_arr['time'])) {
+            $last_time_tz = getTimeZoneTime($timezone, date("Y-m-d H:i:s", $last_time));
+            $date1 = date("Y-m-d", strtotime("+" . $seq_day_diff[$next_seq] . " day " . $last_time_tz->format("Y-m-d")));
+            if ($date1 <= $current_tz->format("Y-m-d")) {
+                echo "need to send";
+                return true;
+            } else {
+                echo "Please wait for " . $seq_day_diff[$next_seq] . "  day";
+                return false;
+            }
+        } else {
+            $diff = (strtotime($email_seq_time_arr['time']) - strtotime($current_tz->format("Y-m-d H:i:s")));
+            $diff = ($diff / 60);
+            echo "Please wait for " . $diff . "minutes";
+            return false;
+        }
+    } else {
+        if ($sequence[$next_seq] < ($current_time - $last_time)) {
+            return true;
+        }
+        return false;
+    }
 }
 
 ?>

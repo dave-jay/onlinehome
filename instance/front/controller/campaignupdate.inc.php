@@ -139,7 +139,7 @@ if(!empty($agent_data)){
     $campaing_class::$AGENT_ROLE = $agent_data['role'];    
     $campaing_class::$AGENT_LINKEDIN_LINK = "<a href='{$agent_data['linkedin_link']}'><img alt='My LinkedIn Profile' src='http://sprout.img-us10.com/public/332ea34c4e46abd2f2d3c65e788c4f22.png?r=761035395' /></a>";
 }
-$data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);
+//$data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);
 if (isset($data_camp->success) && ($data_camp->success || $data_camp->success == '1')) {
     $active_campaign_contact_id = qu('active_campaign_contact', array("campaign_contact_id" => $data_camp->subscriber_id), "id='{$active_campaign_contact_id}'");
     qi('active_campaign_log', array("log" => "Active Campaign Contact Id: " . $data_camp->subscriber_id . "<br>Message:" . $data_camp->result_message));

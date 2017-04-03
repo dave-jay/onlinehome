@@ -9,11 +9,14 @@ date_default_timezone_set('America/New_York');
 $payload = file_get_contents('php://input');
 $data = json_decode(@$payload, true);
 $deal_source = $data['current']['c2a6fc3129578b646ae55717ed15f03ce3ee4df0'];
+qi('active_campaign_log', array("log" => "push: 1"));
 if (!in_array($deal_source, array('44'))) {
     die;
 }
+qi('active_campaign_log', array("log" => "push: 2"));
 //Getting Deal Info and change stage if pipeline id is '1' (i.e. for "Leads")
 $deal_info = $apiPD->getDealInfo($data['current']['id']);
+qi('active_campaign_log', array("log" => "push: 3"));
 $deal_info = json_decode($deal_info, TRUE);
 $tag = $agent = $deal_amount = $phone2 = $active_campaign_contact_id = $fname = $lname = $email = $phone = $org = $pipedrive_id = $pipedrive_stage = '';
 $agent_id = $agent_linkedin_link = $agent_phone = '';
@@ -50,12 +53,15 @@ if (isset($deal_info['data']['id'])) {
     $deal_amount = $deal_info['data']['value'];
     $pipedrive_id = $deal_info['data']['id'];
     $pipedrive_stage = $deal_info['data']['stage_id'];
+    qi('active_campaign_log', array("log" => "push: 4"));
 } else {
     qi('active_campaign_log', array("log" => "Deal info not found. " . json_decode($data)));
     die;
 }
+qi('active_campaign_log', array("log" => "push: 5"));
 
 $org_data = $apiPD->getOrganizationInfo($org_id);
+qi('active_campaign_log', array("log" => "push: 6"));
 $org_data = json_decode($org_data, "true");
 if (isset($org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'])) {
     $deal_amount = $org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'];
@@ -72,7 +78,9 @@ if(isset($deal_info['data']['person_id']['value'])){
     }
 }
 $mobile_number_found = 0;
+qi('active_campaign_log', array("log" => "push: 7"));
 foreach ($phone_arr as $key => $each_phone) {
+    qi('active_campaign_log', array("log" => "push: 8"));
     $phone_carrier_data = $apiCore->getPhoneNumbersCarrier($each_phone['phone']);
     $phone_carrier_data = json_decode($phone_carrier_data, true);
     if (isset($phone_carrier_data['carrier']['type'])) {
@@ -92,6 +100,7 @@ foreach ($phone_arr as $key => $each_phone) {
         break;
     }
 }
+qi('active_campaign_log', array("log" => "push: 9"));
 $stage_data = $apiPD->getAllStage();
 $stage_data = json_decode($stage_data, "true");
 $stage = array();
@@ -105,6 +114,8 @@ $tbl_camp_data = qs("select * from active_campaign_contact where email='$email'"
 $ac_data = array();
 $ac_data['email'] = $email;
 $ac_data['need_to_start'] = '1';
+$ac_data['need_to_start_email'] = '1';
+$ac_data['need_to_start_time'] = date("Y-m-d H:i:s",(time()+60));
 $ac_data['last_deal_id'] = $pipedrive_id;
 $ac_data['last_stage_id'] = $pipedrive_stage;
 $ac_data['last_stage_name'] = $stage[$pipedrive_stage]['name'];
@@ -114,10 +125,12 @@ $ac_data['last10phone'] = last10Char($phone);
 $ac_data['alternate_phone'] = formatPhone($phone2,4);
 $ac_data['phone_detail'] = json_encode($phone_arr);
 $tag = $ac_data['tags'] = ac_tag_generate($stage[$pipedrive_stage]['name']);
-
+qi('active_campaign_log', array("log" => "push: 10"));
 if (empty($tbl_camp_data)) {
+    qi('active_campaign_log', array("log" => "push: 11"));
     $active_campaign_contact_id = qi('active_campaign_contact', _escapeArray($ac_data));
 } else {
+    qi('active_campaign_log', array("log" => "push: 12"));
     //$tag .= ",".$tbl_camp_data['tags']; // Tag Should be new at every new deal. so, It is comment out
     $active_campaign_contact_id = qu('active_campaign_contact', _escapeArray($ac_data), "id='{$tbl_camp_data['id']}'");
     $active_campaign_contact_id = $tbl_camp_data['id'];
