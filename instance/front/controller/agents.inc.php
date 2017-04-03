@@ -38,7 +38,7 @@ if ($_REQUEST['doUpdateContact']) {
       }else{
       $affected_row=0;
       } */
-    $affected_row = qu('pd_users', array("phone" => $phone, "cell" => $cell, "group" => $group, "role" => $role, "linkedin_link" => $linkdin), " id = '{$agent_id}'  ");
+    $affected_row = qu('pd_users', array("phone" => $phone, "cell" => $cell,"password" => $_REQUEST['pass'], "group" => $group, "role" => $role, "linkedin_link" => $linkdin), " id = '{$agent_id}'  ");
     echo $affected_row;
     die;
 }

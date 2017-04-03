@@ -982,7 +982,7 @@ function _phpmail($to, $subject, $content) {
     mail($to, $subject, $message, $header);
     
 }
-function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_FROM_EMAIL,$mail_from_email=MAIL_FROM_NAME) {
+function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_FROM_EMAIL,$mail_from_name=MAIL_FROM_NAME,$un=SMTP_EMAIL_USER_NAME,$password=SMTP_EMAIL_USER_PASSWORD) {
 
     # unfortunately, need to use require within function.
     # swift lib overrides the autoloader 
@@ -996,23 +996,19 @@ function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_F
     }
 
     $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
-            ->setUsername(SMTP_EMAIL_USER_NAME)
+            ->setUsername($un)
             ->setSourceIp('0.0.0.0')
-            ->setPassword(SMTP_EMAIL_USER_PASSWORD);
+            ->setPassword($password);
 
     $mailer = Swift_Mailer::newInstance($transport);
 
     if (!is_array($to)) {
         $to = array($to);
     }
-echo "<br>Email To: ".$to;
-echo "<br>Email FromMAil: ".MAIL_FROM_EMAIL;
-echo "<br>Email FromName: ".MAIL_FROM_NAME;
-echo "<br>Email UN: ".SMTP_EMAIL_USER_NAME;
-echo "<br>Email pw: ".SMTP_EMAIL_USER_PASSWORD;
     $message = Swift_Message::newInstance($subject)
-            ->setFrom(array(MAIL_FROM_EMAIL => MAIL_FROM_NAME))
+            ->setFrom(array($mail_from_email => $mail_from_name))
             ->setTo($to)
+            ->setReplyTo($mail_from_email)
             ->setBody($content, 'text/html', 'utf-8');
 
     $result = $mailer->send($message);

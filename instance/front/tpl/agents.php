@@ -32,6 +32,16 @@
                     </div>
                     <div style="clear: both;height: 18px;"></div>
                     <div class="col-lg-3 col-lg-offset-1" style='text-align: right;'>
+                        <label>Password</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input type="password" class="form-control" id="txtPass" name="txtPass" />
+                        <label class="helptext">Password for access email '<span id='sp_email'></span>'.</label>
+                        <br>
+                        <a href="https://www.google.com/settings/security/lesssecureapps" target="_blank" style='color:blue;'>Click Here</a> and Set 'Allow less secure apps' to 'ON' to send email sequence by above email address.
+                    </div>
+                    <div style="clear: both;height: 12px;"></div>
+                    <div class="col-lg-3 col-lg-offset-1" style='text-align: right;'>
                         <label>Group</label>
                     </div>
                     <div class="col-lg-7">

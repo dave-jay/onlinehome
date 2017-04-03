@@ -5,9 +5,9 @@ define('ADMIN_EMAIL', 'testoperators@gmail.com'); # Admin Mail Sent to This Emai
 //define('SMTP_EMAIL_USER_NAME', 'testaccts001@gmail.com'); # smtp service username
 //define('SMTP_EMAIL_USER_PASSWORD', 'testaccts001.'); # smtp service password
 define('SMTP_EMAIL_USER_NAME', 'davej@sproutlending.com'); # smtp service username
-define('SMTP_EMAIL_USER_PASSWORD', 'Admin1@#4'); # smtp service password
-define('MAIL_FROM_EMAIL', 'testaccts001@gmail.com'); # email to be used a from email
-define('MAIL_FROM_NAME', 'Test Account'); # name to be used as from email
+define('SMTP_EMAIL_USER_PASSWORD', 'Brusgus23!'); # smtp service password
+define('MAIL_FROM_EMAIL', 'davej@sproutlending.com'); # email to be used a from email
+define('MAIL_FROM_NAME', 'Sprout Lending'); # name to be used as from email
 
 
 define('TOLL_FREE_NO', '18006676389');

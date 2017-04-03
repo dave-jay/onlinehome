@@ -15,8 +15,10 @@ foreach ($email_sequence_data as $each_email) {
                 if (isset($deal_info['data']['stage_id']) && ($deal_info['data']['stage_id'] == '28' || $deal_info['data']['stage_id'] == '1') && $deal_info['data']['status'] == 'open') {
                     $agent_id = $deal_info['data']['user_id']['value'];
                     if ($agent_id != '' && $agent_id != "990918") {
+                        qi("active_campaign_log", array("log"=>"agent: ".$agent_id));
                         $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
                     } else {
+                        qi("active_campaign_log", array("log"=>"Default: "));
                         $agent_data = qs("select * from pd_users where is_default='1'");
                     }
                     $name = explode(" ", $deal_info['data']['person_id']['name']);
@@ -30,6 +32,8 @@ foreach ($email_sequence_data as $each_email) {
                     $agent_linked = $agent_data['linkedin_link'];
                     $agent_phone = formatPhone($agent_data['phone']);
                     $agent_role = $agent_data['role'];
+                    $agent_pass = $agent_data['password'];
+                    qi("active_campaign_log", array("log"=>"pass: ".$agent_pass));
 
                     echo "<br><br><div style='font-size:30px;color:green;font-weight:bold;'>Email Sent</div>";
                     qu("email_sequence", array($req_email_detail['next_seq'] => '1'), "id='{$each_email['id']}'");
@@ -39,8 +43,9 @@ foreach ($email_sequence_data as $each_email) {
                     ob_end_clean();
                     qi('active_campaign_log', _escapeArray(array("log" => "Email: {$subject} on " . $email)));
                     try {
-                        //_mail($email, $subject, $mail,array(),);
-                        customMail($email, $subject, $mail, array(), $agent_email, $agent_name);
+                        $apiCore = new apiCore();                        
+                        $apiCore->doCall("http://45.79.140.218/lysoft/hook_email",array("to"=>$email,"subject"=>$subject,"content"=>$mail,"mail_from_email"=>$agent_email,"password"=>$agent_pass,"mail_from_name"=>$agent_name),"POST");
+                        //customMail($email, $subject, $mail, array(), $agent_email, $agent_name);
                     } catch (Exception $e) {
                         echo $e->getMessage();
                     }

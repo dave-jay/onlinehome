@@ -60,6 +60,8 @@
         $("#pd_user_id").val(id);
         $("#txtAgentName").html($("#div_" + id + "_agent_name").html());
         $("#ddlGroup").val($("#div_" + id + "_group").html());
+        $("#sp_email").html($("#div_" + id + "_email").html());
+        $("#txtPass").val($("#hid_" + id + "_pass").val() == "" ? '' : $("#hid_" + id + "_pass").val());
         $("#txtPhone").val($("#td_" + id + "_phone").html() == "-" ? '' : $("#td_" + id + "_phone").html());
         $("#txtCell").val($("#td_" + id + "_cell").html() == "-" ? '' : $("#td_" + id + "_cell").html());
         $("#txtlinkdin").val($("#hid_" + id + "_linkdin").val() == "" ? '' : $("#hid_" + id + "_linkdin").val());
@@ -75,10 +77,11 @@
         var group = $("#ddlGroup").val();
         var linkdin = $("#txtlinkdin").val();
         var role = $("#txtroleno").val();
+        var pass = $("#txtPass").val();
   
         $.ajax({
             url: _U + 'agents',
-            data: {doUpdateContact: id, phone: phone, cell: cell, group: group, linkdin: linkdin, role: role},
+            data: {doUpdateContact: id, phone: phone, cell: cell, group: group, linkdin: linkdin, role: role, pass: pass},
             success: function (r) {
                 hideWait();
                 if (r.toString() == "1") {
@@ -87,6 +90,7 @@
                     $("#div_" + id + "_group").html(group);
                     $("#hid_" + id + "_linkdin").val(linkdin);
                     $("#hid_" + id + "_roleno").val(role);
+                    $("#hid_" + id + "_pass").val(pass);
                     $("#div_" + id + "_group").attr('class', 'group-' + group);
                     $("#selectAgentPopup").modal("hide");
                     _success("Agent Detail updated successfully");

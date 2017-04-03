@@ -55,6 +55,7 @@ $agent_email = $agent_data['email'];
 $agent_linked = $agent_data['linkedin_link'];
 $agent_phone = formatPhone($agent_data['phone']);
 $agent_role = $agent_data['role'];
+$agent_pass = $agent_data['password'];
 if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
     $sms_seq_data = qs("select * from email_sequence where email='" . $email . "'");
     if (!empty($sms_seq_data)) {
@@ -69,8 +70,9 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
     $subject = "Welcome to Sprout Lending";
     qi('active_campaign_log', _escapeArray(array("log" => "Email: Trying to send email on " . $email)));
     try{
-        //_mail($email, $subject, $mail,array(),);
-        customMail($email, $subject, $mail,array(),$agent_email,$agent_name);
+        $apiCore = new apiCore();
+        $apiCore->doCall("http://45.79.140.218/lysoft/hook_email",array("to"=>$email,"subject"=>$subject,"content"=>$mail,"mail_from_email"=>$agent_email,"password"=>$agent_pass,"mail_from_name"=>$agent_name),"POST");
+        //customMail($email, $subject, $mail,array(),$agent_email,$agent_name);
     }  catch (Exception $e){
         echo $e->getMessage();
     }
