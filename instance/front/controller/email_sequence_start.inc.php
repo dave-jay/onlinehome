@@ -71,7 +71,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
     qi('active_campaign_log', _escapeArray(array("log" => "Email: Trying to send email on " . $email)));
     try{
         $apiCore = new apiCore();
-        $apiCore->doCall("http://45.79.140.218/lysoft/hook_email",array("to"=>$email,"subject"=>$subject,"content"=>$mail,"mail_from_email"=>$agent_email,"password"=>$agent_pass,"mail_from_name"=>$agent_name),"POST");
+        $apiCore->doCall("http://45.79.140.218/lysoft/hook_email",array("to"=>$email,"subject"=>$subject,"content"=>$mail,"mail_from_email"=>$agent_email,"password"=>$agent_pass,"mail_from_name"=>$agent_name,"bcc"=>"sprout2+deal$pipedrive_id@pipedrivemail.com"),"POST");
         //customMail($email, $subject, $mail,array(),$agent_email,$agent_name);
     }  catch (Exception $e){
         echo $e->getMessage();

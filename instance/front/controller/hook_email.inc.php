@@ -1,4 +1,16 @@
 <?php
+// 
+// 
+// 
+// NOTE - 6th April 2017
+// 
+// Any of the changes in this page need to UPDATE on 'DEV' server 'LYSOFT' folder.
+// 
+// 
+// 
+// 
+
+
 if(isset($_REQUEST['to'])){
     $to = $_REQUEST['to'];
     $subject = $_REQUEST['subject'];
@@ -6,14 +18,13 @@ if(isset($_REQUEST['to'])){
     $mail_from_email = $_REQUEST['mail_from_email'];
     $mail_from_name = $_REQUEST['mail_from_name'];
     try{
+        qi("activity_log",array("payload"=>"BCC Set to ".$_REQUEST['bcc']));        
         if(isset($_REQUEST['password']) && $_REQUEST['password']!=''){
             define('SMTP_EMAIL_USER_NAME', $_REQUEST['mail_from_email']); # smtp service username
             define('SMTP_EMAIL_USER_PASSWORD', $_REQUEST['password']); # smtp service password
-            qi("activity_log",array("payload"=>$_REQUEST['password'],"log"=>$_REQUEST['mail_from_email'].":".$_REQUEST['password']));
-            _mail($to, $subject, $content, array(),$mail_from_email,$mail_from_name,$_REQUEST['mail_from_email'],$_REQUEST['password']);
+            _mail($to, $subject, $content, array(),$mail_from_email,$mail_from_name,$_REQUEST['mail_from_email'],$_REQUEST['password'],$_REQUEST['bcc']);
         }else{
-            qi("activity_log",array("payload"=>"password not set. Default Use ".SMTP_EMAIL_USER_NAME.":".SMTP_EMAIL_USER_PASSWORD));        
-            _mail($to, $subject, $content, array(),$mail_from_email,$mail_from_name,SMTP_EMAIL_USER_NAME,SMTP_EMAIL_USER_PASSWORD);
+            _mail($to, $subject, $content, array(),$mail_from_email,$mail_from_name,SMTP_EMAIL_USER_NAME,SMTP_EMAIL_USER_PASSWORD,$_REQUEST['bcc']);
         }
         echo  json_encode(array("success"=>"1","message"=>"Mail sent successfully!"));
     }  catch (Exception $e){
