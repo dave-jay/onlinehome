@@ -1,4 +1,5 @@
 <?php
+if(date("l")=="Sunday"){ die; }
 
 $apiPD = new apiPipeDrive();
 $email_sequence_data = q("select * from email_sequence where need_to_send_email='1'");
@@ -25,6 +26,9 @@ foreach ($email_sequence_data as $each_email) {
                     $fname = $name[0];
                     $email = $each_email['email'];
 
+                    # email token replacement
+                    $subject= str_replace(array('{merchant_name}'),array($fname),$subject);
+					
                     $agent_name = $agent_data['name'];
                     $agent = explode(" ", $agent_name);
                     $agent_fname = $agent[0];

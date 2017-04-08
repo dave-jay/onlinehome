@@ -1,4 +1,5 @@
 <?php
+if(date("l")=="Sunday"){ die; }
 
 $apiPD = new apiPipeDrive();
 $sms_sequence_data = q("select * from sms_sequence where need_to_send_sms='1'");

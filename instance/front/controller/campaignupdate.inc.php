@@ -29,6 +29,15 @@ if (isset($data['current']['stage_id'])) {
             qu("sms_sequence",array("need_to_send_sms"=>"1"),"id='{$sms_seq_data["id"]}'");
         }
     }
+    $email_seq_data = qs("select * from email_sequence where last_deal_id='{$data['current']['id']}'");
+    if(!empty($email_seq_data) && !empty($deal_info)){
+        if($email_seq_data['need_to_send_email']==1 && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']=='196'){            
+            qu("email_sequence",array("need_to_send_email"=>"0"),"id='{$email_seq_data["id"]}'");
+        }
+        if($email_seq_data['need_to_send_email']==0 && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']!='196'){            
+            qu("email_sequence",array("need_to_send_email"=>"1"),"id='{$email_seq_data["id"]}'");
+        }
+    }
     $tag = $agent = $deal_amount = $phone2 = $active_campaign_contact_id = $fname = $lname = $email = $phone = $org = $pipedrive_id = $pipedrive_stage = '';
     $agent_id = $agent_linkedin_link = $agent_phone = '';
     if (isset($deal_info['data']['id'])) {

@@ -982,7 +982,7 @@ function _phpmail($to, $subject, $content) {
     mail($to, $subject, $message, $header);
     
 }
-function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_FROM_EMAIL,$mail_from_name=MAIL_FROM_NAME,$un=SMTP_EMAIL_USER_NAME,$password=SMTP_EMAIL_USER_PASSWORD,$bcc="davej@lysoft.com") {
+function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_FROM_EMAIL,$mail_from_name=MAIL_FROM_NAME,$un=SMTP_EMAIL_USER_NAME,$password=SMTP_EMAIL_USER_PASSWORD) {
 
     # unfortunately, need to use require within function.
     # swift lib overrides the autoloader 
@@ -1008,7 +1008,6 @@ function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_F
     $message = Swift_Message::newInstance($subject)
             ->setFrom(array($mail_from_email => $mail_from_name))
             ->setTo($to)
-            ->setBcc($bcc)
             ->setReplyTo($mail_from_email)
             ->setBody($content, 'text/html', 'utf-8');
 
@@ -1793,9 +1792,15 @@ function getSMSText($pd_data = array()) {
         "day1_2_sent" => "Is there a better time we should arrange to chat so I can go to work on your behalf?",
         "day2_1_sent" => "Hi [MERCHANTS NAME], I didn't hear back from you yesterday but maybe you just got busy. Is there a good time today I can call you for a 5-minute conversation to discuss the $[AMOUNT REQUESTED] pre-approval I have on the table?",
         "day2_2_sent" => "Hey [MERCHANTS NAME], I don't want to bother you but I would like to get some additional info and get you the funding you just requested yesterday and go to work for you.",
-        "day3_1_sent" => "Hi [MERCHANTS NAME], are you still interested to get funds for your business? Reply YES if you are still interested. NO if you wished to be removed from our databases.",
-        "day4_1_sent" => "Hey [MERCHANTS NAME], we have been trying to reach you in regards to your interest in funding for your business. Are you still interested in the $[AMOUNT REQUESTED] pre-approval we have on the table for you?",
-        "day5_1_sent" => "I'm sorry! I can't reach you! I would really like to discuss the options we have available for your business. Is there a better time to discuss?");
+        "day3_1_sent" => "Hey [MERCHANTS NAME], I have your business loan application on my desk but haven’t gotten a hold of you. What is an ideal time today for a quick 5-minute conversation to discuss the $[AMOUNT REQUESTED] pre-approval I have on the table for you?",
+        "day3_2_sent" => "Hey [MERCHANTS NAME], You just requested a business loan 2 days ago using my website online.  But no matter what I try I can’t reach you to discuss and help.  I am the best at what I do which is get my clients funded quickly.  Please call me.",
+        "day4_1_sent" => "Courtesy Reminder; Please submit your application with statements in order to get your final approval within the next 24-48 hours.",
+        "day4_2_sent" => "[MERCHANTS NAME], I have been trying to reach you in regards to the funding you requested from me for your business. Are you still interested in the $[AMOUNT REQUESTED] pre-approval we have on the table for you?",
+        "day5_1_sent" => "I'm sorry [MERCHANTS NAME] but it seems that I can't reach you! I would really like to discuss the options we have available for your business. Is there a better time to discuss?",
+        "day7_1_sent" => "Hey [MERCHANTS NAME], it's [AGENTS NAME] from Sprout. I don't mean to bother you, but did you still want your business [COMPANY NAME] funded? I can never reach you. Just let me know if you are because I don't want to keep bugging you if you don't need the funding right now to grow your business.");
+        //"day3_1_sent" => "Hi [MERCHANTS NAME], are you still interested to get funds for your business? Reply YES if you are still interested. NO if you wished to be removed from our databases.",
+        //"day4_1_sent" => "Hey [MERCHANTS NAME], we have been trying to reach you in regards to your interest in funding for your business. Are you still interested in the $[AMOUNT REQUESTED] pre-approval we have on the table for you?",
+        //"day5_1_sent" => "I'm sorry! I can't reach you! I would really like to discuss the options we have available for your business. Is there a better time to discuss?");
     foreach ($sequence as $key => $value) {
         if ($pd_data[$key] == '0') {
             $next_seq = $key;
@@ -1815,25 +1820,24 @@ function IsTimeToSendSMS($last_time, $next_seq, $timezone) {
     $current_time = time();
     $sequence = array("day1_1_sent" => 0,
         "day1_2_sent" => 7200,
-        "day2_1_sent" => 86400,
+        "day2_1_sent" => 79200,
         "day2_2_sent" => 7200,
-        "day3_1_sent" => 86400,
-        "day4_1_sent" => 86400,
-        "day5_1_sent" => 86400);
-    /*$sequence = array("day1_1_sent" => 0,
-        "day1_2_sent" => 3600,
-        "day2_1_sent" => 3600,
-        "day2_2_sent" => 3600,
-        "day3_1_sent" => 600,
-        "day4_1_sent" => 3600,
-        "day5_1_sent" => 3600);*/    
+        "day3_1_sent" => 79200,
+        "day3_2_sent" => 7200,
+        "day4_1_sent" => 79200,
+        "day4_2_sent" => 7200,
+        "day5_1_sent" => 79200,
+        "day7_1_sent" => 86400);    
     $seq_day_diff = array("day1_1_sent" => 0,
         "day1_2_sent" => 0,
         "day2_1_sent" => 1,
         "day2_2_sent" => 0,
         "day3_1_sent" => 1,
+        "day3_2_sent" => 0,
         "day4_1_sent" => 1,
-        "day5_1_sent" => 1);
+        "day4_2_sent" => 0,
+        "day5_1_sent" => 1,
+        "day7_1_sent" => 2);
     if (isset($sms_seq_time_arr['time'])) {
         $current_tz = getTimeZoneTime($timezone);
         if (strtotime($current_tz->format("Y-m-d H:i:s")) >= strtotime($sms_seq_time_arr['time'])) {
@@ -1862,8 +1866,11 @@ function IsTimeToSendSMS($last_time, $next_seq, $timezone) {
 
 function getSMSReply($pd_data = array()) {
     $sequence = array(
+        "day7_1_sent" => "day7_1_replied",
         "day5_1_sent" => "day5_1_replied",
+        "day4_2_sent" => "day4_2_replied",
         "day4_1_sent" => "day4_1_replied",
+        "day3_2_sent" => "day3_2_replied",
         "day3_1_sent" => "day3_1_replied",
         "day2_2_sent" => "day2_2_replied",
         "day2_1_sent" => "day2_1_replied",
@@ -1883,11 +1890,11 @@ function getSMSReply($pd_data = array()) {
 
 function getEmailTemplateName($pd_data = array()) {
     $success = 0;
-    $sequence = array("day1_1_sent" => array("subject"=>"Welcome to Sprout Lending","template_name"=>"day1_1_email.php"),
-        "day2_1_sent" => array("subject"=>"Lead FU #1","template_name"=>"day2_1_email.php"),
-        "day3_1_sent" => array("subject"=>"Lead FU #2","template_name"=>"day3_1_email.php"),
-        "day4_1_sent" => array("subject"=>"Lead FU #3","template_name"=>"day4_1_email.php"),
-        "day5_1_sent" => array("subject"=>"Lead FU #4","template_name"=>"day5_1_email.php"));
+    $sequence = array("day1_1_sent" => array("subject"=>"Welcome to Sprout","template_name"=>"day1_1_email.php"),
+        "day2_1_sent" => array("subject"=>"{merchant_name} I Have Your Application Here","template_name"=>"day2_1_email.php"),
+        "day3_1_sent" => array("subject"=>"{merchant_name} I Still Haven’t Heard Back","template_name"=>"day3_1_email.php"),
+        "day4_1_sent" => array("subject"=>"{merchant_name} Your Application is Expiring","template_name"=>"day4_1_email.php"),
+        "day5_1_sent" => array("subject"=>"{merchant_name} Your Application is Expiring","template_name"=>"day5_1_email.php"));
     foreach ($sequence as $key => $value) {
         if ($pd_data[$key] == '0') {
             $next_seq = $key;
@@ -1906,10 +1913,10 @@ function IsTimeToSendEmail($last_time, $next_seq, $timezone) {
     echo $next_seq;
     $current_time = time();
     $sequence = array("day1_1_sent" => 0,
-        "day2_1_sent" => 3600,
-        "day3_1_sent" => 3600,
-        "day4_1_sent" => 3600,
-        "day5_1_sent" => 3600);
+        "day2_1_sent" => 86400,
+        "day3_1_sent" => 86400,
+        "day4_1_sent" => 86400,
+        "day5_1_sent" => 86400);
     $seq_day_diff = array("day1_1_sent" => 0,
         "day2_1_sent" => 1,
         "day3_1_sent" => 1,
