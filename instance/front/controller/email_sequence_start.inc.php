@@ -22,7 +22,7 @@ $agent = $fname = $lname = $email = $pipedrive_id = $agent_id = $agent_linkedin_
 $phone = $need_to_start_data['phone'];
 if (isset($deal_info['data']['id'])) {
     $name = explode(" ", $deal_info['data']['person_id']['name']);
-    $fname = $name[0];
+    $fname = ucwords(strtolower($name[0]));
     if (count($name) > 2) {
         array_shift($name);
         $lname = implode(" ", $name);
@@ -48,7 +48,7 @@ if ($agent_id != '' && $agent_id != "990918") {
 } else {
     $agent_data = qs("select * from pd_users where is_default='1'");
 }
-$agent_name = $agent_data['name'];
+$agent_name = ucwords(strtolower($agent_data['name']));
 $agent = explode(" ", $agent_name);
 $agent_fname = $agent[0];
 $agent_email = $agent_data['email'];
@@ -67,7 +67,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
     include _PATH . "instance/front/tpl/email_tpl/day1_1_email.php";
     $mail = ob_get_contents();
     ob_end_clean();
-    $subject = "Welcome to Sprout Lending";
+    $subject = "Welcome to Sprout";
     qi('active_campaign_log', _escapeArray(array("log" => "Email: Trying to send email on " . $email)));
     try{
         $apiCore = new apiCore();

@@ -1827,7 +1827,7 @@ function IsTimeToSendSMS($last_time, $next_seq, $timezone) {
         "day4_1_sent" => 79200,
         "day4_2_sent" => 7200,
         "day5_1_sent" => 79200,
-        "day7_1_sent" => 86400);    
+        "day7_1_sent" => 86400);      
     $seq_day_diff = array("day1_1_sent" => 0,
         "day1_2_sent" => 0,
         "day2_1_sent" => 1,
@@ -1917,7 +1917,7 @@ function IsTimeToSendEmail($last_time, $next_seq, $timezone) {
         "day3_1_sent" => 86400,
         "day4_1_sent" => 86400,
         "day5_1_sent" => 86400);
-    $seq_day_diff = array("day1_1_sent" => 0,
+	$seq_day_diff = array("day1_1_sent" => 0,
         "day2_1_sent" => 1,
         "day3_1_sent" => 1,
         "day4_1_sent" => 1,

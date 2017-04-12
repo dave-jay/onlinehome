@@ -27,7 +27,7 @@ echo "<br>3";
 $mobile_number_found = $need_to_start_data['is_mobile_number'];
 if (isset($deal_info['data']['id'])) {
     $name = explode(" ", $deal_info['data']['person_id']['name']);
-    $fname = $name[0];
+    $fname = ucwords(strtolower($name[0]));
     if (count($name) > 2) {
         array_shift($name);
         $lname = implode(" ", $name);

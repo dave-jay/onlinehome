@@ -27,7 +27,23 @@ foreach ($sms_sequence_data as $each_sms) {
 
                 echo "<br><br><div style='font-size:30px;color:green;font-weight:bold;'>SMS Sent</div>";
                 $name = explode(" ", $deal_info['data']['person_id']['name']);
-                $fname = $name[0];
+                $agent = $deal_info['data']['user_id']['name'];
+                $agent_id = $deal_info['data']['user_id']['value'];
+                $org = $deal_info['data']['org_id']['name'];
+                $fname = ucwords(strtolower($name[0]));
+                
+                if ($agent_id != '' && $agent_id != "990918") {
+                    $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
+                } else {
+                    $agent_data = qs("select * from pd_users where is_default='1'");
+                }
+                $agent = ucwords(strtolower($agent_data['name']));
+                $agent_arr = explode(" ", $agent);
+                $agent = $agent_arr[0];
+                       
+                
+                $message = str_ireplace("[COMPANY NAME]", $org, $message);
+                $message = str_ireplace("[AGENTS NAME]", $agent, $message);
                 $message = str_ireplace("[MERCHANTS NAME]", $fname, $message);
                 $message = str_ireplace("[AMOUNT REQUESTED]", $deal_amount, $message);
                 echo "Following Message sent: " . $message;

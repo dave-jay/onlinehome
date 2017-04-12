@@ -23,13 +23,13 @@ foreach ($email_sequence_data as $each_email) {
                         $agent_data = qs("select * from pd_users where is_default='1'");
                     }
                     $name = explode(" ", $deal_info['data']['person_id']['name']);
-                    $fname = $name[0];
+                    $fname = ucwords(strtolower($name[0]));
                     $email = $each_email['email'];
 
                     # email token replacement
                     $subject= str_replace(array('{merchant_name}'),array($fname),$subject);
 					
-                    $agent_name = $agent_data['name'];
+                    $agent_name = ucwords(strtolower($agent_data['name']));
                     $agent = explode(" ", $agent_name);
                     $agent_fname = $agent[0];
                     $agent_email = $agent_data['email'];
