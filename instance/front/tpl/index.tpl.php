@@ -138,6 +138,34 @@
                 }
             });
             }
+            function  changeSequenceStatus(curr_status){
+                if(curr_status=="on"){
+                    new_status = "OFF";
+                }else{
+                    new_status = "ON";
+                }
+                if(confirm("Are you sure, you want to Turn "+new_status+" Followup Sequence?")){
+                    
+                }else{
+                    return;
+                }
+                if(curr_status=="on"){
+                    $("#call_status_img_seq").html('<i class="fa fa-exclamation-triangle"></i> OFF');
+                    $("#call_status_img_seq").css("background-color","#CC1E1E");
+                    $("#call_status_img_seq").attr("onclick","changeSequenceStatus('off')");
+                }else{
+                    $("#call_status_img_seq").html('<i class="fa fa-check"></i> ON');
+                    $("#call_status_img_seq").css("background-color","#39891D");
+                    $("#call_status_img_seq").attr("onclick","changeSequenceStatus('on')");
+                }
+                $.ajax({
+                url: _U + 'call_report',
+                data: {change_seq_status: 1,curr_status:curr_status},
+                success: function (r) {
+                
+                }
+            });
+            }
         </script>
     </body>
 </html>

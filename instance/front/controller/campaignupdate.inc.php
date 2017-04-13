@@ -1,4 +1,10 @@
 <?php
+$call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
+if(strtolower($call_status['seq_status'])!="on"){
+//    qi("test",array("t"=>"followup seq is off."));
+    die;
+}
+
 sleep(5);
 $apiPD = new apiPipeDrive();
 $payload = file_get_contents('php://input');

@@ -11,8 +11,63 @@ window.onload = function () {
     setTimeout(function () {
         loadCallControl();
     }, 5000);
+    setTimeout(function () {
+        getEmailNotification();
+    }, 10000);
 }
 
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+
+    // Check if the XMLHttpRequest object has a "withCredentials" property.
+    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+    xhr.open(method, url, true);
+
+  } else if (typeof XDomainRequest != "undefined") {
+
+    // Otherwise, check if XDomainRequest.
+    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+
+  } else {
+
+    // Otherwise, CORS is not supported by the browser.
+    xhr = null;
+
+  }
+  return xhr;
+}
+
+function getEmailNotification(){
+    console.log('a');
+    var xhr = createCORSRequest('GET', 'https://leadpropel.com/admin/email_tracking?pd_notification=1');
+    if (!xhr) {
+      console.log('CORS not supported');
+    }else{
+        console.log('CORS supported');        
+    }
+    xhr.onload = function() {
+         var responseText = xhr.responseText;
+         res = jQuery.parseJSON(responseText);
+         if(res.found=='1'){
+             var notification = new Notification('Wake Up!', {
+                icon: 'https://leadpropel.com/admin/instance/front/media/img/lead-propel-logo.png',
+                body: res.message,
+              });
+              notification.onclick = function () {
+                  window.open(res.message_link);      
+                };
+         }
+         // process the response.
+    };
+    xhr.onerror = function() { console.log('There was an error!'); };
+    xhr.send();
+    setTimeout(function () {
+        getEmailNotification();
+    }, 10000);
+}
 
 
 chrome.runtime.onMessage.addListener(
@@ -23,7 +78,20 @@ chrome.runtime.onMessage.addListener(
             }
         }
 );
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (!Notification) {
+    alert('Desktop notifications not available in your browser. Try Chromium.'); 
+    return;
+  }
+
+  if (Notification.permission !== "granted")
+    Notification.requestPermission();
+});
 function loadMyButton() {
+    if (Notification.permission !== "granted")
+            Notification.requestPermission();
+        
     if (typeof $(".actions .stateActions").attr("class") != 'undefined' && typeof $("#my-message-btn").attr("id") == 'undefined') {
         var button = document.createElement("button");
         var text = document.createTextNode("Send Text");
@@ -31,7 +99,7 @@ function loadMyButton() {
         button.setAttribute("id", "my-message-btn");
         button.setAttribute("class", "my-custom-btn");
         $(".actions .stateActions").append(button);
-        document.getElementById('my-message-btn').addEventListener('click', openMyCustomPopup);
+        document.getElementById('my-message-btn').addEventListener('click', openMyCustomPopup);        
     }
     setTimeout(function () {
         loadMyButton();

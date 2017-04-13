@@ -1,4 +1,9 @@
 <?php
+$call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
+if(strtolower($call_status['seq_status'])!="on"){
+//    qi("test",array("t"=>"followup seq is off."));
+    die;
+}
 $need_to_start_data = qs("select * from active_campaign_contact where need_to_start='1' order by created_at desc");
 if(!empty($need_to_start_data)){
     if(time()>(strtotime($need_to_start_data['need_to_start_time']))){
@@ -137,7 +142,7 @@ if ($mobile_number_found == 1) {
         qd("sms_sequence", "id='{$sms_seq_data['id']}'");
     }
     $time_zone_arr = getTimeZoneByPhone($phone, "1");
-    qi("sms_sequence", array("phone" => $phone, "deal_amount" => $deal_amount, "last10phone" => last10Char($phone), "state_code" => $time_zone_arr['state_code'], "state" => $time_zone_arr['state'], "area_code" => $time_zone_arr['area_code'], "timezone" => $time_zone_arr['timezone'], "last_deal_id" => $pipedrive_id, "day1_1_sent" => "1"));
+    qi("sms_sequence", _escapeArray(array("customer_name" => $fname.' '.$lname,"agent_name" => $agent,"org_name" => $org,"deal_name" => $deal_info['data']['title'],"phone" => $phone, "deal_amount" => $deal_amount, "last10phone" => last10Char($phone), "state_code" => $time_zone_arr['state_code'], "state" => $time_zone_arr['state'], "area_code" => $time_zone_arr['area_code'], "timezone" => $time_zone_arr['timezone'], "last_deal_id" => $pipedrive_id, "day1_1_sent" => "1")));
     $deal_detail['e585bd988070d2bdfb2af36d968521c3f9aa949a'] = 'ON';
     $apiPD->modifyDeal($pipedrive_id, $deal_detail);
     echo "<br>10";

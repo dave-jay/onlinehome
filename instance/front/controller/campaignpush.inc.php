@@ -1,4 +1,9 @@
 <?php
+$call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
+if(strtolower($call_status['seq_status'])!="on"){
+//    qi("test",array("t"=>"followup seq is off."));
+    die;
+}
 
 $apiPD = new apiPipeDrive();
 $apiCore = new apiCore();
@@ -115,7 +120,7 @@ $ac_data = array();
 $ac_data['email'] = $email;
 $ac_data['need_to_start'] = '1';
 $ac_data['need_to_start_email'] = '1';
-$ac_data['need_to_start_time'] = date("Y-m-d H:i:s",(time()+60));
+$ac_data['need_to_start_time'] = date("Y-m-d H:i:s",(time()+120));
 $ac_data['last_deal_id'] = $pipedrive_id;
 $ac_data['last_stage_id'] = $pipedrive_stage;
 $ac_data['last_stage_name'] = $stage[$pipedrive_stage]['name'];

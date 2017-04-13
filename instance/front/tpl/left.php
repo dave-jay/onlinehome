@@ -52,6 +52,22 @@
                     <!--<img id="call_status_img" onclick="changeCallStatus('<?= $current_status; ?>')" src="<?php print _MEDIA_URL ?>img/<?= $status_img; ?>" style="cursor: pointer;margin: 15px 0 0;height: 25px;" title="Click to change call distributor" />-->
                     <div style="cursor:pointer;float: left; color: white; margin-top: 15px; font-family: verdana; width: 57px; padding: 2px 0px 5px; text-align: center;<?php print $current_style; ?>" id="call_status_img" onclick="changeCallStatus('<?= $current_status; ?>')"><?= $status_img; ?></div>
                 </li>
+                <?php
+                $call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
+                if (strtolower($call_status['seq_status']) != "on") {
+                    $status_img = "<i class='fa fa-exclamation-triangle'></i> OFF";
+                    $current_status = "off";
+                    $current_style="background-color:#CC1E1E";
+                }else{
+                    $status_img = "<i class='fa fa fa-check'></i> ON";
+                    $current_status = "on";
+                    $current_style="background-color:#39891D";
+                }
+                ?>
+                <li>
+                    <div style="font-size: 14px; float: left; padding-top: 15px; color: rgb(110, 86, 86);">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;SMS-Email Sequence &nbsp;</div>
+                    <div style="cursor:pointer;float: left; color: white; margin-top: 15px; font-family: verdana; width: 57px; padding: 2px 0px 5px; text-align: center;<?php print $current_style; ?>" id="call_status_img_seq" onclick="changeSequenceStatus('<?= $current_status; ?>')"><?= $status_img; ?></div>
+                </li>
             </ul>
         </div><!--/.navbar-collapse -->
     </div>

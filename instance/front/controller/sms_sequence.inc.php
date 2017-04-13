@@ -1,6 +1,10 @@
 <?php
 if(date("l")=="Sunday"){ die; }
-
+$call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
+if(strtolower($call_status['seq_status'])!="on"){
+//    qi("test",array("t"=>"followup seq is off."));
+    die;
+}
 $apiPD = new apiPipeDrive();
 $sms_sequence_data = q("select * from sms_sequence where need_to_send_sms='1'");
 foreach ($sms_sequence_data as $each_sms) {

@@ -1,5 +1,10 @@
 <?php
 if(date("l")=="Sunday"){ die; }
+$call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
+if(strtolower($call_status['seq_status'])!="on"){
+//    qi("test",array("t"=>"followup seq is off."));
+    die;
+}
 
 $apiPD = new apiPipeDrive();
 $email_sequence_data = q("select * from email_sequence where need_to_send_email='1'");
@@ -8,6 +13,8 @@ foreach ($email_sequence_data as $each_email) {
     $req_email_detail = getEmailTemplateName($each_email);
     if ($req_email_detail['success'] == 1) {
         if (IsTimeToSendEmail(strtotime($each_email['modified_at']), $req_email_detail['next_seq'], $each_email['timezone'])) {
+            $next_seq = $req_email_detail['next_seq'];
+            $deal_id = $each_email['last_deal_id'];
             $template_name = $req_email_detail['template_name'];
             $subject = $req_email_detail['subject'];
             $deal_info = $apiPD->getDealInfo($each_email['last_deal_id']);

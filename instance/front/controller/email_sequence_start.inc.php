@@ -1,4 +1,9 @@
 <?php
+$call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
+if(strtolower($call_status['seq_status'])!="on"){
+//    qi("test",array("t"=>"followup seq is off."));
+    die;
+}
 
 $need_to_start_data = qs("select * from active_campaign_contact where need_to_start_email='1' order by created_at desc");
 if (!empty($need_to_start_data)) {
@@ -63,6 +68,8 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
     }
     $time_zone_arr = getTimeZoneByPhone($phone, "1");
     qi("email_sequence", array("email" => $email, "state_code" => $time_zone_arr['state_code'], "state" => $time_zone_arr['state'], "area_code" => $time_zone_arr['area_code'], "timezone" => $time_zone_arr['timezone'], "last_deal_id" => $pipedrive_id, "day1_1_sent" => "1"));
+    $next_seq = 'day1_1_sent';
+    $deal_id = $pipedrive_id;
     ob_start();
     include _PATH . "instance/front/tpl/email_tpl/day1_1_email.php";
     $mail = ob_get_contents();

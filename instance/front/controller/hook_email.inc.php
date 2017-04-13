@@ -18,7 +18,6 @@ if(isset($_REQUEST['to'])){
     $mail_from_email = $_REQUEST['mail_from_email'];
     $mail_from_name = $_REQUEST['mail_from_name'];
     try{
-        qi("activity_log",array("payload"=>"BCC Set to ".$_REQUEST['bcc']));        
         if(isset($_REQUEST['password']) && $_REQUEST['password']!=''){
             define('SMTP_EMAIL_USER_NAME', $_REQUEST['mail_from_email']); # smtp service username
             define('SMTP_EMAIL_USER_PASSWORD', $_REQUEST['password']); # smtp service password
