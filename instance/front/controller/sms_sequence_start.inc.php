@@ -119,21 +119,9 @@ if (isset($data_camp->success) && ($data_camp->success || $data_camp->success ==
     qi('active_campaign_log', _escapeArray(array("log" => "Active campaign error. " . json_encode($data_camp) . " Deal:" . $deal_info['data']['id'])));
 }
 echo "<br>8";
-$use_of_fund[1] = 'Advertising & Marketing';
-$use_of_fund[2] = 'Additional Location';
-$use_of_fund[3] = 'Buyout a Partner';
-$use_of_fund[4] = 'Equipment';
-$use_of_fund[5] = 'Supplies/Inventory';
-$use_of_fund[6] = 'Start a New Business';
-$use_of_fund[7] = 'Hiring Additional Staff';
-$use_of_fund[8] = 'Get Through a Slow Period';
-$use_of_fund[9] = 'Remodeling Location';
-$use_of_fund[10] = 'Have In The Bank';
-$use_of_fund[41] = 'Working Capital';
-
 $org_for = 'Working Capital';
 if (isset($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44'])) {
-    $org_for = $use_of_fund[$org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']];
+    $org_for = getUseOfFundText($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']);
 }
 echo "<br>9";
 if ($mobile_number_found == 1) {

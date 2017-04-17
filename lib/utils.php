@@ -1786,9 +1786,9 @@ function ac_tag_generate($tag){
     return "pd_".str_replace(" ", "_", strtolower($tag));
 }
 
-function getSMSText($pd_data = array()) {
+function getSMSText($pd_data = array(),$current=0,$next='day1_1_sent') {
     $success = 0;
-    $sequence = array("day1_1_sent" => "Hi [MERCHANTS NAME], it's [AGENTS NAME] from Sprout. I just received your request for funding for your business [COMPANY NAME]. and I should be able to get you the $[AMOUNT REQUESTED] that you requested for [USE OF FUNDS}. Can you chat for 2 minutes now to discuss?",
+    $sequence = array("day1_1_sent" => "Hi [MERCHANTS NAME], it's [AGENTS NAME] from Sprout. I just received your request for funding for your business [COMPANY NAME]. and I should be able to get you the $[AMOUNT REQUESTED] that you requested for [USE OF FUNDS]. Can you chat for 2 minutes now to discuss?",
         "day1_2_sent" => "Is there a better time we should arrange to chat so I can go to work on your behalf?",
         "day2_1_sent" => "Hi [MERCHANTS NAME], I didn't hear back from you yesterday but maybe you just got busy. Is there a good time today I can call you for a 5-minute conversation to discuss the $[AMOUNT REQUESTED] pre-approval I have on the table?",
         "day2_2_sent" => "Hey [MERCHANTS NAME], I don't want to bother you but I would like to get some additional info and get you the funding you just requested yesterday and go to work for you.",
@@ -1801,6 +1801,9 @@ function getSMSText($pd_data = array()) {
         //"day3_1_sent" => "Hi [MERCHANTS NAME], are you still interested to get funds for your business? Reply YES if you are still interested. NO if you wished to be removed from our databases.",
         //"day4_1_sent" => "Hey [MERCHANTS NAME], we have been trying to reach you in regards to your interest in funding for your business. Are you still interested in the $[AMOUNT REQUESTED] pre-approval we have on the table for you?",
         //"day5_1_sent" => "I'm sorry! I can't reach you! I would really like to discuss the options we have available for your business. Is there a better time to discuss?");
+    if($current=='1'){
+        return $sequence[$next];
+    }
     foreach ($sequence as $key => $value) {
         if ($pd_data[$key] == '0') {
             $next_seq = $key;
@@ -1885,7 +1888,7 @@ function getSMSReply($pd_data = array()) {
             break;
         }
     }
-    return array("success" => 1, "next_seq" => $sequence[$next_seq]);
+    return array("success" => 1, "next_seq" => $sequence[$next_seq], "key" => $next_seq);
 }
 
 function getEmailTemplateName($pd_data = array()) {
@@ -1946,6 +1949,22 @@ function IsTimeToSendEmail($last_time, $next_seq, $timezone) {
         }
         return false;
     }
+}
+function getUseOfFundText($fundId) {
+    $use_of_fund[1] = 'Advertising & Marketing';
+    $use_of_fund[2] = 'Additional Location';
+    $use_of_fund[3] = 'Buyout a Partner';
+    $use_of_fund[4] = 'Equipment';
+    $use_of_fund[5] = 'Supplies/Inventory';
+    $use_of_fund[6] = 'Start a New Business';
+    $use_of_fund[7] = 'Hiring Additional Staff';
+    $use_of_fund[8] = 'Get Through a Slow Period';
+    $use_of_fund[9] = 'Remodeling Location';
+    $use_of_fund[10] = 'Have In The Bank';
+    $use_of_fund[41] = 'Working Capital';
+    if(isset($use_of_fund[$fundId]))
+        return $use_of_fund[$fundId];
+    return 'Working Capital';
 }
 
 ?>

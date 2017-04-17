@@ -91,7 +91,7 @@ foreach ($phone_arr as $key => $each_phone) {
     if (isset($phone_carrier_data['carrier']['type'])) {
         $phone_arr[$key]['type'] = $phone_carrier_data['carrier']['type'];
     }
-    if (isset($phone_carrier_data['carrier']['type']) && strtolower($phone_carrier_data['carrier']['type'] == 'mobile')) {
+    if (isset($phone_carrier_data['carrier']['type']) && (strtolower($phone_carrier_data['carrier']['type']) == 'mobile' || strtolower($phone_carrier_data['carrier']['type']) == 'voip')) {
         $mobile_number_found = 1;
         if ($phone != $each_phone['phone']) {
             if ($phone2 == $each_phone['phone']) {
