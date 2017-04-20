@@ -16,23 +16,37 @@ if (!in_array($deal_source, array('44','37'))) {
 if (isset($data['current']['stage_id'])) {
     $deal_info = $apiPD->getDealInfo($data['current']['id']);
     $deal_info = json_decode($deal_info, TRUE);
+    if (isset($deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a'])) {
+        if ($deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a'] == '196') {
+            qu("deal_seq_status", _escapeArray(array("seq_status" => 'OFF')),"deal_id='{$data['current']['id']}'");            
+        } else if ($deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a'] == '195') {
+            qu("deal_seq_status", _escapeArray(array("seq_status" => 'ON')),"deal_id='{$data['current']['id']}'");                        
+        }
+    }
     qi("test",  _escapeArray(array("payload"=> json_encode($data))));
     qi("test",  _escapeArray(array("payload"=> json_encode($deal_info))));
     $sms_seq_data = qs("select * from sms_sequence where last_deal_id='{$data['current']['id']}'");
-    if(!empty($sms_seq_data) && !empty($deal_info)){
-        if($sms_seq_data['need_to_send_sms']==1 && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']=='196'){
+    $sms_seq_app_out_data = qs("select * from sms_sequence_app_out where last_deal_id='{$data['current']['id']}'");
+    if((!empty($sms_seq_data) || !empty($sms_seq_app_out_data)) && !empty($deal_info)){
+        if(($sms_seq_data['need_to_send_sms']==1 || $sms_seq_app_out_data['need_to_send_sms']==1) && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']=='196'){
             $user_detail = qs("select * from pd_users where pd_id='{$data['meta']['user_id']}'");
             $note_data['deal_id'] = $data['current']['id'];            
             $note_data['content'] = "SMS Sequence(FOLLOW-UP SEQUENCE) has been set to 'OFF'".(isset($user_detail['name'])?" by {$user_detail['name']} ":"").".";
             $apiPD->createNote($note_data);
-            qu("sms_sequence",array("need_to_send_sms"=>"0"),"id='{$sms_seq_data["id"]}'");
+            if(!empty($sms_seq_data))
+                qu("sms_sequence",array("need_to_send_sms"=>"0"),"id='{$sms_seq_data["id"]}'");
+            if(!empty($sms_seq_app_out_data))            
+                qu("sms_sequence_app_out",array("need_to_send_sms"=>"0"),"id='{$sms_seq_app_out_data["id"]}'");
         }
-        if($sms_seq_data['need_to_send_sms']==0 && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']!='196'){
+        if($sms_seq_data['need_to_send_sms']==0 && ((isset($sms_seq_app_out_data) && $sms_seq_app_out_data['need_to_send_sms']==0) || !isset($sms_seq_app_out_data)) && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']!='196'){
             $user_detail = qs("select * from pd_users where pd_id='{$data['meta']['user_id']}'");
             $note_data['deal_id'] = $data['current']['id'];            
             $note_data['content'] = "SMS Sequence(FOLLOW-UP SEQUENCE) has been set to 'ON'".(isset($user_detail['name'])?" by {$user_detail['name']} ":"").".";
             $apiPD->createNote($note_data);
-            qu("sms_sequence",array("need_to_send_sms"=>"1"),"id='{$sms_seq_data["id"]}'");
+            if(!empty($sms_seq_data))
+                qu("sms_sequence",array("need_to_send_sms"=>"1"),"id='{$sms_seq_data["id"]}'");
+            if(!empty($sms_seq_app_out_data))     
+                qu("sms_sequence_app_out",array("need_to_send_sms"=>"1"),"id='{$sms_seq_app_out_data["id"]}'");
         }
     }
     $email_seq_data = qs("select * from email_sequence where last_deal_id='{$data['current']['id']}'");
@@ -113,6 +127,7 @@ $ac_data['last_stage_id'] = $pipedrive_stage;
 $ac_data['last_stage_name'] = $stage[$pipedrive_stage]['name'];
 $tag = $ac_data['tags'] = ac_tag_generate($stage[$pipedrive_stage]['name']);
 
+
 if (empty($tbl_camp_data)) {
     qi('active_campaign_log', array("log" => "Update: no need to add."));
     die;
@@ -121,6 +136,9 @@ if (empty($tbl_camp_data)) {
     if ($tbl_camp_data['last_stage_id'] == $pipedrive_stage) {
         qi('active_campaign_log', array("log" => "Stage id not changed."));
     }else{
+        if ($pipedrive_stage == '3'){
+            $ac_data['need_to_start'] = '2';
+        }
         $tag .= ",".$tbl_camp_data['tags'];
     }
     $active_campaign_contact_id = qu('active_campaign_contact', _escapeArray($ac_data), "id='{$tbl_camp_data['id']}'");
@@ -133,28 +151,7 @@ if($agent_id!='' && $agent_id != "990918"){
     $agent_data = qs("select * from pd_users where is_default='1'");
 }
 $agent = $agent_data['name'];
-$stage_mapping_arr = json_decode(STAGE_MAPPING, true);
-$campaing_class = new Campaign();
-$campaing_class::$contact_email = $email;
-$campaing_class::$contact_fname = $fname;
-$campaing_class::$contact_lname = $lname;
-$campaing_class::$contact_phone = formatPhone($phone,6);
-$campaing_class::$contact_org = $org;
-$campaing_class::$tag = trim($tag,",");
 
-$campaing_class::$SEQUENCE_STATUS = "OLD";
-$campaing_class::$PIPEDRIVE_ID = $pipedrive_id;
-$campaing_class::$PIPEDRIVE_STAGE = $stage[$pipedrive_stage]['name'];
-$campaing_class::$AGENT_NAME = $agent;
-$campaing_class::$DEAL_AMOUNT = $deal_amount;
-$campaing_class::$ALTERNATE_PHONE = formatPhone($phone2,6);
-$campaing_class::$PIPEDRIVE_DEAL_LINK = "https://sprout2.pipedrive.com/deal/".$pipedrive_id;
-if(!empty($agent_data)){
-    $campaing_class::$AGENT_PHONE = formatPhone($agent_data['phone'],6);    
-    $campaing_class::$AGENT_ROLE = $agent_data['role'];    
-    $campaing_class::$AGENT_LINKEDIN_LINK = "<a href='{$agent_data['linkedin_link']}'><img alt='My LinkedIn Profile' src='http://sprout.img-us10.com/public/332ea34c4e46abd2f2d3c65e788c4f22.png?r=761035395' /></a>";
-}
-//$data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);
 if (isset($data_camp->success) && ($data_camp->success || $data_camp->success == '1')) {
     $active_campaign_contact_id = qu('active_campaign_contact', array("campaign_contact_id" => $data_camp->subscriber_id), "id='{$active_campaign_contact_id}'");
     qi('active_campaign_log', array("log" => "Active Campaign Contact Id: " . $data_camp->subscriber_id . "<br>Message:" . $data_camp->result_message));

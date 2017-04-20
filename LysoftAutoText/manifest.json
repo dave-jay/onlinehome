@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "LySoft AutoText",
-  "version": "3.0",
+  "version": "3.1",
   "background": {
     "scripts": ["background.js"]
   },
@@ -10,8 +10,7 @@
     {
 	  "css": [ "mystyle.css" ],
       "matches": [
-        "https://sprout2.pipedrive.com/deal/*","http://sprout2.pipedrive.com/deal/*",
-        "https://sprout2.pipedrive.com/deals/*","http://sprout2.pipedrive.com/deals/*",
+        "https://sprout2.pipedrive.com/*","http://sprout2.pipedrive.com/*",
         "https://leadpropel.com/*"
       ],
       "js": ["jquery-2.2.0.min.js", "content.js"],

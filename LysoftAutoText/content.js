@@ -14,6 +14,51 @@ window.onload = function () {
     setTimeout(function () {
         getEmailNotification();
     }, 10000);
+    setTimeout(function () {
+        getDealStatus();
+    }, 15000);
+}
+var all_load_deal = [];
+function getDealStatus() {    
+    var need_to_load_deal = [];
+    $(".status-open").each(function (){
+        var cur_deal_id = $(this).data("deal-id");
+        if(all_load_deal.indexOf(cur_deal_id)=='-1' && need_to_load_deal.length<30){
+            need_to_load_deal.push(cur_deal_id);
+            all_load_deal.push(cur_deal_id);
+        }
+    });
+    console.log(need_to_load_deal);
+    console.log(all_load_deal);
+    if(need_to_load_deal.length>0)
+        setSequenceStatusIcon(need_to_load_deal)
+    setTimeout(function () {
+        getDealStatus();
+    }, 15000);
+}
+function setSequenceStatusIcon(need_to_load_deal){
+    $.ajax({
+        url: 'https://leadpropel.com/admin/deal_seq_status',
+        data: {need_to_load_deal: need_to_load_deal},
+        type: 'POST',
+        dataType: 'json',
+        success: function (r) {            
+            $(".status-open").each(function (){
+                var cur_deal_id = $(this).data("deal-id");
+                if(need_to_load_deal.indexOf(cur_deal_id)!='-1'){
+                    if(r[cur_deal_id]!=""){
+                        myhtml = '<div style="position:absolute;bottom: 0;right: 5px;"><img style="height:20px;z-index:1000;" src="'+r[cur_deal_id]+'" /></div>';                                            
+                    }else{
+                        myhtml = '';
+                    }
+                    $(this).prepend(myhtml);
+                    need_to_load_deal.push(cur_deal_id);
+                    all_load_deal.push(cur_deal_id);
+                }
+            });
+
+        }
+    });
 }
 
 function createCORSRequest(method, url) {

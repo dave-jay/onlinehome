@@ -1816,6 +1816,26 @@ function getSMSText($pd_data = array(),$current=0,$next='day1_1_sent') {
     else
         return array("success" => 1, "next_seq" => $next_seq, "message" => $sequence[$next_seq]);
 }
+function getSMSTextAppOut($pd_data = array(),$current=0,$next='day1_1_sent') {
+    $success = 0;
+    $sequence = array("day1_1_sent" => "There is no time to waste! Did you know business owners who submit their application and documents the same day get an approval the same if not the next morning?",
+        "day2_1_sent" => "Have you had a chance to fill out your application? Remember the faster the documents come in the faster you will get an approval, once approved funds can be deposited into your bank account in as little as 3 days.",
+        "day3_1_sent" => "Message from Sprout: Is your application and bank statements ready to be submitted. Press 1 for yes, 2 for no.");        
+    if($current=='1'){
+        return $sequence[$next];
+    }
+    foreach ($sequence as $key => $value) {
+        if ($pd_data[$key] == '0') {
+            $next_seq = $key;
+            $success = 1;
+            break;
+        }
+    }
+    if ($success == 0)
+        return array("success" => 0);
+    else
+        return array("success" => 1, "next_seq" => $next_seq, "message" => $sequence[$next_seq]);
+}
 
 function IsTimeToSendSMS($last_time, $next_seq, $timezone) {
     $sms_seq_time_arr = qs("select * from sms_seq_time where is_active='1' and sequence_name='{$next_seq}'");    
