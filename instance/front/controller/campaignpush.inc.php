@@ -91,7 +91,8 @@ foreach ($phone_arr as $key => $each_phone) {
     if (isset($phone_carrier_data['carrier']['type'])) {
         $phone_arr[$key]['type'] = $phone_carrier_data['carrier']['type'];
     }
-    if (isset($phone_carrier_data['carrier']['type']) && (strtolower($phone_carrier_data['carrier']['type']) == 'mobile' || strtolower($phone_carrier_data['carrier']['type']) == 'voip')) {
+    //strtolower($phone_carrier_data['carrier']['type']) == 'voip'
+    if (isset($phone_carrier_data['carrier']['type']) && (strtolower($phone_carrier_data['carrier']['type']) == 'mobile')) {
         $mobile_number_found = 1;
         if ($phone != $each_phone['phone']) {
             if ($phone2 == $each_phone['phone']) {
@@ -103,6 +104,11 @@ foreach ($phone_arr as $key => $each_phone) {
             }
         }
         break;
+    }else{
+        $note_data = array();
+        $note_data['deal_id'] = $pipedrive_id;
+        $note_data['content'] = "Note: Get a Mobile Phone Number from the Merchant";
+        $apiPD->createNote($note_data);
     }
 }
 qi('active_campaign_log', array("log" => "push: 9"));

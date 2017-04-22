@@ -16,16 +16,20 @@ if (!in_array($deal_source, array('44','37'))) {
 if (isset($data['current']['stage_id'])) {
     $deal_info = $apiPD->getDealInfo($data['current']['id']);
     $deal_info = json_decode($deal_info, TRUE);
+    $sms_seq_data = qs("select * from sms_sequence where last_deal_id='{$data['current']['id']}'");
     if (isset($deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a'])) {
         if ($deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a'] == '196') {
-            qu("deal_seq_status", _escapeArray(array("seq_status" => 'OFF')),"deal_id='{$data['current']['id']}'");            
+            if(!empty($seq_deal) && $seq_deal['day7_1_sent']=='1' && $seq_deal['day7_1_sent']=='0'){
+                qu("deal_seq_status", _escapeArray(array("seq_status" => 'OFF_AUTO')),"deal_id='{$data['current']['id']}'");            
+            }else{
+                qu("deal_seq_status", _escapeArray(array("seq_status" => 'OFF_MANU')),"deal_id='{$data['current']['id']}'");            
+            }            
         } else if ($deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a'] == '195') {
             qu("deal_seq_status", _escapeArray(array("seq_status" => 'ON')),"deal_id='{$data['current']['id']}'");                        
         }
     }
     qi("test",  _escapeArray(array("payload"=> json_encode($data))));
     qi("test",  _escapeArray(array("payload"=> json_encode($deal_info))));
-    $sms_seq_data = qs("select * from sms_sequence where last_deal_id='{$data['current']['id']}'");
     $sms_seq_app_out_data = qs("select * from sms_sequence_app_out where last_deal_id='{$data['current']['id']}'");
     if((!empty($sms_seq_data) || !empty($sms_seq_app_out_data)) && !empty($deal_info)){
         if(($sms_seq_data['need_to_send_sms']==1 || $sms_seq_app_out_data['need_to_send_sms']==1) && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a']=='196'){
