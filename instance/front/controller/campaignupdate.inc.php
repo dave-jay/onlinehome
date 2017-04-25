@@ -142,6 +142,8 @@ if (empty($tbl_camp_data)) {
     }else{
         if ($pipedrive_stage == '3'){
             $ac_data['need_to_start'] = '2';
+            $ac_data['need_to_start_email'] = '2';
+            $ac_data['need_to_start_time'] = date("Y-m-d",(time()+84600));
         }
         $tag .= ",".$tbl_camp_data['tags'];
     }

@@ -1930,6 +1930,22 @@ function getEmailTemplateName($pd_data = array()) {
     else
         return array("success" => 1, "next_seq" => $next_seq, "subject" => $sequence[$next_seq]['subject'], "template_name" => $sequence[$next_seq]['template_name']);
 }
+function getEmailTemplateNameAppOut($pd_data = array()) {
+    $success = 0;
+    $sequence = array("day1_1_sent" => array("subject"=>"{merchant_name} I Can't reach you","template_name"=>"day1_1_app_out_email.php"),
+        "day2_1_sent" => array("subject"=>"{merchant_name} I Still Haven’t Heard Back","template_name"=>"day2_1_app_out_email.php"));
+    foreach ($sequence as $key => $value) {
+        if ($pd_data[$key] == '0') {
+            $next_seq = $key;
+            $success = 1;
+            break;
+        }
+    }
+    if ($success == 0)
+        return array("success" => 0);
+    else
+        return array("success" => 1, "next_seq" => $next_seq, "subject" => $sequence[$next_seq]['subject'], "template_name" => $sequence[$next_seq]['template_name']);
+}
 
 function IsTimeToSendEmail($last_time, $next_seq, $timezone) {
     $email_seq_time_arr = qs("select * from email_seq_time where is_active='1' and sequence_name='{$next_seq}'");

@@ -39,6 +39,7 @@ if (isset($deal_info['data']['id'])) {
     } else {
         $lname = $name[1];
     }
+    $lname = ucwords(strtolower($lname));
     foreach ($deal_info['data']['person_id']['email'] as $each) {
         if (isset($each['value']) && $each['value'] != '') {
             $email = $each['value'];
