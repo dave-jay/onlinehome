@@ -21,6 +21,15 @@ foreach ($email_sequence_data as $each_email) {
             $deal_info = $apiPD->getDealInfo($each_email['last_deal_id']);
             $deal_info = json_decode($deal_info, true);
             if (isset($deal_info['data']['stage_id']) && $deal_info['data']['stage_id'] == '3' && $deal_info['data']['status'] == 'open' && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a'] != '196') {
+                $org_id = $deal_info['data']['org_id']['value'];
+                $org_data = $apiPD->getOrganizationInfo($org_id);
+                $org_data = json_decode($org_data, "true");
+                $no_of_month = 6;
+                qi("test",  _escapeArray(array("payload"=> json_encode($org_data))));
+                if (isset($org_data['data']['f8fa58d49c6d5490ef5fba35f5b96cb039b49ddd']) &&
+                        $org_data['data']['f8fa58d49c6d5490ef5fba35f5b96cb039b49ddd']=='198') {
+                    $no_of_month = 12;
+                }
                 $agent_id = $deal_info['data']['user_id']['value'];
                 if ($agent_id != '' && $agent_id != "990918") {                    
                     $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
@@ -43,10 +52,10 @@ foreach ($email_sequence_data as $each_email) {
                 $agent_phone = formatPhone($agent_data['phone']);
                 $agent_role = $agent_data['role'];
                 $agent_pass = $agent_data['password'];
-                qi("active_campaign_log", array("log"=>"pass: ".$agent_pass));
+                qi("active_campaign_log", _escapeArray(array("log"=>"Mail is sending to {$email}")));
 
                 echo "<br><br><div style='font-size:30px;color:green;font-weight:bold;'>Email Sent</div>";
-                qu("email_sequence", array($req_email_detail['next_seq'] => '1'), "id='{$each_email['id']}'");
+                qu("email_sequence_app_out", array($req_email_detail['next_seq'] => '1'), "id='{$each_email['id']}'");
                 ob_start();
                 include _PATH . "instance/front/tpl/email_tpl/" . $template_name;
                 $mail = ob_get_contents();

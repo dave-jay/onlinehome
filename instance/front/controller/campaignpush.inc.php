@@ -121,12 +121,14 @@ if (isset($stage_data['data'])) {
         $stage[$each_stage['id']] = $each_stage; //'order_nr','name'
     }
 }
+$deal_detail['e585bd988070d2bdfb2af36d968521c3f9aa949a'] = 'ON';
+$apiPD->modifyDeal($pipedrive_id, $deal_detail);
 $tbl_camp_data = qs("select * from active_campaign_contact where email='$email'");
 $ac_data = array();
 $ac_data['email'] = $email;
 $ac_data['need_to_start'] = '1';
 $ac_data['need_to_start_email'] = '1';
-$ac_data['need_to_start_time'] = date("Y-m-d H:i:s",(time()+120));
+$ac_data['need_to_start_time'] = date("Y-m-d H:i:s",(time()));
 $ac_data['last_deal_id'] = $pipedrive_id;
 $ac_data['last_stage_id'] = $pipedrive_stage;
 $ac_data['last_stage_name'] = $stage[$pipedrive_stage]['name'];

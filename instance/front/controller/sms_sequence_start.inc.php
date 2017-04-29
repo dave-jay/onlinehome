@@ -131,9 +131,7 @@ if ($mobile_number_found == 1) {
         qd("sms_sequence", "id='{$sms_seq_data['id']}'");
     }
     $time_zone_arr = getTimeZoneByPhone($phone, "1");
-    qi("sms_sequence", _escapeArray(array("customer_name" => $fname.' '.$lname,"agent_name" => $agent,"org_name" => $org,"deal_name" => $deal_info['data']['title'],"phone" => $phone, "deal_amount" => $deal_amount, "last10phone" => last10Char($phone), "state_code" => $time_zone_arr['state_code'], "state" => $time_zone_arr['state'], "area_code" => $time_zone_arr['area_code'], "timezone" => $time_zone_arr['timezone'], "last_deal_id" => $pipedrive_id, "day1_1_sent" => "1")));
-    $deal_detail['e585bd988070d2bdfb2af36d968521c3f9aa949a'] = 'ON';
-    $apiPD->modifyDeal($pipedrive_id, $deal_detail);
+    qi("sms_sequence", _escapeArray(array("customer_name" => $fname.' '.$lname,"agent_name" => $agent,"org_name" => $org,"deal_name" => $deal_info['data']['title'],"phone" => $phone, "deal_amount" => $deal_amount, "last10phone" => last10Char($phone), "state_code" => $time_zone_arr['state_code'], "state" => $time_zone_arr['state'], "area_code" => $time_zone_arr['area_code'], "timezone" => $time_zone_arr['timezone'], "last_deal_id" => $pipedrive_id, "day1_1_sent" => "1")));    
     echo "<br>10";
     $agent_arr = explode(" ", $agent);
     $agent = $agent_arr[0];

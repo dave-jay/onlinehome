@@ -19,6 +19,22 @@ foreach ($sms_sequence_data as $each_sms) {
             $deal_info = $apiPD->getDealInfo($each_sms['last_deal_id']);
             $deal_info = json_decode($deal_info, true);
             if (isset($deal_info['data']['stage_id']) && $deal_info['data']['stage_id'] == '3' && $deal_info['data']['status'] == 'open' && $deal_info['data']['e585bd988070d2bdfb2af36d968521c3f9aa949a'] != '196') {
+                $name = explode(" ", $deal_info['data']['person_id']['name']);
+                $agent = $deal_info['data']['user_id']['name'];
+                $agent_id = $deal_info['data']['user_id']['value'];
+                $fname = ucwords(strtolower($name[0]));
+                
+                if ($agent_id != '' && $agent_id != "990918") {
+                    $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
+                } else {
+                    $agent_data = qs("select * from pd_users where is_default='1'");
+                }
+                $agent = ucwords(strtolower($agent_data['name']));
+                $agent_arr = explode(" ", $agent);
+                $agent = $agent_arr[0];
+
+                $message = str_ireplace("[AGENTS NAME]", $agent, $message);
+                $message = str_ireplace("[MERCHANTS NAME]", $fname, $message);
                 echo "<br><br><div style='font-size:30px;color:green;font-weight:bold;'>SMS Sent</div>";
 
                 echo "Following Message sent: " . $message;
@@ -29,20 +45,20 @@ foreach ($sms_sequence_data as $each_sms) {
                 $note_data['content'] = "Text was sent on " . formatPhone($each_sms['phone'], 4) . ".<br><br>Text: {$message}";
                 //$data = $apiPD->createNote($note_data);
                 $apiCall = new callWebhook();
-                //$apiCall->messageNow($each_sms['phone'], $message, "2");
-                qi("test",array("payload"=>"AppOut: message sent on ".$each_sms['phone']));
+                $apiCall->messageNow($each_sms['phone'], $message, "2");
+                qi("test", array("payload" => "AppOut: message sent on " . $each_sms['phone']));
                 die;
             } else {
                 echo "App Is In or Deal is closed";
-                qi("test",array("payload"=>"AppOut: App is in"));
+                qi("test", array("payload" => "AppOut: App is in"));
             }
         } else {
-            qi("test",array("payload"=>"AppOut: Please wait"));
+            qi("test", array("payload" => "AppOut: Please wait"));
             echo "Please wait some time.";
             continue;
         }
     } else {
-        qi("test",array("payload"=>"AppOut: No need to send"));
+        qi("test", array("payload" => "AppOut: No need to send"));
         echo "No need to send sms";
     }
 
@@ -50,7 +66,7 @@ foreach ($sms_sequence_data as $each_sms) {
         $seq_data['is_app_in'] = '1';
     }
     $seq_data['need_to_send_sms'] = '0';
-    qi("test",array("payload"=>"AppOut: seq set to off"));
+    qi("test", array("payload" => "AppOut: seq set to off"));
     qu("sms_sequence_app_out", _escapeArray($seq_data), "id='{$each_sms['id']}'");
 }
 die;
