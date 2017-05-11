@@ -15,7 +15,7 @@
                 <li>Last 4 months of merchant processing statements (if applicable)</li>
                 <li>Last year’s business tax return-(if you have it, if not just send in the statements and application)</li>
             </ul>
-            <p style="color: #888888;font-family: verdana; line-height: 1.6;">
+            <?php /* <p style="color: #888888;font-family: verdana; line-height: 1.6;">
                 Prior to funding we will need the following:            
             </p>
             <ul style="color: #888888;font-family: verdana;padding-left: 10px;">
@@ -23,7 +23,7 @@
                 <li>Voided business check</li>
                 <li>Copy of your lease</li>
                 <li>Proof of ownership (Last year's business tax return, Articles of Incorporation, Business License or your Fed tax ID letter)</li>
-            </ul>
+            </ul> */ ?>
             <p style="color: #888888;font-family: verdana; line-height: 1.6;">
                 I look forward to working with you. Please call me immediately if you have any questions.
             </p>

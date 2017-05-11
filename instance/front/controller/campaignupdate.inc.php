@@ -112,7 +112,8 @@ if($deal_amount=='' || $deal_amount==0){
     $deal_amount = 50000;
 }
 $deal_amount = number_format($deal_amount);
-q("update sms_sequence set deal_amount='".$deal_amount."' where last_deal_id='".$pipedrive_id."'");
+q("update sms_sequence set deal_amount='".$deal_amount."',hold_till_date='".date("Y-m-d",strtotime($deal_info['data']['c96027b10f722b45d43a1821b25b192528934972']))."' where last_deal_id='".$pipedrive_id."'");
+q("update sms_sequence_app_out set hold_till_date='".date("Y-m-d",strtotime($deal_info['data']['c96027b10f722b45d43a1821b25b192528934972']))."' where last_deal_id='".$pipedrive_id."'");
 
 $stage_data = $apiPD->getAllStage();
 $stage_data = json_decode($stage_data, "true");

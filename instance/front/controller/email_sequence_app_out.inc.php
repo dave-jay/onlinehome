@@ -13,7 +13,7 @@ foreach ($email_sequence_data as $each_email) {
     $deal_info = $seq_data = array();
     $req_email_detail = getEmailTemplateNameAppOut($each_email);
     if ($req_email_detail['success'] == 1) {
-        if (IsTimeToSendEmail(strtotime($each_email['modified_at']), $req_email_detail['next_seq'], $each_email['timezone'])) {
+        if (IsTimeToSendEmail(strtotime($each_email['modified_at']), $req_email_detail['next_seq'], $each_email['timezone'],$each_email['hold_till_date'])) {
             $next_seq = $req_email_detail['next_seq'];
             $deal_id = $each_email['last_deal_id'];
             $template_name = $req_email_detail['template_name'];
@@ -31,6 +31,7 @@ foreach ($email_sequence_data as $each_email) {
                     $no_of_month = 12;
                 }
                 $agent_id = $deal_info['data']['user_id']['value'];
+				$org_name = $deal_info['data']['org_id']['name'];
                 if ($agent_id != '' && $agent_id != "990918") {                    
                     $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
                 } else {
@@ -42,7 +43,7 @@ foreach ($email_sequence_data as $each_email) {
                 $email = $each_email['email'];
 
                 # email token replacement
-                $subject= str_replace(array('{merchant_name}'),array($fname),$subject);
+                $subject= str_replace(array('{merchant_name}','{company_name}'),array($fname,$org_name),$subject);
 
                 $agent_name = ucwords(strtolower($agent_data['name']));
                 $agent = explode(" ", $agent_name);

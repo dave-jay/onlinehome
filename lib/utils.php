@@ -1837,7 +1837,11 @@ function getSMSTextAppOut($pd_data = array(),$current=0,$next='day1_1_sent') {
         return array("success" => 1, "next_seq" => $next_seq, "message" => $sequence[$next_seq]);
 }
 
-function IsTimeToSendSMS($last_time, $next_seq, $timezone) {
+function IsTimeToSendSMS($last_time, $next_seq, $timezone, $hold_date='') {
+    if(strtotime($hold_date)>time()){
+        qi("test",array("t"=>"currently hold date for sms is set."));
+        return false;
+    }
     $sms_seq_time_arr = qs("select * from sms_seq_time where is_active='1' and sequence_name='{$next_seq}'");    
     echo $next_seq;
     $current_time = time();
@@ -1932,7 +1936,7 @@ function getEmailTemplateName($pd_data = array()) {
 }
 function getEmailTemplateNameAppOut($pd_data = array()) {
     $success = 0;
-    $sequence = array("day1_1_sent" => array("subject"=>"App Out: Day1","template_name"=>"day1_1_app_out_email.php"));
+	$sequence = array("day1_1_sent" => array("subject"=>"Your Application for {company_name}","template_name"=>"day1_1_app_out_email.php"));
     foreach ($sequence as $key => $value) {
         if ($pd_data[$key] == '0') {
             $next_seq = $key;
@@ -1946,7 +1950,11 @@ function getEmailTemplateNameAppOut($pd_data = array()) {
         return array("success" => 1, "next_seq" => $next_seq, "subject" => $sequence[$next_seq]['subject'], "template_name" => $sequence[$next_seq]['template_name']);
 }
 
-function IsTimeToSendEmail($last_time, $next_seq, $timezone) {
+function IsTimeToSendEmail($last_time, $next_seq, $timezone, $hold_date='') {
+    if(strtotime($hold_date)>time()){
+        qi("test",array("t"=>"currently hold date for email is set."));
+        return false;
+    }
     $email_seq_time_arr = qs("select * from email_seq_time where is_active='1' and sequence_name='{$next_seq}'");
     echo $next_seq;
     $current_time = time();
