@@ -141,7 +141,7 @@ if (empty($tbl_camp_data)) {
     if ($tbl_camp_data['last_stage_id'] == $pipedrive_stage) {
         qi('active_campaign_log', array("log" => "Stage id not changed."));
     }else{
-        if ($pipedrive_stage == '3' && in_array($deal_source, array('44'))){
+        if ($pipedrive_stage == '3' && in_array($deal_source, array('44','37'))){
             $ac_data['need_to_start'] = '2';
             $ac_data['need_to_start_email'] = '2';
             //$ac_data['need_to_start_time'] = date("Y-m-d",(time()+84600));

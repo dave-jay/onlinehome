@@ -9,7 +9,7 @@
 </div>
 <div>
     <img src="<?= _MEDIA_URL . "img/sprout.png"; ?>" style="width: 183px;" />
-    <img src="<?= _U . "email_tracking?deal_id={$deal_id}&next_seq={$next_seq}"; ?>" style="height:1px;width:1px;display:none;">
+    <img src="<?= _U . "email_tracking?deal_id={$deal_id}&next_seq={$next_seq}&email_type={$email_type}"; ?>" style="height:1px;width:1px;display:none;">
 </div>
 <div style="color: gray; font-size: 14px;">
     1111 Broadhollow Road - 3rd Floor<br>

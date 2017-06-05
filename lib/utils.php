@@ -1820,7 +1820,9 @@ function getSMSText($pd_data = array(),$current=0,$next='day1_1_sent') {
 function getSMSTextAppOut($pd_data = array(),$current=0,$next='day1_1_sent') {
     $success = 0;
     $sequence = array("day1_1_sent" => "Hey [MERCHANTS NAME], It’s [AGENTS NAME] I just sent the application. Did you receive it? Let me know if you have any questions.",
-        "day1_2_sent" => "I’m just checking back in to make sure you received my application.  Please shoot me a text back to confirm.");        
+        "day1_2_sent" => "I’m just checking back in to make sure you received my application.  Please shoot me a text back to confirm.",
+        "day2_1_sent" => "Hey [MERCHANTS NAME], we spoke [DATE_OF_LEAD_MOVED_APPOUT] and I sent you the application you requested. Can you just confirm that you received it please when you get a second so know you have everything you need from me?",
+        "day3_1_sent" => "Good Morning [MERCHANTS NAME]. I wanted to let you know that my underwriter who specializes in financing business in the [COMPANY NAME] industry will be in my office tomorrow. It’s important that you send in your application today so I can have him review it.  He will be able to offer the best program possible so I want to get it in his hands while he will be here. Can you send me everything today or tonight?");
     if($current=='1'){
         return $sequence[$next];
     }
@@ -1837,12 +1839,12 @@ function getSMSTextAppOut($pd_data = array(),$current=0,$next='day1_1_sent') {
         return array("success" => 1, "next_seq" => $next_seq, "message" => $sequence[$next_seq]);
 }
 
-function IsTimeToSendSMS($last_time, $next_seq, $timezone, $hold_date='') {
+function IsTimeToSendSMS($last_time, $next_seq, $timezone, $hold_date='', $seq_type='') {
     if(strtotime($hold_date)>time()){
         qi("test",array("t"=>"currently hold date for sms is set."));
         return false;
     }
-    $sms_seq_time_arr = qs("select * from sms_seq_time where is_active='1' and sequence_name='{$next_seq}'");    
+    $sms_seq_time_arr = qs("select * from sms_seq_time".$seq_type." where is_active='1' and sequence_name='{$next_seq}'");    
     echo $next_seq;
     $current_time = time();
     $sequence = array("day1_1_sent" => 0,
@@ -1936,7 +1938,9 @@ function getEmailTemplateName($pd_data = array()) {
 }
 function getEmailTemplateNameAppOut($pd_data = array()) {
     $success = 0;
-	$sequence = array("day1_1_sent" => array("subject"=>"Your Application for {company_name}","template_name"=>"day1_1_app_out_email.php"));
+	$sequence = array("day1_1_sent" => array("subject"=>"Your Application for {company_name}","template_name"=>"day1_1_app_out_email.php"),
+            "day2_1_sent" => array("subject"=>"Did you receive the application?","template_name"=>"day2_1_app_out_email.php"),
+            "day3_1_sent" => array("subject"=>"{merchant_name} this is kind of urgent","template_name"=>"day3_1_app_out_email.php"));
     foreach ($sequence as $key => $value) {
         if ($pd_data[$key] == '0') {
             $next_seq = $key;
@@ -1950,12 +1954,12 @@ function getEmailTemplateNameAppOut($pd_data = array()) {
         return array("success" => 1, "next_seq" => $next_seq, "subject" => $sequence[$next_seq]['subject'], "template_name" => $sequence[$next_seq]['template_name']);
 }
 
-function IsTimeToSendEmail($last_time, $next_seq, $timezone, $hold_date='') {
+function IsTimeToSendEmail($last_time, $next_seq, $timezone, $hold_date='',$seq_type='') {
     if(strtotime($hold_date)>time()){
         qi("test",array("t"=>"currently hold date for email is set."));
         return false;
     }
-    $email_seq_time_arr = qs("select * from email_seq_time where is_active='1' and sequence_name='{$next_seq}'");
+    $email_seq_time_arr = qs("select * from email_seq_time".$seq_type." where is_active='1' and sequence_name='{$next_seq}'");
     echo $next_seq;
     $current_time = time();
     $sequence = array("day1_1_sent" => 0,

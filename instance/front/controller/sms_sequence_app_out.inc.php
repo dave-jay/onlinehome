@@ -13,7 +13,7 @@ foreach ($sms_sequence_data as $each_sms) {
     $deal_info = $seq_data = array();
     $req_sms_detail = getSMSTextAppOut($each_sms);
     if ($req_sms_detail['success'] == 1) {
-        if (IsTimeToSendSMS(strtotime($each_sms['modified_at']), $req_sms_detail['next_seq'], $each_sms['timezone'],$each_sms['hold_till_date'])) {
+        if (IsTimeToSendSMS(strtotime($each_sms['modified_at']), $req_sms_detail['next_seq'], $each_sms['timezone'],$each_sms['hold_till_date'],"_app_out")) {
             $message = $req_sms_detail['message'];
             $phone = $each_sms['phone'];
             $deal_info = $apiPD->getDealInfo($each_sms['last_deal_id']);
@@ -22,6 +22,7 @@ foreach ($sms_sequence_data as $each_sms) {
                 $name = explode(" ", $deal_info['data']['person_id']['name']);
                 $agent = $deal_info['data']['user_id']['name'];
                 $agent_id = $deal_info['data']['user_id']['value'];
+                $org_name = $deal_info['data']['org_id']['name'];
                 $fname = ucwords(strtolower($name[0]));
                 
                 if ($agent_id != '' && $agent_id != "990918") {
@@ -35,6 +36,8 @@ foreach ($sms_sequence_data as $each_sms) {
 
                 $message = str_ireplace("[AGENTS NAME]", $agent, $message);
                 $message = str_ireplace("[MERCHANTS NAME]", $fname, $message);
+                $message = str_ireplace("[COMPANY NAME]", $org_name, $message);
+                $message = str_ireplace("[DATE_OF_LEAD_MOVED_APPOUT]", date("Y-m-d",  strtotime($each_sms['created_at'])), $message);
                 echo "<br><br><div style='font-size:30px;color:green;font-weight:bold;'>SMS Sent</div>";
 
                 echo "Following Message sent: " . $message;
@@ -43,7 +46,7 @@ foreach ($sms_sequence_data as $each_sms) {
                 $note_data = array();
                 $note_data['deal_id'] = $each_sms['last_deal_id'];
                 $note_data['content'] = "Text was sent on " . formatPhone($each_sms['phone'], 4) . ".<br><br>Text: {$message}";
-                //$data = $apiPD->createNote($note_data);
+                $data = $apiPD->createNote($note_data);
                 $apiCall = new callWebhook();
                 $apiCall->messageNow($each_sms['phone'], $message, "2");
                 qi("test", array("payload" => "AppOut: message sent on " . $each_sms['phone']));
@@ -53,7 +56,7 @@ foreach ($sms_sequence_data as $each_sms) {
                 qi("test", array("payload" => "AppOut: App is in"));
             }
         } else {
-            qi("test", array("payload" => "AppOut: Please wait"));
+            //qi("test", array("payload" => "AppOut: Please wait"));
             echo "Please wait some time.";
             continue;
         }

@@ -56,6 +56,16 @@ $deal_currency = str_replace('&', ' and ', ($deal_data->data->currency));
 $organization = str_replace('&', ' and ', ($deal_data->data->org_name));
 $Person = str_replace('&', ' and ', ($deal_data->data->person_name));
 
+if(isset($deal_data->data->org_id->value)){
+    $org_data = $apiPD->getOrganizationInfo($deal_data->data->org_id->value);
+    $org_data = json_decode($org_data, "true");
+    if (isset($org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'])) {
+        $deal_amount = $org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'];
+    }
+    if($deal_amount=='' || $deal_amount==0){
+        $deal_amount = 0;
+    }
+}
 $agent_name = '';
 $agent_detail = qs("select * from pd_users where phone like '%".$cur_agent."%'");
 if(isset($agent_detail)){

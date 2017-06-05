@@ -87,7 +87,7 @@ function createCORSRequest(method, url) {
 
 function getEmailNotification(){
     console.log('a');
-    var xhr = createCORSRequest('GET', 'https://leadpropel.com/admin/email_tracking?pd_notification=1');
+    var xhr = createCORSRequest('GET', 'https://leadpropel.com/admin/email_tracking?pd_notifications=1');
     if (!xhr) {
       console.log('CORS not supported');
     }else{
@@ -96,13 +96,16 @@ function getEmailNotification(){
     xhr.onload = function() {
          var responseText = xhr.responseText;
          res = jQuery.parseJSON(responseText);
+         console.log(responseText);
          if(res.found=='1'){
+             var msg = res.message;
+             var lnk = res.message_link;
              var notification = new Notification('Wake Up!', {
                 icon: 'https://leadpropel.com/admin/instance/front/media/img/lead-propel-logo.png',
-                body: res.message,
+                body: msg,
               });
               notification.onclick = function () {
-                  window.open(res.message_link);      
+                  window.open(lnk);      
                 };
          }
          // process the response.

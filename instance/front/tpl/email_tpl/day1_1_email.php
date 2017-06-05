@@ -14,6 +14,7 @@
             <p style="color: #888888;font-family: verdana; line-height: 1.6;">
                 In the meantime, if you have any questions or concerns please feel free to contact me at <?= $agent_phone; ?> or just reply to this email with any question. Thank you again for giving us the opportunity to work with you!
             </p>
+            <?php $email_type = ''; ?>
             <?php include _PATH.'instance/front/tpl/email_tpl/email_signature.php'; ?>
         </div>        
     </body>

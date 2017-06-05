@@ -13,7 +13,7 @@ foreach ($email_sequence_data as $each_email) {
     $deal_info = $seq_data = array();
     $req_email_detail = getEmailTemplateNameAppOut($each_email);
     if ($req_email_detail['success'] == 1) {
-        if (IsTimeToSendEmail(strtotime($each_email['modified_at']), $req_email_detail['next_seq'], $each_email['timezone'],$each_email['hold_till_date'])) {
+        if (IsTimeToSendEmail(strtotime($each_email['modified_at']), $req_email_detail['next_seq'], $each_email['timezone'],$each_email['hold_till_date'],"_app_out")) {
             $next_seq = $req_email_detail['next_seq'];
             $deal_id = $each_email['last_deal_id'];
             $template_name = $req_email_detail['template_name'];
@@ -74,7 +74,7 @@ foreach ($email_sequence_data as $each_email) {
                 qi("test",array("payload"=>"AppOut: App is in"));
             }
         } else {
-            qi("test",array("payload"=>"AppOut: Please wait"));
+            //qi("test",array("payload"=>"AppOut: Please wait"));
             echo "Please wait some time.";
             continue;
         }
