@@ -124,7 +124,7 @@ if (isset($stage_data['data'])) {
         $stage[$each_stage['id']] = $each_stage; //'order_nr','name'
     }
 }
-$tbl_camp_data = qs("select * from active_campaign_contact where email='$email'");
+$tbl_camp_data = qs("select * from active_campaign_contact where last_deal_id='$pipedrive_id'");
 $ac_data = array();
 $ac_data['email'] = $email;
 $ac_data['last_deal_id'] = $pipedrive_id;

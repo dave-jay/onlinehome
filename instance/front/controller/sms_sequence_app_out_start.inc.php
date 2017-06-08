@@ -17,7 +17,7 @@ if(!empty($need_to_start_data)){
     echo "no new deal is coming";
     die;
 }
-qd("sms_sequence_app_out", "last10phone='{$need_to_start_data['last10phone']}'");
+qd("sms_sequence_app_out", "last_deal_id='{$need_to_start_data['last_deal_id']}' OR last10phone='{$need_to_start_data['last10phone']}'");
 $last_seq = qs("select * from sms_sequence where last10phone = '{$need_to_start_data['last10phone']}'");
 
 $fields = array();

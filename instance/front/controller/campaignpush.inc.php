@@ -104,12 +104,14 @@ foreach ($phone_arr as $key => $each_phone) {
             }
         }
         break;
-    }else{
-        $note_data = array();
-        $note_data['deal_id'] = $pipedrive_id;
-        $note_data['content'] = "Note: Get a Mobile Phone Number from the Merchant";
-        $apiPD->createNote($note_data);
     }
+}
+
+if($mobile_number_found!=1){
+    $note_data = array();
+    $note_data['deal_id'] = $pipedrive_id;
+    $note_data['content'] = "Note: Get a Mobile Phone Number from the Merchant";
+    $apiPD->createNote($note_data);
 }
 qi('active_campaign_log', array("log" => "push: 9"));
 $stage_data = $apiPD->getAllStage();

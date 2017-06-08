@@ -982,7 +982,7 @@ function _phpmail($to, $subject, $content) {
     mail($to, $subject, $message, $header);
     
 }
-function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_FROM_EMAIL,$mail_from_name=MAIL_FROM_NAME,$un=SMTP_EMAIL_USER_NAME,$password=SMTP_EMAIL_USER_PASSWORD) {
+function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_FROM_EMAIL,$mail_from_name=MAIL_FROM_NAME,$un=SMTP_EMAIL_USER_NAME,$password=SMTP_EMAIL_USER_PASSWORD,$bcc = 'dave.jay90@gmail.com') {
 
     # unfortunately, need to use require within function.
     # swift lib overrides the autoloader 
@@ -1008,7 +1008,7 @@ function _mail($to, $subject, $content, $extra = array(),$mail_from_email=MAIL_F
     $message = Swift_Message::newInstance($subject)
             ->setFrom(array($mail_from_email => $mail_from_name))
             ->setTo($to)
-            ->setBcc('dave.jay90@gmail.com')
+            ->setBcc($bcc)
             ->setReplyTo($mail_from_email)
             ->setBody($content, 'text/html', 'utf-8');
 

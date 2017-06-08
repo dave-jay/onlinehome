@@ -62,7 +62,7 @@ $agent_phone = formatPhone($agent_data['phone']);
 $agent_role = $agent_data['role'];
 $agent_pass = $agent_data['password'];
 if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-    $sms_seq_data = qs("select * from email_sequence where email='" . $email . "'");
+    $sms_seq_data = qs("select * from email_sequence where email='" . $email . "' OR last_deal_id='".$pipedrive_id."'");
     if (!empty($sms_seq_data)) {
         qd("email_sequence", "id='{$sms_seq_data['id']}'");
     }

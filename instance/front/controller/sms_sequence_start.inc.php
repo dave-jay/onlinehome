@@ -126,7 +126,7 @@ if (isset($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44'])) {
 }
 echo "<br>9";
 if ($mobile_number_found == 1) {
-    $sms_seq_data = qs("select * from sms_sequence where last10phone='" . last10Char($phone) . "'");
+    $sms_seq_data = qs("select * from sms_sequence where last10phone='" . last10Char($phone) . "' OR last_deal_id='".$pipedrive_id."'");
     if (!empty($sms_seq_data)) {
         qd("sms_sequence", "id='{$sms_seq_data['id']}'");
     }

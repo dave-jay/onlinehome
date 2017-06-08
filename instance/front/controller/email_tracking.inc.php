@@ -31,7 +31,7 @@ if(isset($_REQUEST['deal_id'])){
     $note_data['deal_id'] = $deal_id;
     $note_data['content'] = "Customer <b>opened</b> an Email sent by agent with subject to '".$subject."' on day $day";
     $data = $apiPD->createNote($note_data);
-    q("update {$email_table} set recently_opened='{$next_seq}' where last_deal_id='{$deal_id}'");        
+    q("update {$email_table} set recently_opened='{$next_seq}',open_email_date='".date("Y-m-d H:i:s")."',notify_users='' where last_deal_id='{$deal_id}'");        
     qi("activity_log",array("payload"=>"NEXT: ".$next_seq." Deal:".$deal_id));
     die;
 }
