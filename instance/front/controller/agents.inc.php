@@ -5,20 +5,20 @@ if ($_REQUEST['syncUser']) {
     die;
 }
 if ($_REQUEST['MarkAsDefault']) {
-    qu("pd_users", array("is_default" => 0), "1=1");
+    qu("pd_users", array("is_default" => 0), " tenant_id='{$_SESSION['user']['tenant_id']}'");
     qu("pd_users", array("is_default" => 1), "id='{$_REQUEST['user_id']}'");
-    $agents = q("select * From pd_users where is_active='1' order by name asc ");
+    $agents = q("select * From pd_users where is_active='1' AND  tenant_id='{$_SESSION['user']['tenant_id']}' order by name asc ");
     include _PATH . 'instance/front/tpl/agents_data.php';
     die;
 }
 if ($_REQUEST['RemoceFromDefault']) {
     qu("pd_users", array("is_default" => 0), "id='{$_REQUEST['user_id']}'");
-    $agents = q("select * From pd_users where is_active='1' order by name asc ");
+    $agents = q("select * From pd_users where is_active='1' AND  tenant_id='{$_SESSION['user']['tenant_id']}' order by name asc ");
     include _PATH . 'instance/front/tpl/agents_data.php';
     die;
 }
 if ($_REQUEST['updateUser']) {
-    $agents = q("select * From pd_users where is_active='1' order by name asc ");
+    $agents = q("select * From pd_users where is_active='1' AND tenant_id='{$_SESSION['user']['tenant_id']}' order by name asc ");
     include _PATH . 'instance/front/tpl/agents_data.php';
     die;
 }
@@ -61,7 +61,7 @@ if ($_REQUEST['doUpdateAgentCell']) {
     die;
 }
 
-$agents = q("select * From pd_users where is_active='1' order by name asc ");
+$agents = q("select * From pd_users where is_active='1' AND  tenant_id='{$_SESSION['user']['tenant_id']}' order by name asc ");
 
 _cg("page_title", "Pipedrive Agents List");
 $jsInclude = "agents.js.php";

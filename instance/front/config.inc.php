@@ -19,5 +19,5 @@ $auth_pages[] = "pipedrive-dashboard-source";
 if ($_REQUEST['logout']) {
     User::killSession();
 }
-_auth_url($auth_pages, "login_new");
+_auth_url($auth_pages, "login");
 ?>

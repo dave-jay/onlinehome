@@ -29,9 +29,9 @@
                         <li><a href="<?php l('sms_service'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>SMS Text</a></li>
                         <li><a href="<?php l('call_statistics'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>Call Statistics</a></li>
                         <?php if (isset($_SESSION['user'])): ?>                
-                            <li><a href="<?php l('login_new?logout=1'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>Logout</a></li>               
+                            <li><a href="<?php l('login?logout=1'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>Logout</a></li>               
                         <?php else: ?>
-                            <li><a href="<?php l('login_new'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>Login</a></li>
+                            <li><a href="<?php l('login'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>Login</a></li>
                         <?php endif; ?>
                     </ul>
                 </li>

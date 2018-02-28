@@ -1,0 +1,9 @@
+28 FEB 2018:
+    ALTER TABLE `pd_sources` ADD `tenant_id` INT NOT NULL AFTER `id`;
+    UPDATE `lysoft`.`pd_sources` SET `tenant_id` = '1';
+    ALTER TABLE `pd_users` ADD `tenant_id` INT NOT NULL AFTER `id`;
+    UPDATE `lysoft`.`pd_users` SET `tenant_id` = '1';
+    ALTER TABLE `call_list_by_source` ADD `tenant_id` INT NOT NULL AFTER `id`;
+    UPDATE `lysoft`.`call_list_by_source` SET `tenant_id` = '1';
+    ALTER TABLE `call_detail` ADD `tenant_id` INT NOT NULL AFTER `id`;
+    UPDATE `lysoft`.`call_detail` SET `tenant_id` = '1';

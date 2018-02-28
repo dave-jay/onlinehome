@@ -17,6 +17,7 @@ if ($_REQUEST['submit']) {
 
         if (User::doLogin($user_name, $password)) {
             User::setSession($user_name);		
+            $_SESSION['user']['tenant_id'] = $_SESSION['user']['id'];
         } else {
             //$error = "Invalid Login";
             $login_error = 1;
@@ -34,7 +35,7 @@ if (isset($_SESSION['user'])) {
 
 //$login_action_url = lr('login');
 $no_visible_elements = true;
-$jsInclude = "login_new.js.php";
+$jsInclude = "login.js.php";
 
 _cg("page_title", "Login");
 ?>

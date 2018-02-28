@@ -110,7 +110,7 @@ if ($fil_source != '') {
 }
 if (isset($_REQUEST['count_detail'])) {
     $res_arr = array();
-    $call_list = qs("SELECT count(*) as total_calls,sum(recording_duration) as call_duration,min(created_at) as min_date,max(created_at) as max_date FROM `call_detail` cd WHERE 1=1 {$where}");
+    $call_list = qs("SELECT count(*) as total_calls,sum(recording_duration) as call_duration,min(created_at) as min_date,max(created_at) as max_date FROM `call_detail` cd WHERE tenant_id='{$_SESSION['user']['tenant_id']}' {$where}");
     if($call_list['total_calls']>0){
         $res_arr['total_calls'] = $call_list['total_calls'];
         $res_arr['call_duration'] = floor($call_list['call_duration'] / 3600)."<br>"."Hours";
@@ -139,7 +139,7 @@ if (isset($_REQUEST['count_detail'])) {
 }
 if(isset($_REQUEST['load_detail']) && $_REQUEST['load_detail']==1){
     $start_limit = $_REQUEST['hidLastRecord'];
-    $call_list = q("SELECT * FROM `call_detail` cd WHERE 1=1 {$where} order by CAST(cd.deal_id AS UNSIGNED ) desc limit {$start_limit},{$page_size}");
+    $call_list = q("SELECT * FROM `call_detail` cd WHERE tenant_id='{$_SESSION['user']['tenant_id']}' {$where} order by CAST(cd.deal_id AS UNSIGNED ) desc limit {$start_limit},{$page_size}");
     //sleep(1);
     
     include _PATH.'instance/front/tpl/call_report_data.php';
@@ -147,7 +147,7 @@ if(isset($_REQUEST['load_detail']) && $_REQUEST['load_detail']==1){
 }
 if(isset($_REQUEST['loadTimeLine']) && $_REQUEST['loadTimeLine']==1){
     $dealId= $_REQUEST['dealId'];
-    $deal_data = qs("select * from call_detail where deal_id='{$dealId}'");
+    $deal_data = qs("select * from call_detail where tenant_id='{$_SESSION['user']['tenant_id']}' AND deal_id='{$dealId}'");
     $date = date("d M, ",strtotime($deal_data['deal_added']))."<br>".date("Y",strtotime($deal_data['deal_added']));;
     $time = date("h:i a",strtotime($deal_data['deal_added']));
     $timeline['date'] = $date;
@@ -159,7 +159,7 @@ if(isset($_REQUEST['loadTimeLine']) && $_REQUEST['loadTimeLine']==1){
     if($deal_data['customer_name']!=''){
         $timeline['first_data'] .= '<br>Customer: '.$deal_data['customer_name'].(" (".$deal_data['customer_phone'].")");
     }
-    $timeline_call = q("select * from agent_call_dialed where deal_id='{$dealId}' order by id asc");
+    $timeline_call = q("select * from agent_call_dialed where tenant_id='{$_SESSION['user']['tenant_id']}' AND deal_id='{$dealId}' order by id asc");
 
     $call_count = 1;
     foreach($timeline_call as $each_timeline_call){
@@ -176,7 +176,7 @@ if(isset($_REQUEST['loadTimeLine']) && $_REQUEST['loadTimeLine']==1){
     die;
 }
 include _PATH.'instance/front/controller/updateDeal.inc.php'; //Update Deal which is not handled by any agents
-$call_list = q("SELECT * FROM `call_detail` cd WHERE 1=1 {$where} order by CAST(cd.deal_id AS UNSIGNED ) desc limit {$start_limit},{$page_size}");
+$call_list = q("SELECT * FROM `call_detail` cd WHERE  tenant_id='{$_SESSION['user']['tenant_id']}' {$where} order by CAST(cd.deal_id AS UNSIGNED ) desc limit {$start_limit},{$page_size}");
 
 if(!isset($_SESSION['pipedrive_source'])){
     $_SESSION['pipedrive_source'] = User::getSources();
