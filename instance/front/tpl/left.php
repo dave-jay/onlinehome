@@ -26,6 +26,7 @@
                     <ul class="dropdown-menu" style="width: 100%;">
                         <li><a href="<?php l('twilio_settings'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>Twilio Settings</a></li>
                         <li><a href="<?php l('pipedrive_settings'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>PipeDrive Settings</a></li>
+                        <li><a href="<?php l('call_redial_setting'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>Call Redial Settings</a></li>
                         <li><a href="<?php l('sms_service'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>SMS Text</a></li>
                         <li><a href="<?php l('call_statistics'); ?>"><i class="visible-xs fa fa-chevron-right" style="width: 10px; float: left; margin-top: 4px;"></i>Call Statistics</a></li>
                         <?php if (isset($_SESSION['user'])): ?>                

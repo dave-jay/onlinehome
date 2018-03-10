@@ -18,6 +18,7 @@ if ($_REQUEST['submit']) {
         if (User::doLogin($user_name, $password)) {
             User::setSession($user_name);		
             $_SESSION['user']['tenant_id'] = $_SESSION['user']['id'];
+            User::setConfig($_SESSION['user']['tenant_id']);            
         } else {
             //$error = "Invalid Login";
             $login_error = 1;
@@ -30,7 +31,7 @@ if ($_REQUEST['submit']) {
 
 
 if (isset($_SESSION['user'])) {
-    _R(lr('pipedrive-dashboard-source'));
+    _R(lr('call_report'));
 }
 
 //$login_action_url = lr('login');

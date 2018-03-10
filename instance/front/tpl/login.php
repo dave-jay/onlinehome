@@ -62,7 +62,7 @@
                                 <label class="floating-label">Password</label>
                                 <small data-fv-result="NOT_VALIDATED" data-fv-for="password" data-fv-validator="notEmpty" class="help-block" style="display: none;">The password is required</small></div>
 
-                            <div class="form-group clearfix">
+                            <div class="form-group clearfix" style="display:none;">
                                  <div class=" checkbox-inline pull-left">
                                     <input name="remember" value="1" id="checkbox" type="checkbox" onchange="checkremember()">
                                     <label for="inputCheckbox">Remember me</label>
@@ -71,6 +71,8 @@
                             </div>
 
                             <input type="submit" name="submit" value="Sign in" class="btn btn-primary btn-block btn-lg margin-top-40"/>
+                            <br>
+                            <div style="text-align: center;">Not an account?<a href="<?= l('signup') ?>" style="margin-left: 4px;">click here</a></div>
                         </form>
 
                     </div>

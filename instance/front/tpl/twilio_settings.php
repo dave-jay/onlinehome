@@ -27,7 +27,12 @@
                 <input type="hidden" value="<?php echo $TWILIO_ACCOUNT_SID['id']; ?>" name="hid_sid_id" id="hid_sid_id">
                 <input type="hidden" value="<?php echo $TWILIO_AUTH_TOKEN['value']; ?>" name="hid_token" id="hid_token">
                 <input type="hidden" value="<?php echo $TWILIO_AUTH_TOKEN['id']; ?>" name="hid_token_id" id="hid_token_id">
-                <button id="btn_submit" class="btn green-btn" type="submit">Update</button>
+                <input type="hidden" value="<?php echo $first_time; ?>" name="is_first_time" id="is_first_time">
+                <?php if($first_time==1): ?>
+                    <button id="btn_submit" class="btn green-btn" type="submit">Save & Continue</button>
+                <?php else: ?>
+                    <button id="btn_submit" class="btn green-btn" type="submit">Update</button>
+                <?php endif; ?>
                 <input id="btn_cancel" type="button" class="btn white-btn" value="Cancel">
             </div>
         </form>

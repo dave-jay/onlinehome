@@ -1,6 +1,9 @@
 <?php
-
-$calls = q("select distinct(deal_id) as deal_id from agent_call_dialed where is_received='0' AND  DATE(`created_at`) = CURDATE() AND created_at<=NOW() - INTERVAL 1 MINUTE order by id desc limit 0,10");
+$pipedriver_api_key = qs("SELECT * FROM  `config` WHERE  `key` LIKE  'CALL_REDIAL_TIME'");
+if(!isset($pipedriver_api_key['value']) || $pipedriver_api_key['value']<1){
+    $pipedriver_api_key['value']=1;
+}
+$calls = q("select distinct(deal_id) as deal_id from agent_call_dialed where is_received='0' AND  DATE(`created_at`) = CURDATE() AND created_at<=NOW() - INTERVAL {$pipedriver_api_key['value']} MINUTE order by id desc limit 0,10");
 //$calls = q("select distinct(deal_id) as deal_id from agent_call_dialed where is_received='0' AND created_at<=NOW() - INTERVAL 5 MINUTE order by id desc limit 0,10");
 d($calls);
 foreach ($calls as $each_call) {
@@ -41,7 +44,7 @@ foreach ($calls as $each_call) {
                 if ($category != 'A' && $category != 'B' && $category != 'C') {
                     $category = 'A';
                 }
-                $query = "select count(*) as count from agent_call_dialed where deal_id='" . $each_call['deal_id'] . "' AND  DATE(`created_at`) = CURDATE() AND created_at>NOW() - INTERVAL 1 MINUTE order by created_at desc";
+                $query = "select count(*) as count from agent_call_dialed where deal_id='" . $each_call['deal_id'] . "' AND  DATE(`created_at`) = CURDATE() AND created_at>NOW() - INTERVAL {$pipedriver_api_key['value']} MINUTE order by created_at desc";
                 $last_call = qs($query);
                 echo $query;
                 d($last_call);

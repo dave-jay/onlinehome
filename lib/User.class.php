@@ -31,6 +31,15 @@ class User {
         self::$user_data = qs("select * from admin_users where user_name = '{$user_name}' and password = '{$password}'");        
         return empty(self::$user_data) ? false : true;
     }
+    public static function doSignup($data_request) {
+        $data['fname'] = _escape($data_request['fname']);
+        $data['lname'] = _escape($data_request['lname']);
+        $data['user_name'] = _escape($data_request['email']);
+        $data['phone'] = _escape($data_request['phone']);
+        $data['password'] = md5($data_request['password']);
+        $insert_id = qi("admin_users",  $data);        
+        return empty($insert_id) ? false : true;
+    }
 
     /**
      * Direct the login
@@ -40,7 +49,7 @@ class User {
      */
     public static function doDirectQuoteLogin($user_name) {
 
-        self::$user_data = qs("select * from role where (user_name = '{$user_name}' OR email = '{$user_name}')");
+        self::$user_data = qs("select * from admin_users where (user_name = '{$user_name}')");
         if (!empty(self::$user_data)) {
             self::$user_data['user_type'] = 'role_user';
             self::$user_data['first_name'] = self::$user_data['user_name'];
@@ -82,6 +91,23 @@ class User {
     public static function setSession($user_name) {
         // d(self::$user_data);
         $_SESSION['user'] = self::$user_data;
+    }
+    public static function setDefaults($tenant_id) {
+        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"TWILIO_ACCOUNT_SID","value"=>"");
+        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"TWILIO_AUTH_TOKEN","value"=>"");
+        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"PIPEDRIVER_API_KEY","value"=>"");
+        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"CALL_STATUS","value"=>"on");
+        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"SEQUENCE_STATUS","value"=>"on");
+        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"CALL_REDIAL_TIME","value"=>"2");
+        foreach($fields as $each){
+            qi("config",  _escapeArray($each));            
+        }
+    }
+    public static function setConfig($tenant_id) {
+        $conf_data = q("select * from config where tenant_id='{$tenant_id}'");
+        foreach($conf_data as $each){
+            $_SESSION['config'][$each['key']] = $each['value'];
+        }
     }
 
     /**

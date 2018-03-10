@@ -1,9 +1,20 @@
 28 FEB 2018:
     ALTER TABLE `pd_sources` ADD `tenant_id` INT NOT NULL AFTER `id`;
-    UPDATE `lysoft`.`pd_sources` SET `tenant_id` = '1';
+    UPDATE `pd_sources` SET `tenant_id` = '1';
     ALTER TABLE `pd_users` ADD `tenant_id` INT NOT NULL AFTER `id`;
-    UPDATE `lysoft`.`pd_users` SET `tenant_id` = '1';
+    UPDATE `pd_users` SET `tenant_id` = '1';
     ALTER TABLE `call_list_by_source` ADD `tenant_id` INT NOT NULL AFTER `id`;
-    UPDATE `lysoft`.`call_list_by_source` SET `tenant_id` = '1';
+    UPDATE `call_list_by_source` SET `tenant_id` = '1';
     ALTER TABLE `call_detail` ADD `tenant_id` INT NOT NULL AFTER `id`;
-    UPDATE `lysoft`.`call_detail` SET `tenant_id` = '1';
+    UPDATE `call_detail` SET `tenant_id` = '1';
+
+01 MAR 2018:
+    ALTER TABLE `admin_users` ADD `fname` VARCHAR(50) NOT NULL AFTER `id`, ADD `lname` VARCHAR(50) NOT NULL AFTER `fname`, ADD `phone` VARCHAR(50) NOT NULL AFTER `lname`;
+
+05 MAR 2018:
+    UPDATE `admin_users` SET `password` = 'd1d9ac32b52a127026074bfdc0463664' WHERE `admin_users`.`id` = 1;
+
+09 MAR 2018:
+    ALTER TABLE `config` ADD `tenant_id` INT NOT NULL AFTER `id`;
+    UPDATE config set tenant_id=1;
+    UPDATE `config` SET `value` = '2e803e20dd85ca1026d45878a88934f956ffa6d9' WHERE `config`.`id` = 3;

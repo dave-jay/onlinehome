@@ -12,8 +12,25 @@ if (!isset($_REQUEST['Digits']) || $_REQUEST['Digits'] == ""):
             $new_agent_numbers[] = $each_agents;
         }
     }
+    $voice_call_count = q("select * from v where deal_id='{$dealId}' and curr_agent='{$cur_agent}'");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    if (count($new_agent_numbers) > 0) {
+    if(count($voice_call_count)>2){
+        ?>
+        <Response><Say>sorry, You had not press any key. Good Bye!</Say></Response>
+            <?php
+            qi("voice_call",array("deal_id"=>$dealId,"is_handled"=>"0","curr_agent"=>$cur_agent,"all_agents"=>$agent_numbers,"customer_phone"=>$phone_value));
+        $agent_name = 'agent';
+        $agent_detail = qs("select * from pd_users where phone like '%" . $cur_agent . "%'");
+        if (isset($agent_detail)) {
+            $agent_name = $agent_detail['name'];
+        }
+        $message = '<b>Note: </b><br>Call went into voicemail of <b>' . $agent_name . "</b>. System will call again in <b>10 minutes</b>.";
+        sendNote($dealId,$message);
+        //$apiCall = new callWebhook();
+        //$apiCall->callNow($phone_value, $new_agent_numbers, $dealId,"1");
+        die;
+    }
+    else if (count($new_agent_numbers) > 0) {
         ?>
         <Response><Say>sorry, You had not press any key. Good Bye!</Say></Response>
         <?php
