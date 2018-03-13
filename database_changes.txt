@@ -18,3 +18,9 @@
     ALTER TABLE `config` ADD `tenant_id` INT NOT NULL AFTER `id`;
     UPDATE config set tenant_id=1;
     UPDATE `config` SET `value` = '2e803e20dd85ca1026d45878a88934f956ffa6d9' WHERE `config`.`id` = 3;
+
+13 MAR 2018:
+    ALTER TABLE `sms_seq_time` ADD `tenant_id` INT NOT NULL AFTER `id`;
+    ALTER TABLE `email_seq_time` ADD `tenant_id` INT NOT NULL AFTER `id`;
+    UPDATE `sms_seq_time` SET `tenant_id` = '1';
+    UPDATE `email_seq_time` SET `tenant_id` = '1';
