@@ -93,21 +93,19 @@ class User {
         $_SESSION['user'] = self::$user_data;
     }
     public static function setDefaults($tenant_id) {
-        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"TWILIO_ACCOUNT_SID","value"=>"");
-        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"TWILIO_AUTH_TOKEN","value"=>"");
-        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"PIPEDRIVER_API_KEY","value"=>"");
-        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"CALL_STATUS","value"=>"on");
-        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"SEQUENCE_STATUS","value"=>"on");
-        $fields[] = array("tenant_id"=>$tenant_id,"key"=>"CALL_REDIAL_TIME","value"=>"2");
+        $fields = q("select key,value from config where tenant_id=0");
         foreach($fields as $each){
+            $each['tenant_id'] = $tenant_id;
             qi("config",  _escapeArray($each));            
         }
     }
     public static function setConfig($tenant_id) {
         $conf_data = q("select * from config where tenant_id='{$tenant_id}'");
+        $configs = array();
         foreach($conf_data as $each){
-            $_SESSION['config'][$each['key']] = $each['value'];
+            $configs[$each['key']] = $_SESSION['config'][$each['key']] = $each['value'];
         }
+        return $configs;
     }
 
     /**

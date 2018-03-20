@@ -24,3 +24,7 @@
     ALTER TABLE `email_seq_time` ADD `tenant_id` INT NOT NULL AFTER `id`;
     UPDATE `sms_seq_time` SET `tenant_id` = '1';
     UPDATE `email_seq_time` SET `tenant_id` = '1';
+
+20 MAR 2018:
+    ALTER TABLE `admin_users` ADD `unique_code` VARCHAR(50) NOT NULL AFTER `id`;
+    UPDATE `admin_users` SET `unique_code` = '1' WHERE `admin_users`.`id` = 1;

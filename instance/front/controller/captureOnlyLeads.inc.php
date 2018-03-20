@@ -1,16 +1,19 @@
 <?php
-$call_status = qs("select *,value as call_status from config where `key` = 'CALL_STATUS'");
-if(strtolower($call_status['call_status'])!="on"){
-    qi("test",array("t"=>"call distribution is off."));
+$unique_code = $_REQUEST['unique_code'];
+include _PATH.'instance/front/controller/define_settings.inc.php';
+
+
+if(strtolower($conf_data['CALL_STATUS'])!="on"){
+    addLogs($_REQUEST['q'], $tenant_id, "call distribution is off");
     die;
 }
+addLogs($_REQUEST['q'], $tenant_id, "1");
+
 _errors_on();
 # Get Pipedrive API object
-$apiPD = new apiPipeDrive();
+$apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
 $apiCall = new callWebhook();
-
-# Set default timezone
-date_default_timezone_set('America/New_York');
+addLogs($_REQUEST['q'], $tenant_id, "2");
 
 # receive the payload
 $payload = file_get_contents('php://input');
@@ -22,11 +25,13 @@ $deal_info = json_decode($deal_info, TRUE);
 if($deal_info['data']['pipeline_id']=="1"){
     $deal_info = $apiPD->modifyDeal($data['current']['id'],array("stage_id"=>"1"));
 }
+addLogs($_REQUEST['q'], $tenant_id, "3");
 // store into the database
 //qi("pd_push_notification_log", array("payload" => _escape($payload)));
 
 # now, identify if that is hot lead then get the number of customer and start calling the customer
 # c2a6fc3129578b646ae55717ed15f03ce3ee4df0 - this is key for custom attribute/field - "Source"
+addLogs($_REQUEST['q'], $tenant_id, "4");
 $deal_source = $data['current']['c2a6fc3129578b646ae55717ed15f03ce3ee4df0'];
 if (in_array($deal_source, array('37')) || 1) {
     
@@ -52,6 +57,7 @@ if (in_array($deal_source, array('37')) || 1) {
     $agent_numbers = $apiPD->getAgentByDealSource($deal_source);
    
     # Finally call the agents
+    addLogs($_REQUEST['q'], $tenant_id, "7");
     $apiCall->callNow($phone_value, $agent_numbers , $deal_id, "0", "A"); 
 }
 //15162004065 - dj

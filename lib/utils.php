@@ -2014,4 +2014,12 @@ function getUseOfFundText($fundId) {
     return 'Working Capital';
 }
 
+function addLogs($page,$tenant,$logs){
+    $logs_data = array();
+    $logs_data['page'] = $page;
+    $logs_data['tenant_id'] = $tenant;
+    $logs_data['logs'] = $logs;
+    qi("logs",  _escapeArray($logs_data));
+}
+
 ?>

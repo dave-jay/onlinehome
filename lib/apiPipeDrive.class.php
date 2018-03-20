@@ -9,8 +9,8 @@ class apiPipeDrive extends apiCore {
     public $key = '2e803e20dd85ca1026d45878a88934f956ffa6d9';
     public $params = array();
 
-    public function __construct() {
-        $this->params['api_token'] = $this->key;
+    public function __construct($key='') {
+        $this->params['api_token'] = !empty($key)?$key:$this->key;
     }
 
     public function createPerson($data) {
