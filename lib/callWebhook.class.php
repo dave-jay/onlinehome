@@ -3,8 +3,8 @@
 class callWebhook {
 
     public function callNow($phone_value, $agent_numbers, $dealId,$is_redial = "0",$group = "A") {
-        $account_sid = ACCOUNT_SID;
-        $auth_token = AUTH_TOKEN;
+        $account_sid = $GLOBALS['ACCOUNT_SID'];
+        $auth_token = $GLOBALS['AUTH_TOKEN'];
         //$account_sid = 'AC4878ef9ccad9ce3b980fdd4d1d0f42ca';
         //$auth_token = 'ea532dd88a9ee7fb43259da56a40a38f';
         $call_status = qs("select *,value as call_status from config where `key` = 'CALL_STATUS'");
@@ -60,7 +60,7 @@ class callWebhook {
                 $url_agent_calling .= $params;
                 $url_agent_received .= $params;
 
-                $call = $client->account->calls->create(TWILIO_PHONE_NUMBER, $each_agent, $url_agent_received, array(
+                $call = $client->account->calls->create($GLOBALS['TWILIO_PHONE_NUMBER'], $each_agent, $url_agent_received, array(
                     "Method" => "GET",
                     "StatusCallback" => $url_agent_calling,
                     "StatusCallbackMethod" => "POST",
@@ -83,8 +83,8 @@ class callWebhook {
     }
     
     public function click_to_call($click_to_call_id = 0) {
-        $account_sid = ACCOUNT_SID;
-        $auth_token = AUTH_TOKEN;
+        $account_sid = $GLOBALS['ACCOUNT_SID'];
+        $auth_token = $GLOBALS['AUTH_TOKEN'];
         $click_to_call = qs("select * from click_to_call where id='{$click_to_call_id}'");
         if(empty($click_to_call)){
             return '';
@@ -97,7 +97,7 @@ class callWebhook {
         $url_agent_received .= $params;
         include _PATH . "/Services/Twilio.php";
         $client = new Services_Twilio($account_sid, $auth_token);
-        $call = $client->account->calls->create(TWILIO_PHONE_NUMBER, $click_to_call['agent_phone'], $url_agent_received, array(
+        $call = $client->account->calls->create($GLOBALS['TWILIO_PHONE_NUMBER'], $click_to_call['agent_phone'], $url_agent_received, array(
             "Method" => "GET",
             "StatusCallback" => $url_agent_calling,
             "StatusCallbackMethod" => "POST",
@@ -108,15 +108,15 @@ class callWebhook {
     
     public function messageNow($phone_value, $message, $use_number='') {       
         include _PATH . "/Services/Twilio.php";
-        $client = new Services_Twilio(ACCOUNT_SID, AUTH_TOKEN);
+        $client = new Services_Twilio($GLOBALS['ACCOUNT_SID'], $GLOBALS['AUTH_TOKEN']);
         if(IS_DEV_ENV){
             $phone_value = CUSTOMER_NO;
         }
         $phone_value=  self::ValidateNumber($phone_value);
         if($use_number=='2'){
-            $company_phone = TWILIO_PHONE_NUMBER2;
+            $company_phone = $GLOBALS['TWILIO_PHONE_NUMBER2'];
         }else{
-            $company_phone = TWILIO_PHONE_NUMBER;            
+            $company_phone = $GLOBALS['TWILIO_PHONE_NUMBER'];            
         }
         try {
             $sms = $client->account->messages->sendMessage($company_phone, $phone_value,$message);

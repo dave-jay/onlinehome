@@ -66,8 +66,8 @@ elseif ($_REQUEST['Digits'] == 1):
     qu("voice_call", array("in_progress" => "0"), "deal_id='" . $dealId . "'"); //Set in_progress=0 because call process is completed
     $agent_call_dialed_data = qs("select id from agent_call_dialed where deal_id='{$dealId}' order by id desc");
     qu("agent_call_dialed",  _escapeArray(array("received_agent"=>$cur_agent,"is_received"=>"1")),"id='".$agent_call_dialed_data['id']."'");
-    $account_sid = ACCOUNT_SID;
-    $auth_token = AUTH_TOKEN;
+    $account_sid = $GLOBALS['ACCOUNT_SID'];
+    $auth_token = $GLOBALS['AUTH_TOKEN'];
     include _PATH . "/Services/Twilio.php";
     $client = new Services_Twilio($account_sid, $auth_token);
 

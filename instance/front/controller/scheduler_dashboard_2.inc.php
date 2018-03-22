@@ -113,29 +113,4 @@ foreach ($d as $a) {
     }
 }
 die;
-_errors_on();
-include _PATH . "/Services/Twilio.php";
-$account_sid = ACCOUNT_SID;
-$auth_token = AUTH_TOKEN;
-$client = new Services_Twilio($account_sid, $auth_token);
-$each_agent = "919737128291";
-
-$url_agent_calling = _U . "DialingAgent?";
-$url_agent_received = _U . "ReceivedAgent?";
-try {
-    $call = $client->account->calls->create(TWILIO_PHONE_NUMBER, $each_agent, $url_agent_received, array(
-        "Method" => "GET",
-        "StatusCallback" => $url_agent_calling,
-        "StatusCallbackMethod" => "POST",
-        "StatusCallbackEvent" => array("ringing"),
-        //"IfMachine" => "Hangup",
-        "Timeout" => "25"
-    ));
-    echo $call->sid . "<br>";
-} catch (Exception $e) {
-    // Failed calls will throw
-    echo $e;
-    die;
-}
-die;
 ?>

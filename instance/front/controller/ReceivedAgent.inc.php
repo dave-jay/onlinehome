@@ -23,8 +23,8 @@ qu("deal_sid", array("status" => 'A'), "sid='" . $_REQUEST['CallSid'] . "'");
 
 $apiPD = new apiPipeDrive();
 
-$account_sid = ACCOUNT_SID;
-$auth_token = AUTH_TOKEN;
+$account_sid = $GLOBALS['ACCOUNT_SID'];
+$auth_token = $GLOBALS['AUTH_TOKEN'];
 include _PATH . "/Services/Twilio.php";
 $client = new Services_Twilio($account_sid, $auth_token);
 
