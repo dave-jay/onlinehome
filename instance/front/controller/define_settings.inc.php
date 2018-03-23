@@ -1,5 +1,5 @@
 <?php
-if(!isset($tenant_id) && !isset($unique_code)){
+if(!isset($GLOBALS['tenant_id']) && !isset($unique_code)){
     addLogs($_REQUEST['q'], 0, "tenant_id or unique_code must be set.");
     die;
 }
@@ -10,9 +10,9 @@ if(isset($unique_code)){
         addLogs($_REQUEST['q'], 0, "Tenant not found for unique code = {$_REQUEST['unique_code']}");        
         die;
     }
-    $tenant_id = $tenant_data['tenant_id'];
+    $GLOBALS['tenant_id'] = $tenant_data['tenant_id'];
 }
-$conf_data = User::setConfig($tenant_data['tenant_id']); 
+$conf_data = User::setConfig($GLOBALS['tenant_id']); 
 
 
 //SET VALUE FROM CONFIG TABLE

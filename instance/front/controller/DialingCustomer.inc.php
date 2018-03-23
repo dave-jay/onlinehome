@@ -1,14 +1,17 @@
 <?php
+$GLOBALS['tenant_id'] = $_REQUEST['tenant_id'];
+include _PATH.'instance/front/controller/define_settings.inc.php';
+
 $agent_numbers = explode(',', $_REQUEST['agent_numbers']);
 $dealId = _e($_REQUEST['dealId'], 0);
 $phone_value = urlencode($_REQUEST['phone_value']);
 $cur_agent = $_REQUEST['cur_agent'];
-$agent = qs("select pd_id,name from pd_users where phone = '{$cur_agent}'");
+$agent = qs("select pd_id,name from pd_users where tenant_id='".$GLOBALS['tenant_id']."' AND phone = '{$cur_agent}'");
 
 $agent_id = $agent['pd_id'];
 $agent_name = $agent['name'];
 
-$apiPD = new apiPipeDrive();
+$apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
 $apiPD->assignDeal($dealId, $agent_id);
 
 $deal_data = json_decode($apiPD->getDealInfo($dealId)); //$deal_data = json_decode($apiPD->getDealInfo('4586'));
@@ -25,6 +28,7 @@ $apiPD->assignOrganization($org_id, $agent_id);
 
 
 $call_detail_data = q("select * from call_detail where sid='{$_REQUEST['CallSid']}'");
+$call_detail_fields['tenant_id'] = $GLOBALS['tenant_id'];
 $call_detail_fields['agent_phone'] = $cur_agent;
 $call_detail_fields['agent_id'] = $agent_id;
 $call_detail_fields['agent_name'] = $agent_name;
@@ -38,7 +42,7 @@ $call_detail_fields['deal_id'] = $dealId;
 $call_detail_fields['deal_added'] = $add_time;
 $call_detail_fields['sid'] = $_REQUEST['CallSid'];
 $call_detail_id = qi('call_detail',  _escapeArray($call_detail_fields));
-qu("agent_call_dialed",  _escapeArray(array("is_updated"=>"1")),"deal_id='".$dealId."'");
+qu("agent_call_dialed",  _escapeArray(array("is_updated"=>"1")),"tenant_id='".$GLOBALS['tenant_id']."' AND deal_id='".$dealId."'");
 
 
 $fields['subject'] = 'Call';
@@ -63,9 +67,9 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 ?>
 <Response>
     <Say>Connecting to customer!</Say>    
-    <Dial record="record-from-answer" action="<?php print _U; ?>RecordCallBack/<?php print $cur_agent; ?>/<?php print $dealId; ?>/<?php print $phone_value; ?>/<?php print $cur_agent; ?>" >        
+    <Dial record="record-from-answer" action="<?php print _U; ?>RecordCallBack/<?php print $cur_agent; ?>/<?php print $dealId; ?>/<?php print $phone_value; ?>/<?php print $cur_agent; ?>/<?php print $GLOBALS['tenant_id']; ?>" >        
         <Number statusCallbackEvent="answered"
-                statusCallback="<?php print _U; ?>AgentCallLog/<?php print $cur_agent; ?>/<?php print $dealId; ?>/<?php print $phone_value; ?>/<?php print $cur_agent; ?>"
+                statusCallback="<?php print _U; ?>AgentCallLog/<?php print $cur_agent; ?>/<?php print $dealId; ?>/<?php print $phone_value; ?>/<?php print $cur_agent; ?>/<?php print $GLOBALS['tenant_id']; ?>"
                 statusCallbackMethod="POST"><?php print $phone_value; ?></Number>
     </Dial>        
 </Response><?php die; ?>

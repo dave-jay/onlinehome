@@ -3,10 +3,11 @@
 	// just add an entry - for deal id and call sid
 	// to later hang the call
 	// when the other agent picks up the code
+    $GLOBALS['tenant_id'] = $_REQUEST['tenant_id'];
     if($_REQUEST['CallStatus']=='no-answer' || $_REQUEST['CallStatus']=='busy'){
         header("content-type: text/xml");
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";        
-        qu("voice_call", array("in_progress" => "0"), "deal_id='" . $_REQUEST['dealId'] . "'"); //Set in_progress=0 because call process is completed
+        qu("voice_call", array("in_progress" => "0"), "tenant_id='".$GLOBALS['tenant_id']."' AND deal_id='" . $_REQUEST['dealId'] . "'"); //Set in_progress=0 because call process is completed
         echo "<Response><say>Call Status - {$_REQUEST['CallStatus']}</say></Response>";
         die;
     }else if($_REQUEST['CallStatus']=='ringing'){
@@ -16,7 +17,7 @@
     $dealId = _e($_REQUEST['dealId'],"T{$rand}");
     $phone_value = urlencode($_REQUEST['phone_value']);
     $cur_agent = $_REQUEST['cur_agent'];
-    qi("deal_sid",array("deal_id"=>$dealId,"sid"=>$_REQUEST['CallSid']));    
+    qi("deal_sid",array("tenant_id"=>$GLOBALS['tenant_id'],"deal_id"=>$dealId,"sid"=>$_REQUEST['CallSid']));    
 
     header("content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";

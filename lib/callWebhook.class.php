@@ -5,15 +5,15 @@ class callWebhook {
     public function callNow($phone_value, $agent_numbers, $dealId,$is_redial = "0",$group = "A") {
         $account_sid = $GLOBALS['ACCOUNT_SID'];
         $auth_token = $GLOBALS['AUTH_TOKEN'];
-        //$account_sid = 'AC4878ef9ccad9ce3b980fdd4d1d0f42ca';
-        //$auth_token = 'ea532dd88a9ee7fb43259da56a40a38f';
-        $call_status = qs("select *,value as call_status from config where `key` = 'CALL_STATUS'");
+        
+        if(!isset($GLOBALS['tenant_id'])) $GLOBALS['tenant_id']=1; //Temparary tenant_id set
+        $call_status = qs("select *,value as call_status from config where `key` = 'CALL_STATUS' and tenant_id='1'");
         if(strtolower($call_status['call_status'])!="on"){
-            qi("test",array("t"=>"call distribution is off.","payload"=>"someone is trying to call without permission!!!"));
+            addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "call distribution is off");
             die;
         }
         if($phone_value==''){
-            qi("activity_log",  _escapeArray(array("log"=>"Call can not be generated. Phone value is blank","deal_id"=>$dealId)));
+            addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "Call can not be generated. Phone value is blank for deal: ".$dealId);
             die;
         }
         if(IS_DEV_ENV && $is_redial=="0"){
@@ -31,17 +31,17 @@ class callWebhook {
 		//d($agent_numbers);
 		//d($filter_agent_number);
         if(empty($filter_agent_number['agent'])){
-            qi("activity_log",  _escapeArray(array("log"=>"We have no agents for group '$group' or any lower level. ","deal_id"=>$dealId)));
-            qu("agent_call_dialed",  array("is_aborted"=>"1"),"deal_id='".$dealId."'");
-            qu("voice_call",  array("in_progress"=>"0"),"deal_id='".$dealId."'");
+            addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "We have no agents for group '$group' or any lower level for deal: ".$dealId);
+            qu("agent_call_dialed",  array("is_aborted"=>"1"),"deal_id='".$dealId."' AND tenant_id='".$GLOBALS['tenant_id']."'");
+            qu("voice_call",  array("in_progress"=>"0"),"tenant_id='".$GLOBALS['tenant_id']."' AND deal_id='".$dealId."'");
             die;
         }
 		
 		
-        qi("agent_call_dialed",  _escapeArray(array("agent_numbers"=>$agent_numbers,"deal_id"=>$dealId,"is_redial"=>$is_redial,"customer_phone"=>$phone_value,"category"=>$filter_agent_number['group'])));
+        qi("agent_call_dialed",  _escapeArray(array("tenant_id"=>$GLOBALS['tenant_id'], "agent_numbers"=>$agent_numbers,"deal_id"=>$dealId,"is_redial"=>$is_redial,"customer_phone"=>$phone_value,"category"=>$filter_agent_number['group'])));
         $client = new Services_Twilio($account_sid, $auth_token);
-        $deal_sid_data = q("select * from deal_sid where status!='R' AND status!='C' AND deal_id='{$dealId}'");
-        qu("deal_sid", array("status" => "C"), " status!='R' AND status!='C' AND deal_id='{$dealId}'");
+        $deal_sid_data = q("select * from deal_sid where tenant_id='".$GLOBALS['tenant_id']."' AND status!='R' AND status!='C' AND deal_id='{$dealId}'");
+        qu("deal_sid", array("status" => "C"), "tenant_id='".$GLOBALS['tenant_id']."' AND status!='R' AND status!='C' AND deal_id='{$dealId}'");
 
         foreach ($deal_sid_data as $each_sid) {
             $call = $client->account->calls->get($each_sid['sid']);
@@ -56,7 +56,7 @@ class callWebhook {
                 //echo $each_agent."<br>";
                 $url_agent_calling = _U."DialingAgent?";
                 $url_agent_received = _U."ReceivedAgent?";
-                $params = ("agent_numbers=" . $agent_numbers . "&dealId=" . $dealId . "&phone_value=" . $phone_value . "&cur_agent=" . $each_agent);
+                $params = ("tenant_id=" . $GLOBALS['tenant_id'] . "&agent_numbers=" . $agent_numbers . "&dealId=" . $dealId . "&phone_value=" . $phone_value . "&cur_agent=" . $each_agent);
                 $url_agent_calling .= $params;
                 $url_agent_received .= $params;
 
@@ -136,7 +136,7 @@ class callWebhook {
     
     public static function filterAgentsByGroup($agent_numbers,$group){
         $filter_agent = array();
-		print $query = "select * from pd_users where is_active='1' and `group`='{$group}' and phone in ('$agent_numbers')";
+		print $query = "select * from pd_users where tenant_id='".$GLOBALS['tenant_id']."' AND is_active='1' and `group`='{$group}' and phone in ('$agent_numbers')";
         $agent_data = q($query);
 		d($agent_data);
 		

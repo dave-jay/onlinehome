@@ -28,3 +28,9 @@
 20 MAR 2018:
     ALTER TABLE `admin_users` ADD `unique_code` VARCHAR(50) NOT NULL AFTER `id`;
     UPDATE `admin_users` SET `unique_code` = '1' WHERE `admin_users`.`id` = 1;
+
+22 MAR 2018:
+    ALTER TABLE `agent_call_dialed` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+    UPDATE `agent_call_dialed` SET `tenant_id` = '1';
+    ALTER TABLE `deal_sid` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+    UPDATE `deal_sid` SET `tenant_id` = '1';

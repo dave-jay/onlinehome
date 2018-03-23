@@ -1,12 +1,14 @@
 <?php
 
+$GLOBALS['tenant_id'] = $_REQUEST['tenant_id'];
+include _PATH.'instance/front/controller/define_settings.inc.php';
 $agent_numbers = $_REQUEST['agent_numbers'];
 $dealId = _e($_REQUEST['dealId'], '0');
 $phone_value = urlencode($_REQUEST['phone_value']);
 $cur_agent = $_REQUEST['cur_agent'];
-$_SESSION['REQUEST'] = array("agent_numbers"=> $agent_numbers , "dealId" => $dealId , "phone_value" => $phone_value, "cur_agent" => $cur_agent);
+$_SESSION['REQUEST'] = array("tenant_id"=> $GLOBALS['tenant_id'] ,"agent_numbers"=> $agent_numbers , "dealId" => $dealId , "phone_value" => $phone_value, "cur_agent" => $cur_agent);
 
-$status = qs("select * from deal_sid where status = 'A' and deal_id = '{$dealId}'  ");
+$status = qs("select * from deal_sid where tenant_id='".$GLOBALS['tenant_id']."' AND status = 'A' AND deal_id = '{$dealId}'  ");
 if(count($status) > 0 ){
         header("content-type: text/xml");
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -21,7 +23,7 @@ if(count($status) > 0 ){
 qu("deal_sid", array("status" => 'A'), "sid='" . $_REQUEST['CallSid'] . "'");
 
 
-$apiPD = new apiPipeDrive();
+$apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
 
 $account_sid = $GLOBALS['ACCOUNT_SID'];
 $auth_token = $GLOBALS['AUTH_TOKEN'];
@@ -29,8 +31,8 @@ include _PATH . "/Services/Twilio.php";
 $client = new Services_Twilio($account_sid, $auth_token);
 
 // call first
-$data = q("select * from deal_sid where deal_id='{$dealId}' AND status!='C' AND sid!='{$_REQUEST['CallSid']}'");
-qu("deal_sid", array("status" => 'R'), "deal_id='{$dealId}' AND status!='C' AND sid !='{$_REQUEST['CallSid']}'");
+$data = q("select * from deal_sid where tenant_id='".$GLOBALS['tenant_id']."' AND deal_id='{$dealId}' AND status!='C' AND sid!='{$_REQUEST['CallSid']}'");
+qu("deal_sid", array("status" => 'R'), "tenant_id='".$GLOBALS['tenant_id']."' AND deal_id='{$dealId}' AND status!='C' AND sid !='{$_REQUEST['CallSid']}'");
 
 if (count($data) > 0) {
 	foreach ($data as $each_data) {
@@ -67,7 +69,7 @@ if(isset($deal_data->data->org_id->value)){
     }
 }
 $agent_name = '';
-$agent_detail = qs("select * from pd_users where phone like '%".$cur_agent."%'");
+$agent_detail = qs("select * from pd_users where tenant_id='".$GLOBALS['tenant_id']."' AND phone like '%".$cur_agent."%'");
 if(isset($agent_detail)){
     $agent_name = $agent_detail['name'];
 }

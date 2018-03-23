@@ -1,17 +1,21 @@
 <?php
 //d($_REQUEST);
 $urlArgs = _cg("url_vars");
-$agent = qs("select pd_id,name from pd_users where phone = '{$urlArgs[0]}'   ");
+$GLOBALS['tenant_id'] = $urlArgs[4];
+include _PATH.'instance/front/controller/define_settings.inc.php';
+
+$agent = qs("select pd_id,name from pd_users where tenant_id='".$GLOBALS['tenant_id']."' AND phone = '{$urlArgs[0]}'   ");
 $agent_id = $agent['pd_id'];
 $agent_name = $agent['name'];
 $recording_url = (isset($_REQUEST['RecordingUrl'])?$_REQUEST['RecordingUrl']:'');
 $recording_duration = (isset($_REQUEST['RecordingDuration'])?$_REQUEST['RecordingDuration']:'0');
 //qi('config',array("key"=>$agent_id,"value"=>$urlArgs[1]));
 
-$apiPD = new apiPipeDrive();
+$apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
 //$apiPD->assignDeal($urlArgs[1], $agent_id);
 
 $call_detail_data = q("select * from call_detail where sid='{$_REQUEST['CallSid']}'");
+$call_detail_fields['tenant_id'] = $GLOBALS['tenant_id'];
 $call_detail_fields['agent_phone'] = $urlArgs[0];
 $call_detail_fields['agent_id'] = $agent_id;
 $call_detail_fields['agent_name'] = $agent_name;
