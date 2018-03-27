@@ -1,13 +1,16 @@
 <?php
 
-date_default_timezone_set('America/Chicago');
+$unique_code = $_REQUEST['unique_code'];
+include _PATH.'instance/front/controller/define_settings.inc.php';
+
+//date_default_timezone_set('America/Chicago');
 $tz = new DateTimeZone('Asia/Kolkata');
 $filter_array = array('488' => 'Prospects');
 
 $start_record_from = 0;
 $no_of_records = 100;
 
-$apiPD = new apiPipeDrive();
+$apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
 $source_data = $apiPD->getDealField('12463');
 $stage_data = $apiPD->getAllStage();
 
@@ -36,6 +39,7 @@ foreach ($filter_array as $filter_id => $filter_stage_name) {
                 if ($each_deal['pipeline_id'] != '1')
                     continue;
                 $fields = array();
+                $fields['tenant_id'] = $GLOBALS['tenant_id'];
                 $fields['reference'] = strtotime(date('Y-m-d H:i:s')) . "" . $each_deal['id'] . mt_rand(1, 1000);
                 $fields['deal_id'] = $each_deal['id'];
                 $fields['agent_id'] = $each_deal['user_id']['id'];
@@ -52,10 +56,10 @@ foreach ($filter_array as $filter_id => $filter_stage_name) {
                 //$fields['initial_move_stage'] = $filter_stage_name;
                 $fields['stage_order_nr'] = $stage[$each_deal['stage_id']]['order_nr'];
 
-                $duplicate = qs("select * from dashboard_pipedrive_deals where deal_id = '{$fields['deal_id']}' and initial_move_stage = '{$fields['initial_move_stage']}'");
+                $duplicate = qs("select * from dashboard_pipedrive_deals where tenant_id='".$GLOBALS['tenant_id']."' AND deal_id = '{$fields['deal_id']}' and initial_move_stage = '{$fields['initial_move_stage']}'");
                 if (!empty($duplicate)) {
                     unset($fields['reference']);
-                    qu("dashboard_pipedrive_deals", _escapeArray($fields), "deal_id= '{$fields['deal_id']}' and initial_move_stage = '{$fields['initial_move_stage']}'");
+                    qu("dashboard_pipedrive_deals", _escapeArray($fields), "tenant_id='".$GLOBALS['tenant_id']."' AND deal_id= '{$fields['deal_id']}' and initial_move_stage = '{$fields['initial_move_stage']}'");
                     echo "<br> Record Update for deal: " . $fields['deal_id'];
                 } else {
                     $fields['pipedrive_added_date'] = $each_deal['add_time'];

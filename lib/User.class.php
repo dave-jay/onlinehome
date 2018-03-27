@@ -107,6 +107,13 @@ class User {
         }
         return $configs;
     }
+    public static function getSingleConfig($tenant_id,$key) {
+        $conf_data = qs("select * from config where tenant_id='{$tenant_id}' AND `key`='{$key}'");
+        if(isset($conf_data['value']))
+            return $conf_data['value'];
+        else 
+            return '';
+    }
 
     /**
      *  Kill the session

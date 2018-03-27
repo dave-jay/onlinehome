@@ -34,3 +34,21 @@
     UPDATE `agent_call_dialed` SET `tenant_id` = '1';
     ALTER TABLE `deal_sid` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
     UPDATE `deal_sid` SET `tenant_id` = '1';
+
+23 MAR 2018:
+    ALTER TABLE `active_campaign_contact` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+    UPDATE `active_campaign_contact` SET `tenant_id` = '1';
+    ALTER TABLE `sms_sequence` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+    UPDATE `sms_sequence` SET `tenant_id` = '1';
+    ALTER TABLE `sms_sequence_app_out` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+    UPDATE `sms_sequence_app_out` SET `tenant_id` = '1';
+    ALTER TABLE `email_sequence` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+    UPDATE `email_sequence` SET `tenant_id` = '1';
+    ALTER TABLE `email_sequence_app_out` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+    UPDATE `email_sequence_app_out` SET `tenant_id` = '1';
+    ALTER TABLE `admin_users` ADD `is_active` ENUM('0','1') NOT NULL DEFAULT '1' AFTER `password`;
+    ALTER TABLE `dashboard_stage_entering_deals` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+    UPDATE `dashboard_stage_entering_deals` SET `tenant_id` = '1';
+    ALTER TABLE `dashboard_pipedrive_deals` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+    UPDATE `dashboard_pipedrive_deals` SET `tenant_id` = '1';
+    
