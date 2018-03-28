@@ -52,3 +52,14 @@
     ALTER TABLE `dashboard_pipedrive_deals` ADD `tenant_id` INT NOT NULL DEFAULT '0' AFTER `id`;
     UPDATE `dashboard_pipedrive_deals` SET `tenant_id` = '1';
     
+
+    ALTER TABLE `sms_seq_time` ADD `dynamic_time` INT NOT NULL COMMENT '(in minute)' AFTER `time`;
+    ALTER TABLE `sms_seq_time` ADD `sms_text` TEXT NOT NULL AFTER `dynamic_time`;
+    ALTER TABLE `sms_seq_time_app_out` ADD `dynamic_time` INT NOT NULL COMMENT '(in minute)' AFTER `time`;
+    ALTER TABLE `sms_seq_time_app_out` ADD `sms_text` TEXT NOT NULL AFTER `dynamic_time`;
+
+    ALTER TABLE `email_seq_time` ADD `dynamic_time` INT NOT NULL COMMENT '(in minute)' AFTER `time`;
+    ALTER TABLE `email_seq_time` ADD `email_text` TEXT NOT NULL AFTER `dynamic_time`;
+    ALTER TABLE `email_seq_time_app_out` ADD `dynamic_time` INT NOT NULL COMMENT '(in minute)' AFTER `time`;
+    ALTER TABLE `email_seq_time_app_out` ADD `email_text` TEXT NOT NULL AFTER `dynamic_time`;
+    ALTER TABLE `email_seq_time` ADD `email_subject` VARCHAR(500) NOT NULL AFTER `dynamic_time`;

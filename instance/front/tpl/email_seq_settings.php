@@ -5,55 +5,247 @@
 <div class="page_body">
     <div class="panel-body">   
         <form action="" method="post" id="userForm" novalidate="novalidate">
-            <div class="form-group">
-                <div class="col-lg-1 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
-                    <label class="form-lbl">Day1 Time : </label>
+            <div class="my_box first_box" >
+                <div class="my_box_heading">
+                    <div style="float: left;">Day1 Email</div>
+                    <div style="float: right;" class="fade_icon"><i class="fa fa-plus"></i></div>
                 </div>
-                <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                    <input value="<?php echo $data['day1_1_sent']['time']; ?>" name="day1_1_sent" id="day1_1_sent" class="form-control">
-                </div>  
-                <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12"><input type="checkbox" id="chk_day1_1_sent" /><label for="chk_day1_1_sent">&nbsp;Active</label> </div>
-            </div>
-            <div class="clear-space" style="clear:both;">&nbsp;</div>
-            <div class="form-group">
-                <div class="col-lg-1 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
-                    <label class="form-lbl">Day2 Time : </label>
+                <div class="my_box_body">
+                    <div style="overflow: auto;" class="form-group">
+                        <div style="padding-right: 0px;" class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                            <label class="form-lbl">Time : </label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <div>
+                                <input type="radio" class="radio_group" data-id="day1_1" data-type="fixed" id="rd_day1_1_sent_fixed" name="rd_day1_1_sent" value="fixed" <?php echo $data['day1_1_sent']['is_active']=="1"?"checked":""; ?>>&nbsp;<label for="rd_day1_1_sent_fixed">Fixed Time</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="radio_group" data-id="day1_1" data-type="dynamic" id="rd_day1_1_sent_dynamic" name="rd_day1_1_sent" value="dynamic" <?php echo $data['day1_1_sent']['is_active']!="1"?"checked":""; ?>>&nbsp;<label for="rd_day1_1_sent_dynamic">Dynamic Time</label>
+                            </div>
+                            <input style="<?php echo $data['day1_1_sent']['is_active']!="1"?"display:none;":""; ?>" aria-invalid="false" name="day1_1_sent" id="day1_1_sent" value="<?php echo $data['day1_1_sent']['time']; ?>" class="form-control valid">
+                            <select style="<?php echo $data['day1_1_sent']['is_active']=="1"?"display:none;":""; ?>"  name="day1_1_sent_dynamic_time" id="day1_1_sent_dynamic_time" class="form-control valid">
+                                <option value="0" <?php echo $data['day1_1_sent']['dynamic_time']==0?"selected":""; ?>>Instant</option>
+                                <option value="60" <?php echo $data['day1_1_sent']['dynamic_time']==60?"selected":""; ?>>After 1 hour</option>
+                                <option value="120" <?php echo $data['day1_1_sent']['dynamic_time']==120?"selected":""; ?>>After 2 hour</option>
+                                <option value="180" <?php echo $data['day1_1_sent']['dynamic_time']==180?"selected":""; ?>>After 3 hour</option>
+                                <option value="240" <?php echo $data['day1_1_sent']['dynamic_time']==240?"selected":""; ?>>After 4 hour</option>
+                                <option value="300" <?php echo $data['day1_1_sent']['dynamic_time']==300?"selected":""; ?>>After 5 hour</option>
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="form-group" style="clear: both; overflow: auto;">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
+                            <label class="form-lbl">Email Subject</label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <input type="text" class="form-control valid" id="day1_1_sent_sub" name="day1_1_sent_sub" aria-invalid="false" value="<?php echo $data['day1_1_sent']['email_subject']; ?>" />
+                        </div>  
+
+                    </div>
+                    <div class="form-group" style="clear: both; overflow: auto;">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
+                            <label class="form-lbl">Email Content</label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <textarea class="form-control valid" id="day1_1_sent_text" name="day1_1_sent_text" aria-invalid="false"><?php echo $data['day1_1_sent']['email_text']; ?></textarea>
+                        </div>  
+
+                    </div>
                 </div>
-                <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                    <input value="<?php echo $data['day2_1_sent']['time']; ?>" name="day2_1_sent" id="day2_1_sent" class="form-control">
-                </div>   <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12"><input type="checkbox" id="chk_day2_1_sent" /><label for="chk_day2_1_sent">&nbsp;Active</label> </div>
+                <div style="clear:both;"></div>                    
             </div>            
             <div class="clear-space" style="clear:both;">&nbsp;</div>
-            <div class="form-group">
-                <div class="col-lg-1 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
-                    <label class="form-lbl">Day3 Time : </label>
+            <div class="my_box" >
+                <div class="my_box_heading">
+                    <div style="float: left;">Day2 Email</div>
+                    <div style="float: right;" class="fade_icon"><i class="fa fa-plus"></i></div>
                 </div>
-                <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                    <input value="<?php echo $data['day3_1_sent']['time']; ?>" name="day3_1_sent" id="day3_1_sent" class="form-control">
+                <div class="my_box_body">
+                    <div style="overflow: auto;" class="form-group">
+                        <div style="padding-right: 0px;" class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                            <label class="form-lbl">Time : </label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <div>
+                                <input type="radio" class="radio_group" data-id="day2_1" data-type="fixed" id="rd_day2_1_sent_fixed" name="rd_day2_1_sent" value="fixed" <?php echo $data['day2_1_sent']['is_active']=="1"?"checked":""; ?>>&nbsp;<label for="rd_day2_1_sent_fixed">Fixed Time</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="radio_group" data-id="day2_1" data-type="dynamic" id="rd_day2_1_sent_dynamic" name="rd_day2_1_sent" value="dynamic" <?php echo $data['day2_1_sent']['is_active']!="1"?"checked":""; ?>>&nbsp;<label for="rd_day2_1_sent_dynamic">Dynamic Time</label>
+                            </div>
+                            <input style="<?php echo $data['day2_1_sent']['is_active']!="1"?"display:none;":""; ?>" aria-invalid="false" name="day2_1_sent" id="day2_1_sent" value="<?php echo $data['day2_1_sent']['time']; ?>" class="form-control valid">
+                            <select style="<?php echo $data['day2_1_sent']['is_active']=="1"?"display:none;":""; ?>"  name="day2_1_sent_dynamic_time" id="day2_1_sent_dynamic_time" class="form-control valid">
+                                <option value="0" <?php echo $data['day2_1_sent']['dynamic_time']==0?"selected":""; ?>>Instant</option>
+                                <option value="60" <?php echo $data['day2_1_sent']['dynamic_time']==60?"selected":""; ?>>After 1 hour</option>
+                                <option value="120" <?php echo $data['day2_1_sent']['dynamic_time']==120?"selected":""; ?>>After 2 hour</option>
+                                <option value="180" <?php echo $data['day2_1_sent']['dynamic_time']==180?"selected":""; ?>>After 3 hour</option>
+                                <option value="240" <?php echo $data['day2_1_sent']['dynamic_time']==240?"selected":""; ?>>After 4 hour</option>
+                                <option value="300" <?php echo $data['day2_1_sent']['dynamic_time']==300?"selected":""; ?>>After 5 hour</option>
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="form-group" style="clear: both; overflow: auto;">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
+                            <label class="form-lbl">Email Subject</label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <input type="text" class="form-control valid" id="day2_1_sent_sub" name="day2_1_sent_sub" aria-invalid="false" value="<?php echo $data['day2_1_sent']['email_subject']; ?>" />
+                        </div>  
+
+                    </div>
+                    <div class="form-group" style="clear: both; overflow: auto;">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
+                            <label class="form-lbl">Email Content</label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <textarea class="form-control valid" id="day2_1_sent_text" name="day2_1_sent_text" aria-invalid="false"><?php echo $data['day2_1_sent']['email_text']; ?></textarea>
+                        </div>  
+
+                    </div>
                 </div>
-                <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12"><input type="checkbox" id="chk_day3_1_sent" /><label for="chk_day3_1_sent">&nbsp;Active</label> </div>
-            </div> 
+                <div style="clear:both;"></div>                    
+            </div>   
             <div class="clear-space" style="clear:both;">&nbsp;</div>
-            <div class="form-group">
-                <div class="col-lg-1 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
-                    <label class="form-lbl">Day4 Time : </label>
+            <div class="my_box" >
+                <div class="my_box_heading">
+                    <div style="float: left;">Day3 Email</div>
+                    <div style="float: right;" class="fade_icon"><i class="fa fa-plus"></i></div>
                 </div>
-                <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                    <input value="<?php echo $data['day4_1_sent']['time']; ?>" name="day4_1_sent" id="day4_1_sent" class="form-control">
-                </div>  
-                <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12"><input type="checkbox" id="chk_day4_1_sent" /><label for="chk_day4_1_sent">&nbsp;Active</label> </div>
-            </div> 
+                <div class="my_box_body">
+                    <div style="overflow: auto;" class="form-group">
+                        <div style="padding-right: 0px;" class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                            <label class="form-lbl">Time : </label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <div>
+                                <input type="radio" class="radio_group" data-id="day3_1" data-type="fixed" id="rd_day3_1_sent_fixed" name="rd_day3_1_sent" value="fixed" <?php echo $data['day3_1_sent']['is_active']=="1"?"checked":""; ?>>&nbsp;<label for="rd_day3_1_sent_fixed">Fixed Time</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="radio_group" data-id="day3_1" data-type="dynamic" id="rd_day3_1_sent_dynamic" name="rd_day3_1_sent" value="dynamic" <?php echo $data['day3_1_sent']['is_active']!="1"?"checked":""; ?>>&nbsp;<label for="rd_day3_1_sent_dynamic">Dynamic Time</label>
+                            </div>
+                            <input style="<?php echo $data['day3_1_sent']['is_active']!="1"?"display:none;":""; ?>" aria-invalid="false" name="day3_1_sent" id="day3_1_sent" value="<?php echo $data['day3_1_sent']['time']; ?>" class="form-control valid">
+                            <select style="<?php echo $data['day3_1_sent']['is_active']=="1"?"display:none;":""; ?>"  name="day3_1_sent_dynamic_time" id="day3_1_sent_dynamic_time" class="form-control valid">
+                                <option value="0" <?php echo $data['day3_1_sent']['dynamic_time']==0?"selected":""; ?>>Instant</option>
+                                <option value="60" <?php echo $data['day3_1_sent']['dynamic_time']==60?"selected":""; ?>>After 1 hour</option>
+                                <option value="120" <?php echo $data['day3_1_sent']['dynamic_time']==120?"selected":""; ?>>After 2 hour</option>
+                                <option value="180" <?php echo $data['day3_1_sent']['dynamic_time']==180?"selected":""; ?>>After 3 hour</option>
+                                <option value="240" <?php echo $data['day3_1_sent']['dynamic_time']==240?"selected":""; ?>>After 4 hour</option>
+                                <option value="300" <?php echo $data['day3_1_sent']['dynamic_time']==300?"selected":""; ?>>After 5 hour</option>
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="form-group" style="clear: both; overflow: auto;">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
+                            <label class="form-lbl">Email Subject</label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <input type="text" class="form-control valid" id="day3_1_sent_sub" name="day3_1_sent_sub" aria-invalid="false" value="<?php echo $data['day3_1_sent']['email_subject']; ?>" />
+                        </div>  
+
+                    </div>
+                    <div class="form-group" style="clear: both; overflow: auto;">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
+                            <label class="form-lbl">Email Content</label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <textarea class="form-control valid" id="day3_1_sent_text" name="day3_1_sent_text" aria-invalid="false"><?php echo $data['day3_1_sent']['email_text']; ?></textarea>
+                        </div>  
+
+                    </div>
+                </div>
+                <div style="clear:both;"></div>                    
+            </div>   
             <div class="clear-space" style="clear:both;">&nbsp;</div>
-            <div class="form-group">
-                <div class="col-lg-1 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
-                    <label class="form-lbl">Day5 Time : </label>
+            <div class="my_box" >
+                <div class="my_box_heading">
+                    <div style="float: left;">Day4 Email</div>
+                    <div style="float: right;" class="fade_icon"><i class="fa fa-plus"></i></div>
                 </div>
-                <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                    <input value="<?php echo $data['day5_1_sent']['time']; ?>" name="day5_1_sent" id="day5_1_sent" class="form-control">
-                </div>   
-                <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12"><input type="checkbox" id="chk_day5_1_sent" /><label for="chk_day5_1_sent">&nbsp;Active</label> </div>
-            </div>
-            <div class="clear-space hidden-lg hidden-md">&nbsp;</div>
+                <div class="my_box_body">
+                    <div style="overflow: auto;" class="form-group">
+                        <div style="padding-right: 0px;" class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                            <label class="form-lbl">Time : </label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <div>
+                                <input type="radio" class="radio_group" data-id="day4_1" data-type="fixed" id="rd_day4_1_sent_fixed" name="rd_day4_1_sent" value="fixed" <?php echo $data['day4_1_sent']['is_active']=="1"?"checked":""; ?>>&nbsp;<label for="rd_day4_1_sent_fixed">Fixed Time</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="radio_group" data-id="day4_1" data-type="dynamic" id="rd_day4_1_sent_dynamic" name="rd_day4_1_sent" value="dynamic" <?php echo $data['day4_1_sent']['is_active']!="1"?"checked":""; ?>>&nbsp;<label for="rd_day4_1_sent_dynamic">Dynamic Time</label>
+                            </div>
+                            <input style="<?php echo $data['day4_1_sent']['is_active']!="1"?"display:none;":""; ?>" aria-invalid="false" name="day4_1_sent" id="day4_1_sent" value="<?php echo $data['day4_1_sent']['time']; ?>" class="form-control valid">
+                            <select style="<?php echo $data['day4_1_sent']['is_active']=="1"?"display:none;":""; ?>"  name="day4_1_sent_dynamic_time" id="day4_1_sent_dynamic_time" class="form-control valid">
+                                <option value="0" <?php echo $data['day4_1_sent']['dynamic_time']==0?"selected":""; ?>>Instant</option>
+                                <option value="60" <?php echo $data['day4_1_sent']['dynamic_time']==60?"selected":""; ?>>After 1 hour</option>
+                                <option value="120" <?php echo $data['day4_1_sent']['dynamic_time']==120?"selected":""; ?>>After 2 hour</option>
+                                <option value="180" <?php echo $data['day4_1_sent']['dynamic_time']==180?"selected":""; ?>>After 3 hour</option>
+                                <option value="240" <?php echo $data['day4_1_sent']['dynamic_time']==240?"selected":""; ?>>After 4 hour</option>
+                                <option value="300" <?php echo $data['day4_1_sent']['dynamic_time']==300?"selected":""; ?>>After 5 hour</option>
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="form-group" style="clear: both; overflow: auto;">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
+                            <label class="form-lbl">Email Subject</label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <input type="text" class="form-control valid" id="day4_1_sent_sub" name="day4_1_sent_sub" aria-invalid="false" value="<?php echo $data['day4_1_sent']['email_subject']; ?>" />
+                        </div>  
+
+                    </div>
+                    <div class="form-group" style="clear: both; overflow: auto;">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
+                            <label class="form-lbl">Email Content</label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <textarea class="form-control valid" id="day4_1_sent_text" name="day4_1_sent_text" aria-invalid="false"><?php echo $data['day4_1_sent']['email_text']; ?></textarea>
+                        </div>  
+
+                    </div>
+                </div>
+                <div style="clear:both;"></div>                    
+            </div>   
+            <div class="clear-space" style="clear:both;">&nbsp;</div>
+            <div class="my_box" >
+                <div class="my_box_heading">
+                    <div style="float: left;">Day5 Email</div>
+                    <div style="float: right;" class="fade_icon"><i class="fa fa-plus"></i></div>
+                </div>
+                <div class="my_box_body">
+                    <div style="overflow: auto;" class="form-group">
+                        <div style="padding-right: 0px;" class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                            <label class="form-lbl">Time : </label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <div>
+                                <input type="radio" class="radio_group" data-id="day5_1" data-type="fixed" id="rd_day5_1_sent_fixed" name="rd_day5_1_sent" value="fixed" <?php echo $data['day5_1_sent']['is_active']=="1"?"checked":""; ?>>&nbsp;<label for="rd_day5_1_sent_fixed">Fixed Time</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="radio_group" data-id="day5_1" data-type="dynamic" id="rd_day5_1_sent_dynamic" name="rd_day5_1_sent" value="dynamic" <?php echo $data['day5_1_sent']['is_active']!="1"?"checked":""; ?>>&nbsp;<label for="rd_day5_1_sent_dynamic">Dynamic Time</label>
+                            </div>
+                            <input style="<?php echo $data['day5_1_sent']['is_active']!="1"?"display:none;":""; ?>" aria-invalid="false" name="day5_1_sent" id="day5_1_sent" value="<?php echo $data['day5_1_sent']['time']; ?>" class="form-control valid">
+                            <select style="<?php echo $data['day5_1_sent']['is_active']=="1"?"display:none;":""; ?>"  name="day5_1_sent_dynamic_time" id="day5_1_sent_dynamic_time" class="form-control valid">
+                                <option value="0" <?php echo $data['day5_1_sent']['dynamic_time']==0?"selected":""; ?>>Instant</option>
+                                <option value="60" <?php echo $data['day5_1_sent']['dynamic_time']==60?"selected":""; ?>>After 1 hour</option>
+                                <option value="120" <?php echo $data['day5_1_sent']['dynamic_time']==120?"selected":""; ?>>After 2 hour</option>
+                                <option value="180" <?php echo $data['day5_1_sent']['dynamic_time']==180?"selected":""; ?>>After 3 hour</option>
+                                <option value="240" <?php echo $data['day5_1_sent']['dynamic_time']==240?"selected":""; ?>>After 4 hour</option>
+                                <option value="300" <?php echo $data['day5_1_sent']['dynamic_time']==300?"selected":""; ?>>After 5 hour</option>
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="form-group" style="clear: both; overflow: auto;">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
+                            <label class="form-lbl">Email Subject</label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <input type="text" class="form-control valid" id="day5_1_sent_sub" name="day5_1_sent_sub" aria-invalid="false" value="<?php echo $data['day5_1_sent']['email_subject']; ?>" />
+                        </div>  
+
+                    </div>
+                    <div class="form-group" style="clear: both; overflow: auto;">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
+                            <label class="form-lbl">Email Content</label>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
+                            <textarea class="form-control valid" id="day5_1_sent_text" name="day5_1_sent_text" aria-invalid="false"><?php echo $data['day5_1_sent']['email_text']; ?></textarea>
+                        </div>  
+
+                    </div>
+                </div>
+                <div style="clear:both;"></div>                    
+            </div>   
+            <div class="clear-space" style="clear:both;">&nbsp;</div>
+
 
             <div class="clear-space">&nbsp;</div>
 
@@ -88,6 +280,15 @@
     <style>
         .form-lbl{
             padding-top: 4px;
+        }
+        .my_box{
+            border: 1px solid #1294d5; border-radius: 4px; margin-bottom: 10px;
+        }
+        .my_box_heading{
+            padding: 6px; overflow: auto; background-color: #1294d5; color: white;cursor:pointer;
+        }
+        .my_box_body{
+            padding-top: 14px;display: none;
         }
     </style>
 
