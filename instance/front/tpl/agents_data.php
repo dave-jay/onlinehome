@@ -8,6 +8,7 @@
     <span style="font-weight: normal; font-size: 11px;">Note: At a time, only one agent can be mark as default owner</span></td>
     <td style="width: 10%;font-weight:bold;background-color:#1294d5;color:white;">Action</td>
 </tr>
+<?php if(count($agents)>0): ?>
 <?php foreach ($agents as $each_agents): 
     if($each_agents['is_default']==1): ?>
     <tr style="background-color: #E6E6FA;">
@@ -41,3 +42,8 @@
     </tr>
     <?php endif; ?>
 <?php endforeach; ?>
+    <?php else: ?>
+    <tr>
+        <td colspan="10" style="border-bottom: 1px solid #ddd ;color:#6f6f6f;text-align: center;font-size:15px;">No records found!  Please click on 'Sync User With Pipedrive' button.</td>
+    </tr>
+<?php endif; ?>

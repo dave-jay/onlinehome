@@ -40,6 +40,10 @@ class User {
         $insert_id = qi("admin_users",  $data);        
         return empty($insert_id) ? false : true;
     }
+    public static function createUniqueCode($tenant_id) {
+        $_SESSION['user']['unique_code'] = $data['unique_code'] = $tenant_id;        
+        qu("admin_users",  $data,"id='{$tenant_id}'");
+    }
 
     /**
      * Direct the login
@@ -93,7 +97,7 @@ class User {
         $_SESSION['user'] = self::$user_data;
     }
     public static function setDefaults($tenant_id) {
-        $fields = q("select key,value from config where tenant_id=0");
+        $fields = q("select `key`,`value` from config where tenant_id=0");
         foreach($fields as $each){
             $each['tenant_id'] = $tenant_id;
             qi("config",  _escapeArray($each));            

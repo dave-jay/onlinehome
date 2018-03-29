@@ -2,6 +2,13 @@
 <div class="MyPageHeader">
     Source Dashboard
 </div>
+<?php
+ if(count($data_curr)==0 || count($data_prev)==0){
+     echo "<div id=''>Currently no records available for dashboard.</div>";
+     
+ }else {
+     $jsInclude = "pipedrive-dashboard-source.js.php";
+?>
 <div style="text-align: center;margin: 30px 30px 10px 30px;">
     <div class="btn-group source-btn-group" role="group" aria-label="...">
         <button type="button" id="btn-TODAY" class="btn btn-default duration-btn" onclick="changeDashboard('TODAY')">Today</button>
@@ -155,3 +162,5 @@
         font-family: "Lucida Grande","Lucida Sans Unicode",Verdana,Arial,Helvetica,sans-serif;
     }
 </style>
+
+ <?php } ?>

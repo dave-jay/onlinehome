@@ -16,6 +16,7 @@ if ($_REQUEST['submit']) {
             User::doDirectQuoteLogin($_REQUEST['email']);
             User::setSession($_REQUEST['email']);
             $_SESSION['user']['tenant_id'] = $_SESSION['user']['id'];
+            User::createUniqueCode($_SESSION['user']['tenant_id']);
             User::setDefaults($_SESSION['user']['tenant_id']);
             User::setConfig($_SESSION['user']['tenant_id']); 
             _R(lr('plans'));

@@ -9,8 +9,6 @@
  * @package lysoft
  * 
  */
-$jsInclude = "pipedrive-dashboard-source.js.php";
-
 
 $dashboard_title = "Source - Current Month";
 //$curr_month = '5';
@@ -91,7 +89,7 @@ SELECT source, count(*) as `Total Deals`,
             (select count(*) from dashboard_pipedrive_deals as in_table where added_date >= '$curr_start_date' AND added_date <= '$curr_end_date' AND out_table.source=in_table.source AND in_table.curr_stage='Approved') approved_count , 
             (select count(*) from dashboard_pipedrive_deals as in_table where added_date >= '$curr_start_date' AND added_date <= '$curr_end_date' AND out_table.source=in_table.source AND in_table.curr_stage='Funded') funded_count 
         FROM `dashboard_pipedrive_deals` as out_table 
-WHERE   added_date >= '$curr_start_date' AND added_date <= '$curr_end_date' AND 
+WHERE  tenant_id='{$_SESSION['user']['tenant_id']}' AND  added_date >= '$curr_start_date' AND added_date <= '$curr_end_date' AND 
         source!='' 
 GROUP BY `out_table`.`source` 
 ORDER BY `Total Deals` DESC
@@ -102,7 +100,7 @@ SELECT source, count(*) as `Total Deals`,
             (select count(*) from dashboard_pipedrive_deals as in_table where added_date >= '$prev_start_date' AND added_date <= '$prev_end_date' AND out_table.source=in_table.source AND in_table.curr_stage='Approved') approved_count , 
             (select count(*) from dashboard_pipedrive_deals as in_table where added_date >= '$prev_start_date' AND added_date <= '$prev_end_date' AND out_table.source=in_table.source AND in_table.curr_stage='Funded') funded_count 
         FROM `dashboard_pipedrive_deals` as out_table 
-WHERE    added_date >= '$prev_start_date' AND added_date <= '$prev_end_date' AND 
+WHERE tenant_id='{$_SESSION['user']['tenant_id']}' AND  added_date >= '$prev_start_date' AND added_date <= '$prev_end_date' AND 
         source!='' 
 GROUP BY `out_table`.`source` 
 ORDER BY `Total Deals` DESC

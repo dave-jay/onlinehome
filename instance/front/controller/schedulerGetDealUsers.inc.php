@@ -1,5 +1,5 @@
 <?php
-$api = new apiPipeDrive();
+$api = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
 $data = $api->getAllUsers();
 $data = json_decode($data, true);
 $user_list_data = array();
@@ -7,7 +7,7 @@ $user_list_data = $data["data"];
 if (!empty($user_list_data)) {
     unset($fields);
     $fields["is_deleted"] = 1;
-    qu("pd_users", $fields, " 1=1 ");
+    qu("pd_users", $fields, " tenant_id='{$GLOBALS['tenant_id'] }' ");
 
     foreach ($user_list_data as $each_user):
         d($each_user);
@@ -19,6 +19,7 @@ if (!empty($user_list_data)) {
             echo $check_user_id . "****" . $each_user["name"];
             echo "<br/>";
             unset($fields);
+            $fields["tenant_id"] = $GLOBALS['tenant_id'];
             $fields["name"] = $each_user["name"];
             $fields["email"] = $each_user["email"];
             $fields["phone"] = $each_user["phone"];

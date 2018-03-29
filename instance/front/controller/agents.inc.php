@@ -1,4 +1,6 @@
 <?php
+$GLOBALS['tenant_id'] = $_SESSION['user']['tenant_id'];
+include _PATH.'instance/front/controller/define_settings.inc.php';
 
 if ($_REQUEST['syncUser']) {
     include _PATH . 'instance/front/controller/schedulerGetDealUsers.inc.php';
