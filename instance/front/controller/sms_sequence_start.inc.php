@@ -3,11 +3,11 @@
 $apiCall = new callWebhook();
 $all_tenants = q("select * from admin_users where is_active='1'");
 foreach($all_tenants as $each_tenant):
-    $GLOBALS['tenant_id'] = $each_tenant['tenant_id'];
+    $GLOBALS['tenant_id'] = $each_tenant['id'];
     include _PATH.'instance/front/controller/define_settings.inc.php';
     
     if(strtolower($conf_data['SEQUENCE_STATUS'])!="on"){
-        die;        
+        continue;        
     }
     
     $need_to_start_data = qs("select * from active_campaign_contact where tenant_id='{$GLOBALS['tenant_id']}' AND  need_to_start='1' order by created_at desc");
@@ -17,11 +17,11 @@ foreach($all_tenants as $each_tenant):
             qu("active_campaign_contact",array("need_to_start"=>"0"),"id='{$need_to_start_data['id']}'");            
         }else{
             echo "please wait for ".((strtotime($need_to_start_data['modified_at'])+60)-time())." sec";
-            die;
+            continue;
         }
     }else{
         echo "no new deal is coming";
-        die;
+        continue;
     }
     //Getting Deal Info and change stage if pipeline id is '1' (i.e. for "Leads")
     $apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
@@ -60,7 +60,7 @@ foreach($all_tenants as $each_tenant):
         $pipedrive_stage = $deal_info['data']['stage_id'];
     } else {
         qi('active_campaign_log', array("log" => "Add: Deal info not found. " . json_decode($data)));
-        die;
+        continue;
     }
     echo "<br>4";
     $org_data = $apiPD->getOrganizationInfo($org_id);
@@ -136,7 +136,7 @@ foreach($all_tenants as $each_tenant):
             qd("sms_sequence", "id='{$sms_seq_data['id']}'");
         }
         $time_zone_arr = getTimeZoneByPhone($phone, "1");
-        qi("sms_sequence", _escapeArray(array("customer_name" => $fname.' '.$lname,"agent_name" => $agent,"org_name" => $org,"deal_name" => $deal_info['data']['title'],"phone" => $phone, "deal_amount" => $deal_amount, "last10phone" => last10Char($phone), "state_code" => $time_zone_arr['state_code'], "state" => $time_zone_arr['state'], "area_code" => $time_zone_arr['area_code'], "timezone" => $time_zone_arr['timezone'], "last_deal_id" => $pipedrive_id, "day1_1_sent" => "1")));    
+        qi("sms_sequence", _escapeArray(array("tenant_id"=>$GLOBALS['tenant_id'],  "customer_name" => $fname.' '.$lname,"agent_name" => $agent,"org_name" => $org,"deal_name" => $deal_info['data']['title'],"phone" => $phone, "deal_amount" => $deal_amount, "last10phone" => last10Char($phone), "state_code" => $time_zone_arr['state_code'], "state" => $time_zone_arr['state'], "area_code" => $time_zone_arr['area_code'], "timezone" => $time_zone_arr['timezone'], "last_deal_id" => $pipedrive_id, "day1_1_sent" => "1")));    
         echo "<br>10";
         $agent_arr = explode(" ", $agent);
         $agent = $agent_arr[0];

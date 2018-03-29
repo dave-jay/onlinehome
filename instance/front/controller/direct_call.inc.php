@@ -3,7 +3,7 @@ header("content-type: text/xml");
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 $apiPD = new apiPipeDrive();
 $deal_source = qs("select pd_source_id from pd_sources where source_name like 'Hot Lead 2'");
-$agent_numbers = $apiPD->getAgentByDealSource($deal_source['pd_source_id']);
+$agent_numbers = $apiPD->getAgentByDealSource($deal_source['pd_source_id'],1);
 if (count($agent_numbers) == 0):
     ?>
     <Response>        

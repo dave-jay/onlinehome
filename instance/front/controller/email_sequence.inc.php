@@ -1,4 +1,5 @@
 <?php
+die;
 if(date("l")=="Sunday"){ die; }
 $call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
 if(strtolower($call_status['seq_status'])!="on"){

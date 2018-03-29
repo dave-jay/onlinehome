@@ -9,6 +9,7 @@ if (count($agent_call_dialed) > 0) {
             //echo "<br>-" . $each_deal['is_updated'] . "-not-" . $each_deal['deal_id'];
         } else {
             $new = array();
+            $new['tenant_id'] = $each_deal['tenant_id'];
             $new['customer_phone'] = $each_deal['customer_phone'];
             $new['deal_id'] = $each_deal['deal_id'];
             $new['call_handled'] = '0';

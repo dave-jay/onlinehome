@@ -49,7 +49,7 @@ if (in_array($deal_source, array('37')) || 1) {
     $email = $data['email']['0'];
 
     # Retrieve which agents we have to broadcast from source ( i.e. HotDeal, CCC, Dialer )
-    $agent_numbers = $apiPD->getAgentByDealSource($deal_source);
+    $agent_numbers = $apiPD->getAgentByDealSource($deal_source,$GLOBALS['tenant_id']);
    
     # Finally call the agents
     $apiCall->callNow($phone_value, $agent_numbers , $deal_id, "0", "A"); 

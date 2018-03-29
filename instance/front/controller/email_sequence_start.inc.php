@@ -1,4 +1,5 @@
 <?php
+die;
 $call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
 if(strtolower($call_status['seq_status'])!="on"){
 //    qi("test",array("t"=>"followup seq is off."));
@@ -18,7 +19,10 @@ if (!empty($need_to_start_data)) {
     echo "no new deal is coming";
     die;
 }
-$apiPD = new apiPipeDrive();
+$GLOBALS['tenant_id'] = $need_to_start_data['tenant_id'];
+include _PATH.'instance/front/controller/define_settings.inc.php';
+
+$apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
 $deal_info = $apiPD->getDealInfo($need_to_start_data['last_deal_id']);
 $deal_info = json_decode($deal_info, TRUE);
 
@@ -67,7 +71,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
         qd("email_sequence", "id='{$sms_seq_data['id']}'");
     }
     $time_zone_arr = getTimeZoneByPhone($phone, "1");
-    qi("email_sequence", array("email" => $email, "state_code" => $time_zone_arr['state_code'], "state" => $time_zone_arr['state'], "area_code" => $time_zone_arr['area_code'], "timezone" => $time_zone_arr['timezone'], "last_deal_id" => $pipedrive_id, "day1_1_sent" => "1"));
+    qi("email_sequence", array("tenant_id"=>$GLOBALS['tenant_id'], "email" => $email, "state_code" => $time_zone_arr['state_code'], "state" => $time_zone_arr['state'], "area_code" => $time_zone_arr['area_code'], "timezone" => $time_zone_arr['timezone'], "last_deal_id" => $pipedrive_id, "day1_1_sent" => "1"));
     $next_seq = 'day1_1_sent';
     $deal_id = $pipedrive_id;
     ob_start();

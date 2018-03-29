@@ -76,8 +76,17 @@ class apiPipeDrive extends apiCore {
         return $this->doCall($this->prepareApiUrl(), array(), 'GET');
     }    
     
-    public function getAgentByDealSource($source_id){
-        $data = qs("select * from call_list_by_source where pd_source_id = '{$source_id}' ");
+    public function getAgentByDealSource($source_id,$tenant_id){
+        if(empty($source_id)){
+            $phones = q("select * from pd_users where phone!='' AND tenant_id='{$tenant_id}'");
+            $phones_data = array();
+            foreach($phones as $each_phone){
+                $phones_data[] = $each_phone['phone'];
+            }
+            $phones_data = array_filter($phones_data);
+            return ($phones_data);
+        }
+        $data = qs("select * from call_list_by_source where pd_source_id = '{$source_id}' AND tenant_id='{$tenant_id}' ");
         $agents = $data['pd_user_id'];
         
         if($agents){

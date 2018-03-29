@@ -1,5 +1,5 @@
 <?php
-
+die;
 if (date("l") == "Sunday") {
     die;
 }

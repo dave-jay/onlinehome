@@ -1,4 +1,5 @@
 <?php
+die;
 $call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
 if(strtolower($call_status['seq_status'])!="on"){
 //    qi("test",array("t"=>"followup seq is off."));
@@ -21,6 +22,7 @@ qd("email_sequence_app_out", "last_deal_id='{$need_to_start_data['last_deal_id']
 $last_seq = qs("select * from email_sequence where last_deal_id = '{$need_to_start_data['last_deal_id']}'");
 
 $fields = array();
+$fields['tenant_id'] = $need_to_start_data['tenant_id'];
 $fields['last_deal_id'] = $last_seq['last_deal_id'];
 $fields['email'] = $need_to_start_data['email'];
 $fields['timezone'] = $last_seq['timezone'];
