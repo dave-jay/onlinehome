@@ -21,7 +21,7 @@ if (isset($_REQUEST['hid_is_edit'])) {
         $time = $_REQUEST[$key];
         $dynamic_time = $_REQUEST[$key.'_dynamic_time'];
         $sub = $_REQUEST[$key.'_sub'];
-        $text = $_REQUEST[$key.'_text'];
+        $text = $_REQUEST[$key.'_email'];
         $is_active = ($_REQUEST['rd_'.$key]=="fixed")?"1":"0";
         qu("email_seq_time", _escapeArray(array("time" => $time,"dynamic_time"=>$dynamic_time,"email_text"=>$text,"email_subject"=>$sub,"is_active"=>$is_active)), "sequence_name='{$key}' AND tenant_id='{$_SESSION['user']['tenant_id']}'");
     }

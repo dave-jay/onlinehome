@@ -13,6 +13,10 @@ $auth_pages[] = "dashboard";
 $auth_pages[] = "twilio_settings";
 $auth_pages[] = "pipedrive_settings";
 $auth_pages[] = "pipedrive-dashboard-source";
+$auth_pages[] = "call_redial_setting";
+$auth_pages[] = "sms_seq_settings";
+$auth_pages[] = "email_seq_settings";
+$auth_pages[] = "call_statistics";
 
 
 

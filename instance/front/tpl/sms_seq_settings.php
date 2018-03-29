@@ -36,9 +36,16 @@
                             <label class="form-lbl">SMS Text</label>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day1_1_sent_text" name="day1_1_sent_text" aria-invalid="false"><?php echo $data['day1_1_sent']['sms_text']; ?></textarea>
+                            <textarea rows="5" class="form-control valid" id="day1_1_sent_text" name="day1_1_sent_text" aria-invalid="false"><?php echo $data['day1_1_sent']['sms_text']; ?></textarea>
                         </div>  
-
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 token_text">
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day1_1_sent_text','[MERCHANTS NAME]')">[MERCHANTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day1_1_sent_text','[AGENTS NAME]')">[AGENTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day1_1_sent_text','[COMPANY NAME]')">[COMPANY NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day1_1_sent_text','[AMOUNT REQUESTED]')">[AMOUNT REQUESTED]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day1_1_sent_text','[USE OF FUNDS]')">[USE OF FUNDS]</a></div>
+                        </div>
+                        
                     </div>
                 </div>
                 <div style="clear:both;"></div>                    
@@ -75,9 +82,16 @@
                             <label class="form-lbl">SMS Text</label>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day1_2_sent_text" name="day1_2_sent_text" aria-invalid="false"><?php echo $data['day1_2_sent']['sms_text']; ?></textarea>
+                            <textarea rows="5" class="form-control valid" id="day1_2_sent_text" name="day1_2_sent_text" aria-invalid="false"><?php echo $data['day1_2_sent']['sms_text']; ?></textarea>
                         </div>  
-
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 token_text">
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day1_2_sent_text','[MERCHANTS NAME]')">[MERCHANTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day1_2_sent_text','[AGENTS NAME]')">[AGENTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day1_2_sent_text','[COMPANY NAME]')">[COMPANY NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day1_2_sent_text','[AMOUNT REQUESTED]')">[AMOUNT REQUESTED]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day1_2_sent_text','[USE OF FUNDS]')">[USE OF FUNDS]</a></div>
+                        </div>
+                        
                     </div>
                 </div>
                 <div style="clear:both;"></div>                    
@@ -114,9 +128,15 @@
                             <label class="form-lbl">SMS Text</label>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day2_1_sent_text" name="day2_1_sent_text" aria-invalid="false"><?php echo $data['day2_1_sent']['sms_text']; ?></textarea>
+                            <textarea rows="5" class="form-control valid" id="day2_1_sent_text" name="day2_1_sent_text" aria-invalid="false"><?php echo $data['day2_1_sent']['sms_text']; ?></textarea>
                         </div>  
-
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 token_text">
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day2_1_sent_text','[MERCHANTS NAME]')">[MERCHANTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day2_1_sent_text','[AGENTS NAME]')">[AGENTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day2_1_sent_text','[COMPANY NAME]')">[COMPANY NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day2_1_sent_text','[AMOUNT REQUESTED]')">[AMOUNT REQUESTED]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day2_1_sent_text','[USE OF FUNDS]')">[USE OF FUNDS]</a></div>
+                        </div>
                     </div>
                 </div>
                 <div style="clear:both;"></div>                    
@@ -153,9 +173,15 @@
                             <label class="form-lbl">SMS Text</label>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day2_2_sent_text" name="day2_2_sent_text" aria-invalid="false"><?php echo $data['day2_2_sent']['sms_text']; ?></textarea>
+                            <textarea rows="5" class="form-control valid" id="day2_2_sent_text" name="day2_2_sent_text" aria-invalid="false"><?php echo $data['day2_2_sent']['sms_text']; ?></textarea>
                         </div>  
-
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 token_text">
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day2_2_sent_text','[MERCHANTS NAME]')">[MERCHANTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day2_2_sent_text','[AGENTS NAME]')">[AGENTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day2_2_sent_text','[COMPANY NAME]')">[COMPANY NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day2_2_sent_text','[AMOUNT REQUESTED]')">[AMOUNT REQUESTED]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day2_2_sent_text','[USE OF FUNDS]')">[USE OF FUNDS]</a></div>
+                        </div>
                     </div>
                 </div>
                 <div style="clear:both;"></div>                    
@@ -192,9 +218,15 @@
                             <label class="form-lbl">SMS Text</label>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day3_1_sent_text" name="day3_1_sent_text" aria-invalid="false"><?php echo $data['day3_1_sent']['sms_text']; ?></textarea>
+                            <textarea rows="5" class="form-control valid" id="day3_1_sent_text" name="day3_1_sent_text" aria-invalid="false"><?php echo $data['day3_1_sent']['sms_text']; ?></textarea>
                         </div>  
-
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 token_text">
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day3_1_sent_text','[MERCHANTS NAME]')">[MERCHANTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day3_1_sent_text','[AGENTS NAME]')">[AGENTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day3_1_sent_text','[COMPANY NAME]')">[COMPANY NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day3_1_sent_text','[AMOUNT REQUESTED]')">[AMOUNT REQUESTED]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day3_1_sent_text','[USE OF FUNDS]')">[USE OF FUNDS]</a></div>
+                        </div>
                     </div>
                 </div>
                 <div style="clear:both;"></div>                    
@@ -231,9 +263,15 @@
                             <label class="form-lbl">SMS Text</label>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day3_2_sent_text" name="day3_2_sent_text" aria-invalid="false"><?php echo $data['day3_2_sent']['sms_text']; ?></textarea>
+                            <textarea rows="5" class="form-control valid" id="day3_2_sent_text" name="day3_2_sent_text" aria-invalid="false"><?php echo $data['day3_2_sent']['sms_text']; ?></textarea>
                         </div>  
-
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 token_text">
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day3_2_sent_text','[MERCHANTS NAME]')">[MERCHANTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day3_2_sent_text','[AGENTS NAME]')">[AGENTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day3_2_sent_text','[COMPANY NAME]')">[COMPANY NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day3_2_sent_text','[AMOUNT REQUESTED]')">[AMOUNT REQUESTED]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day3_2_sent_text','[USE OF FUNDS]')">[USE OF FUNDS]</a></div>
+                        </div>
                     </div>
                 </div>
                 <div style="clear:both;"></div>                    
@@ -270,9 +308,15 @@
                             <label class="form-lbl">SMS Text</label>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day4_1_sent_text" name="day4_1_sent_text" aria-invalid="false"><?php echo $data['day4_1_sent']['sms_text']; ?></textarea>
+                            <textarea rows="5" class="form-control valid" id="day4_1_sent_text" name="day4_1_sent_text" aria-invalid="false"><?php echo $data['day4_1_sent']['sms_text']; ?></textarea>
                         </div>  
-
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 token_text">
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day4_1_sent_text','[MERCHANTS NAME]')">[MERCHANTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day4_1_sent_text','[AGENTS NAME]')">[AGENTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day4_1_sent_text','[COMPANY NAME]')">[COMPANY NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day4_1_sent_text','[AMOUNT REQUESTED]')">[AMOUNT REQUESTED]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day4_1_sent_text','[USE OF FUNDS]')">[USE OF FUNDS]</a></div>
+                        </div>
                     </div>
                 </div>
                 <div style="clear:both;"></div>                    
@@ -309,9 +353,15 @@
                             <label class="form-lbl">SMS Text</label>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day4_2_sent_text" name="day4_2_sent_text" aria-invalid="false"><?php echo $data['day4_2_sent']['sms_text']; ?></textarea>
+                            <textarea rows="5" class="form-control valid" id="day4_2_sent_text" name="day4_2_sent_text" aria-invalid="false"><?php echo $data['day4_2_sent']['sms_text']; ?></textarea>
                         </div>  
-
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 token_text">
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day4_2_sent_text','[MERCHANTS NAME]')">[MERCHANTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day4_2_sent_text','[AGENTS NAME]')">[AGENTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day4_2_sent_text','[COMPANY NAME]')">[COMPANY NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day4_2_sent_text','[AMOUNT REQUESTED]')">[AMOUNT REQUESTED]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day4_2_sent_text','[USE OF FUNDS]')">[USE OF FUNDS]</a></div>
+                        </div>
                     </div>
                 </div>
                 <div style="clear:both;"></div>                    
@@ -348,9 +398,15 @@
                             <label class="form-lbl">SMS Text</label>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day5_1_sent_text" name="day5_1_sent_text" aria-invalid="false"><?php echo $data['day5_1_sent']['sms_text']; ?></textarea>
+                            <textarea rows="5" class="form-control valid" id="day5_1_sent_text" name="day5_1_sent_text" aria-invalid="false"><?php echo $data['day5_1_sent']['sms_text']; ?></textarea>
                         </div>  
-
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 token_text">
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day5_1_sent_text','[MERCHANTS NAME]')">[MERCHANTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day5_1_sent_text','[AGENTS NAME]')">[AGENTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day5_1_sent_text','[COMPANY NAME]')">[COMPANY NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day5_1_sent_text','[AMOUNT REQUESTED]')">[AMOUNT REQUESTED]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day5_1_sent_text','[USE OF FUNDS]')">[USE OF FUNDS]</a></div>
+                        </div>
                     </div>
                 </div>
                 <div style="clear:both;"></div>                    
@@ -387,9 +443,15 @@
                             <label class="form-lbl">SMS Text</label>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day7_1_sent_text" name="day7_1_sent_text" aria-invalid="false"><?php echo $data['day7_1_sent']['sms_text']; ?></textarea>
+                            <textarea rows="5" class="form-control valid" id="day7_1_sent_text" name="day7_1_sent_text" aria-invalid="false"><?php echo $data['day7_1_sent']['sms_text']; ?></textarea>
                         </div>  
-
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 token_text">
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day7_1_sent_text','[MERCHANTS NAME]')">[MERCHANTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day7_1_sent_text','[AGENTS NAME]')">[AGENTS NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day7_1_sent_text','[COMPANY NAME]')">[COMPANY NAME]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day7_1_sent_text','[AMOUNT REQUESTED]')">[AMOUNT REQUESTED]</a></div>
+                            <div><a style="cursor: pointer" onclick="addDefaultText('day7_1_sent_text','[USE OF FUNDS]')">[USE OF FUNDS]</a></div>
+                        </div>
                     </div>
                 </div>
                 <div style="clear:both;"></div>                    
@@ -439,6 +501,10 @@
         }
         .my_box_body{
             padding-top: 14px;display: none;
+        }
+        
+        .token_text a{
+            color: #3498db;
         }
     </style>
 

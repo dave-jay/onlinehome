@@ -44,8 +44,8 @@
                         <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
                             <label class="form-lbl">Email Content</label>
                         </div>
-                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day1_1_sent_text" name="day1_1_sent_text" aria-invalid="false"><?php echo $data['day1_1_sent']['email_text']; ?></textarea>
+                        <div class="col-lg-10 col-md-9 col-sm-8 col-xs-8">
+                            <textarea class="form-control valid" id="day1_1_sent_email" name="day1_1_sent_email" aria-invalid="false"><?php echo $data['day1_1_sent']['email_text']; ?></textarea>
                         </div>  
 
                     </div>
@@ -92,8 +92,8 @@
                         <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
                             <label class="form-lbl">Email Content</label>
                         </div>
-                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day2_1_sent_text" name="day2_1_sent_text" aria-invalid="false"><?php echo $data['day2_1_sent']['email_text']; ?></textarea>
+                        <div class="col-lg-10 col-md-9 col-sm-8 col-xs-8">
+                            <textarea class="form-control valid" id="day2_1_sent_email" name="day2_1_sent_email" aria-invalid="false"><?php echo $data['day2_1_sent']['email_text']; ?></textarea>
                         </div>  
 
                     </div>
@@ -140,8 +140,8 @@
                         <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
                             <label class="form-lbl">Email Content</label>
                         </div>
-                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day3_1_sent_text" name="day3_1_sent_text" aria-invalid="false"><?php echo $data['day3_1_sent']['email_text']; ?></textarea>
+                        <div class="col-lg-10 col-md-9 col-sm-8 col-xs-8">
+                            <textarea class="form-control valid" id="day3_1_sent_email" name="day3_1_sent_email" aria-invalid="false"><?php echo $data['day3_1_sent']['email_text']; ?></textarea>
                         </div>  
 
                     </div>
@@ -188,8 +188,8 @@
                         <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
                             <label class="form-lbl">Email Content</label>
                         </div>
-                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day4_1_sent_text" name="day4_1_sent_text" aria-invalid="false"><?php echo $data['day4_1_sent']['email_text']; ?></textarea>
+                        <div class="col-lg-10 col-md-9 col-sm-8 col-xs-8">
+                            <textarea class="form-control valid" id="day4_1_sent_email" name="day4_1_sent_email" aria-invalid="false"><?php echo $data['day4_1_sent']['email_text']; ?></textarea>
                         </div>  
 
                     </div>
@@ -236,8 +236,8 @@
                         <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4" style="padding-right: 0px;">
                             <label class="form-lbl">Email Content</label>
                         </div>
-                        <div class="col-lg-4 col-md-3 col-sm-8 col-xs-8">
-                            <textarea class="form-control valid" id="day5_1_sent_text" name="day5_1_sent_text" aria-invalid="false"><?php echo $data['day5_1_sent']['email_text']; ?></textarea>
+                        <div class="col-lg-10 col-md-9 col-sm-8 col-xs-8">
+                            <textarea class="form-control valid" id="day5_1_sent_email" name="day5_1_sent_email" aria-invalid="false"><?php echo $data['day5_1_sent']['email_text']; ?></textarea>
                         </div>  
 
                     </div>
