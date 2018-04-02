@@ -21,17 +21,17 @@ $call_try[10]='Tenth';
 
 if(isset($_REQUEST['change_call_status']) && $_REQUEST['change_call_status']=="1"){
     if($_REQUEST['curr_status']=="on"){
-        qu("config",array("value"=>"off"),"`key`='CALL_STATUS'");
+        qu("config",array("value"=>"off"),"`key`='CALL_STATUS' AND  tenant_id='{$_SESSION['user']['tenant_id']}'");
     }else{
-        qu("config",array("value"=>"on"),"`key`='CALL_STATUS'");
+        qu("config",array("value"=>"on"),"`key`='CALL_STATUS' AND  tenant_id='{$_SESSION['user']['tenant_id']}'");
     }
     die;
 }
 if(isset($_REQUEST['change_seq_status']) && $_REQUEST['change_seq_status']=="1"){
     if($_REQUEST['curr_status']=="on"){
-        qu("config",array("value"=>"off"),"`key`='SEQUENCE_STATUS'");
+        qu("config",array("value"=>"off"),"`key`='SEQUENCE_STATUS' AND  tenant_id='{$_SESSION['user']['tenant_id']}'");
     }else{
-        qu("config",array("value"=>"on"),"`key`='SEQUENCE_STATUS'");
+        qu("config",array("value"=>"on"),"`key`='SEQUENCE_STATUS' AND  tenant_id='{$_SESSION['user']['tenant_id']}'");
     }
     die;
 }

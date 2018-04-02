@@ -6,7 +6,8 @@ $all_tenants = q("select * from admin_users where is_active='1'");
 foreach($all_tenants as $each_tenant):
     $GLOBALS['tenant_id'] = $each_tenant['id'];
     include _PATH.'instance/front/controller/define_settings.inc.php';
-
+    $sequence = getSMSSequenceByTenant($GLOBALS['tenant_id']);
+    
     if(strtolower($conf_data['SEQUENCE_STATUS'])!="on"){
         continue;        
     }
@@ -15,7 +16,7 @@ foreach($all_tenants as $each_tenant):
     $sms_sequence_data = q("select * from sms_sequence where  tenant_id='{$GLOBALS['tenant_id']}' AND need_to_send_sms='1'");
     foreach ($sms_sequence_data as $each_sms) {
         $deal_info = $seq_data = array();
-        $req_sms_detail = getSMSText($each_sms);
+        $req_sms_detail = getSMSText($each_sms,$sequence);
         if ($req_sms_detail['success'] == 1) {
             if (IsTimeToSendSMS(strtotime($each_sms['modified_at']), $req_sms_detail['next_seq'],$each_sms['timezone'],$each_sms['hold_till_date'])) {
                 $message = $req_sms_detail['message'];

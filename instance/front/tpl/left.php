@@ -38,7 +38,7 @@
                     </ul>
                 </li>
                 <?php
-                $call_status = qs("select *,value as call_status from config where `key` = 'CALL_STATUS'");
+                $call_status = qs("select *,value as call_status from config where `key` = 'CALL_STATUS' AND  tenant_id='{$_SESSION['user']['tenant_id']}'");
                 if (strtolower($call_status['call_status']) != "on") {
                     $status_img = "<i class='fa fa-exclamation-triangle'></i> OFF";
                     $current_status = "off";
@@ -55,7 +55,7 @@
                     <div style="cursor:pointer;float: left; color: white; margin-top: 15px; font-family: verdana; width: 57px; padding: 2px 0px 5px; text-align: center;<?php print $current_style; ?>" id="call_status_img" onclick="changeCallStatus('<?= $current_status; ?>')"><?= $status_img; ?></div>
                 </li>
                 <?php
-                $call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS'");
+                $call_status = qs("select *,value as seq_status from config where `key` = 'SEQUENCE_STATUS' AND  tenant_id='{$_SESSION['user']['tenant_id']}'");
                 if (strtolower($call_status['seq_status']) != "on") {
                     $status_img = "<i class='fa fa-exclamation-triangle'></i> OFF";
                     $current_status = "off";

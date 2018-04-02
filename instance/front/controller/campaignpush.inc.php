@@ -2,8 +2,8 @@
 $unique_code = $_REQUEST['unique_code'];
 include _PATH.'instance/front/controller/define_settings.inc.php';
 
-if(strtolower($conf_data['CALL_STATUS'])!="on"){
-    addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "call distribution is off");
+if(strtolower($conf_data['SEQUENCE_STATUS'])!="on"){
+    addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "Sequence Status is off");
     die;
 }
 

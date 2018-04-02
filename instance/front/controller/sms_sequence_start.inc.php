@@ -5,6 +5,7 @@ $all_tenants = q("select * from admin_users where is_active='1'");
 foreach($all_tenants as $each_tenant):
     $GLOBALS['tenant_id'] = $each_tenant['id'];
     include _PATH.'instance/front/controller/define_settings.inc.php';
+    $sequence = getSMSSequenceByTenant($GLOBALS['tenant_id']);
     
     if(strtolower($conf_data['SEQUENCE_STATUS'])!="on"){
         continue;        
@@ -28,7 +29,7 @@ foreach($all_tenants as $each_tenant):
     $deal_info = $apiPD->getDealInfo($need_to_start_data['last_deal_id']);
     echo "<br>2";
     $deal_info = json_decode($deal_info, TRUE);
-    $tag = $agent = $deal_amount  = $fname = $lname = $email = $org = $pipedrive_id = $pipedrive_stage = '';
+    $agent = $deal_amount  = $fname = $lname = $email = $org = $pipedrive_id = $pipedrive_stage = '';
     $agent_id = $agent_linkedin_link = $agent_phone = '';
     $phone = $need_to_start_data['phone'];
     $phone2 = $need_to_start_data['alternate_phone'];
@@ -74,16 +75,7 @@ foreach($all_tenants as $each_tenant):
     $deal_amount = number_format($deal_amount);
 
     echo "<br>5";
-    $stage_data = $apiPD->getAllStage();
-    $stage_data = json_decode($stage_data, "true");
-    $stage = array();
-
-    if (isset($stage_data['data'])) {
-        foreach ($stage_data['data'] as $each_stage) {
-            $stage[$each_stage['id']] = $each_stage; //'order_nr','name'
-        }
-    }
-    $tag = $ac_data['tags'] = ac_tag_generate($stage[$pipedrive_stage]['name']);
+    
     if ($agent_id != '' && $agent_id != "990918") {
         $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
     } else {
@@ -91,40 +83,6 @@ foreach($all_tenants as $each_tenant):
     }
     echo "<br>6";
     $agent = $agent_data['name'];
-    $stage_mapping_arr = json_decode(STAGE_MAPPING, true);
-    $campaing_class = new Campaign();
-    $campaing_class::$contact_email = $email;
-    $campaing_class::$contact_fname = $fname;
-    $campaing_class::$contact_lname = $lname;
-    $campaing_class::$contact_phone = formatPhone($phone, 6);
-    $campaing_class::$contact_org = $org;
-    $campaing_class::$tag = trim($tag, ",");
-
-    $campaing_class::$SEQUENCE_STATUS = "NEW";
-    $campaing_class::$PIPEDRIVE_ID = $pipedrive_id;
-    $campaing_class::$PIPEDRIVE_STAGE = $stage[$pipedrive_stage]['name'];
-    $campaing_class::$AGENT_NAME = $agent;
-    $campaing_class::$DEAL_AMOUNT = $deal_amount;
-    $campaing_class::$ALTERNATE_PHONE = formatPhone($phone2, 6);
-    $campaing_class::$PIPEDRIVE_DEAL_LINK = "https://sprout2.pipedrive.com/deal/" . $pipedrive_id;
-    if (!empty($agent_data)) {
-        $campaing_class::$AGENT_PHONE = formatPhone($agent_data['phone']);
-        $campaing_class::$AGENT_ROLE = $agent_data['role'];
-        $campaing_class::$AGENT_LINKEDIN_LINK = "<a href='{$agent_data['linkedin_link']}'><img alt='My LinkedIn Profile' src='http://sprout.img-us10.com/public/332ea34c4e46abd2f2d3c65e788c4f22.png?r=761035395' /></a>";
-    }
-    try {
-        //$data_camp = $campaing_class->pushContact($stage_mapping_arr[$pipedrive_stage]['ac_list_id']);
-    } catch (Exception $e) {
-
-    }
-    echo "<br>7";
-    if (isset($data_camp->success) && ($data_camp->success || $data_camp->success == '1')) {
-        $active_campaign_contact_id = qu('active_campaign_contact', array("campaign_contact_id" => $data_camp->subscriber_id), "id='{$active_campaign_contact_id}'");
-        qi('active_campaign_log', _escapeArray(array("log" => "Active Campaign Contact Id: " . $data_camp->subscriber_id . "<br>Message:" . $data_camp->result_message)));
-    } else {
-        qi('active_campaign_log', _escapeArray(array("log" => "Active campaign error. " . json_encode($data_camp) . " Deal:" . $deal_info['data']['id'])));
-    }
-    echo "<br>8";
     $org_for = 'Working Capital';
     if (isset($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44'])) {
         $org_for = getUseOfFundText($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44']);
@@ -140,7 +98,15 @@ foreach($all_tenants as $each_tenant):
         echo "<br>10";
         $agent_arr = explode(" ", $agent);
         $agent = $agent_arr[0];
-        $message = "Hi " . trim($fname) . ", it's {$agent} from Sprout. I just received your request for funding for your business {$org}. and I should be able to get you the $" . $deal_amount . " that you requested for {$org_for}. Can you chat for 2 minutes now to discuss?";
+        $each_sms['day1_1_sent'] = 0;
+        $req_sms_detail = getSMSText($each_sms,$sequence);
+        $message = $req_sms_detail['message'];
+        $message = str_ireplace("[COMPANY NAME]", $org, $message);
+        $message = str_ireplace("[AGENTS NAME]", $agent, $message);
+        $message = str_ireplace("[MERCHANTS NAME]", $fname, $message);
+        $message = str_ireplace("[AMOUNT REQUESTED]", $deal_amount, $message);
+        $message = str_ireplace("[USE OF FUNDS]", $org_for, $message);
+        //$message = "Hi " . trim($fname) . ", it's {$agent} from Sprout. I just received your request for funding for your business {$org}. and I should be able to get you the $" . $deal_amount . " that you requested for {$org_for}. Can you chat for 2 minutes now to discuss?";
         $note_data['deal_id'] = $pipedrive_id;
         $note_data['content'] = "Welcome Text was sent on " . formatPhone($phone, 4) . ".<br><br>Text: {$message}";
         $data = $apiPD->createNote($note_data);
