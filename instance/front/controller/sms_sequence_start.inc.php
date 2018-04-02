@@ -14,7 +14,7 @@ foreach($all_tenants as $each_tenant):
     $need_to_start_data = qs("select * from active_campaign_contact where tenant_id='{$GLOBALS['tenant_id']}' AND  need_to_start='1' order by created_at desc");
     if(!empty($need_to_start_data)){
         if(time()>(strtotime($need_to_start_data['need_to_start_time']))){
-            qi('active_campaign_log', _escapeArray(array("log" => "SMS:One new deal found")));    
+            addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "SMS:One new deal found");
             qu("active_campaign_contact",array("need_to_start"=>"0"),"id='{$need_to_start_data['id']}'");            
         }else{
             echo "please wait for ".((strtotime($need_to_start_data['modified_at'])+60)-time())." sec";
@@ -27,7 +27,6 @@ foreach($all_tenants as $each_tenant):
     //Getting Deal Info and change stage if pipeline id is '1' (i.e. for "Leads")
     $apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
     $deal_info = $apiPD->getDealInfo($need_to_start_data['last_deal_id']);
-    echo "<br>2";
     $deal_info = json_decode($deal_info, TRUE);
     $agent = $deal_amount  = $fname = $lname = $email = $org = $pipedrive_id = $pipedrive_stage = '';
     $agent_id = $agent_linkedin_link = $agent_phone = '';
@@ -60,10 +59,9 @@ foreach($all_tenants as $each_tenant):
         $pipedrive_id = $deal_info['data']['id'];
         $pipedrive_stage = $deal_info['data']['stage_id'];
     } else {
-        qi('active_campaign_log', array("log" => "Add: Deal info not found. " . json_decode($data)));
+        addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "Add: Deal info for '{$need_to_start_data['last_deal_id']}' deal not found. " . json_decode($data));
         continue;
     }
-    echo "<br>4";
     $org_data = $apiPD->getOrganizationInfo($org_id);
     $org_data = json_decode($org_data, "true");
     if (isset($org_data['data']['e46960a5a8d75e6909eebf64ef3cd0c0fe426119'])) {
@@ -73,15 +71,12 @@ foreach($all_tenants as $each_tenant):
         $deal_amount = 50000;
     }
     $deal_amount = number_format($deal_amount);
-
-    echo "<br>5";
     
     if ($agent_id != '' && $agent_id != "990918") {
         $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
     } else {
         $agent_data = qs("select * from pd_users where is_default='1'");
     }
-    echo "<br>6";
     $agent = $agent_data['name'];
     $org_for = 'Working Capital';
     if (isset($org_data['data']['48b7dac9e6fa7666a2f0d9e233bb5139f7493a44'])) {
@@ -115,7 +110,7 @@ foreach($all_tenants as $each_tenant):
         
         echo "<br>11";
         $apiCall->messageNow($phone, $message, "2");
-        qi('active_campaign_log', _escapeArray(array("log" => "Trying to message sending on " . formatPhone($phone, 4))));
+        addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "Trying to message sending on ". formatPhone($phone, 4));
     }
 endforeach;
 die;

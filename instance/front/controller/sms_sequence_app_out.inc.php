@@ -19,7 +19,7 @@ foreach($all_tenants as $each_tenant):
         $deal_info = $seq_data = array();
         $req_sms_detail = getSMSTextAppOut($each_sms);
         if ($req_sms_detail['success'] == 1) {
-            if (IsTimeToSendSMS(strtotime($each_sms['modified_at']), $req_sms_detail['next_seq'], $each_sms['timezone'],$each_sms['hold_till_date'],"_app_out")) {
+            if (IsTimeToSendSMS($GLOBALS['tenant_id'],strtotime($each_sms['modified_at']), $req_sms_detail['next_seq'], $each_sms['timezone'],$each_sms['hold_till_date'],"_app_out")) {
                 $message = $req_sms_detail['message'];
                 $phone = $each_sms['phone'];
                 $deal_info = $apiPD->getDealInfo($each_sms['last_deal_id']);
