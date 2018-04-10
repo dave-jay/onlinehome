@@ -1,7 +1,6 @@
 <?php
 
-die;
-$all_tenants = q("select * from admin_users where is_active='1'");
+$all_tenants = q("select * from admin_users where is_active='1' and id=1");
 foreach ($all_tenants as $each_tenant):
     $GLOBALS['tenant_id'] = $each_tenant['id'];
     include _PATH.'instance/front/controller/define_settings.inc.php';
@@ -13,18 +12,16 @@ foreach ($all_tenants as $each_tenant):
     $need_to_start_data = qs("select * from active_campaign_contact where tenant_id='{$GLOBALS['tenant_id']}' AND need_to_start_email='1' order by created_at desc");
     if (!empty($need_to_start_data)) {
         if (time() > (strtotime($need_to_start_data['need_to_start_time']))) {
-            qi('active_campaign_log', _escapeArray(array("log" => "Email:One new deal found")));
+            addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "Email:One new deal found");
             qu("active_campaign_contact", array("need_to_start_email" => "0"), "id='{$need_to_start_data['id']}'");
         } else {
             echo "please wait for " . ((strtotime($need_to_start_data['modified_at']) + 60) - time()) . " sec";
-            die;
+            continue;
         }
     } else {
         echo "no new deal is coming";
-        die;
+        continue;
     }
-    $GLOBALS['tenant_id'] = $need_to_start_data['tenant_id'];
-    include _PATH . 'instance/front/controller/define_settings.inc.php';
 
     $apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
     $deal_info = $apiPD->getDealInfo($need_to_start_data['last_deal_id']);
@@ -52,8 +49,8 @@ foreach ($all_tenants as $each_tenant):
         $agent_id = $deal_info['data']['user_id']['value'];
         $pipedrive_id = $deal_info['data']['id'];
     } else {
-        qi('active_campaign_log', array("log" => "Add: Deal info not found. " . json_decode($data)));
-        die;
+        addLogs($_REQUEST['q'], $GLOBALS['tenant_id'],"Add: Deal info not found for deal {$need_to_start_data['last_deal_id']}. " . json_decode($data));        
+        continue;
     }
 
     if ($agent_id != '' && $agent_id != "990918") {
@@ -70,7 +67,7 @@ foreach ($all_tenants as $each_tenant):
     $agent_role = $agent_data['role'];
     $agent_pass = $agent_data['password'];
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-        $sms_seq_data = qs("select * from email_sequence where email='" . $email . "' OR last_deal_id='" . $pipedrive_id . "'");
+        $sms_seq_data = qs("select * from email_sequence where tenant_id='{$GLOBALS['tenant_id']}' AND (email='" . $email . "' OR last_deal_id='" . $pipedrive_id . "')");
         if (!empty($sms_seq_data)) {
             qd("email_sequence", "id='{$sms_seq_data['id']}'");
         }
@@ -83,7 +80,7 @@ foreach ($all_tenants as $each_tenant):
         $mail = ob_get_contents();
         ob_end_clean();
         $subject = "Welcome to Sprout";
-        qi('active_campaign_log', _escapeArray(array("log" => "Email: Trying to send email on " . $email)));
+        addLogs($_REQUEST['q'], $GLOBALS['tenant_id'],"Email: Trying to send email on " . $email);
         try {
             $apiCore = new apiCore();
             $apiCore->doCall("http://45.79.140.218/lysoft/hook_email", array("to" => $email, "subject" => $subject, "content" => $mail, "mail_from_email" => $agent_email, "password" => $agent_pass, "mail_from_name" => $agent_name, "bcc" => "sprout2+deal$pipedrive_id@pipedrivemail.com"), "POST");
@@ -92,7 +89,7 @@ foreach ($all_tenants as $each_tenant):
             echo $e->getMessage();
         }
     } else {
-        qi('active_campaign_log', _escapeArray(array("log" => "Email:{$email} Email addresss invalid")));
+        addLogs($_REQUEST['q'], $GLOBALS['tenant_id'],"Email:{$email} Email addresss invalid");
     }
 endforeach;
 die;

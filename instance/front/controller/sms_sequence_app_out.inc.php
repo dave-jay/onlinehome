@@ -32,9 +32,9 @@ foreach($all_tenants as $each_tenant):
                     $fname = ucwords(strtolower($name[0]));
 
                     if ($agent_id != '' && $agent_id != "990918") {
-                        $agent_data = qs("select * from pd_users where pd_id='{$agent_id}'");
+                        $agent_data = qs("select * from pd_users where tenant_id='{$GLOBALS['tenant_id']}' AND pd_id='{$agent_id}'");
                     } else {
-                        $agent_data = qs("select * from pd_users where is_default='1'");
+                        $agent_data = qs("select * from pd_users where tenant_id='{$GLOBALS['tenant_id']}' AND is_default='1'");
                     }
                     $agent = ucwords(strtolower($agent_data['name']));
                     $agent_arr = explode(" ", $agent);

@@ -1954,25 +1954,20 @@ function getEmailTemplateNameAppOut($pd_data = array()) {
         return array("success" => 1, "next_seq" => $next_seq, "subject" => $sequence[$next_seq]['subject'], "template_name" => $sequence[$next_seq]['template_name']);
 }
 
-function IsTimeToSendEmail($last_time, $next_seq, $timezone, $hold_date='',$seq_type='') {
+function IsTimeToSendEmail($tenant_id, $last_time, $next_seq, $timezone, $hold_date='',$seq_type='') {
     if(strtotime($hold_date)>time()){
         qi("test",array("t"=>"currently hold date for email is set."));
         return false;
     }
-    $email_seq_time_arr = qs("select * from email_seq_time".$seq_type." where is_active='1' and sequence_name='{$next_seq}'");
+    $email_seq_time_arr = qs("select * from email_seq_time".$seq_type." where tenant_id='{$tenant_id}' and sequence_name='{$next_seq}'");
     echo $next_seq;
     $current_time = time();
-    $sequence = array("day1_1_sent" => 0,
-        "day2_1_sent" => 86400,
-        "day3_1_sent" => 86400,
-        "day4_1_sent" => 86400,
-        "day5_1_sent" => 86400);
 	$seq_day_diff = array("day1_1_sent" => 0,
         "day2_1_sent" => 1,
         "day3_1_sent" => 1,
         "day4_1_sent" => 1,
         "day5_1_sent" => 1);
-    if (isset($email_seq_time_arr['time'])) {
+    if ($email_seq_time_arr['is_active']=='1') {
         $current_tz = getTimeZoneTime($timezone);
         if (strtotime($current_tz->format("Y-m-d H:i:s")) >= strtotime($email_seq_time_arr['time'])) {
             $last_time_tz = getTimeZoneTime($timezone, date("Y-m-d H:i:s", $last_time));
@@ -1991,7 +1986,7 @@ function IsTimeToSendEmail($last_time, $next_seq, $timezone, $hold_date='',$seq_
             return false;
         }
     } else {
-        if ($sequence[$next_seq] < ($current_time - $last_time)) {
+        if (($email_seq_time_arr['dynamic_time']*60) < ($current_time - $last_time)) {
             return true;
         }
         return false;

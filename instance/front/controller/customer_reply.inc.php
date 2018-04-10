@@ -1,13 +1,19 @@
 <?php
 if(!isset($_REQUEST['seq_id'])){
-    $_REQUEST['seq_id']='67';
-    qi("test",  array("payload"=>"Id not set"));
+    addLogs($_REQUEST['q'], 0, "Id not set");
+    die;
 }else{
-    qi("test",  array("payload"=>"Id set"));
+    $sms_sequence_data = qs("select * from sms_sequence where id = '{$_REQUEST['seq_id']}'");
+    if(!isset($sms_sequence_data['tenant_id'])){
+        addLogs($_REQUEST['q'], 0, "tenant_id must be set.");
+        die;
+    }
+    addLogs($_REQUEST['q'],$sms_sequence_data['tenant_id'], "Sequence id has been set");
 }
+$GLOBALS['tenant_id'] = $sms_sequence_data['tenant_id'];
+include _PATH.'instance/front/controller/define_settings.inc.php';
     
-$apiPD = new apiPipeDrive();
-$sms_sequence_data = qs("select * from sms_sequence where id = '{$_REQUEST['seq_id']}'");
+$apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
 $_REQUEST['cont']=$sms_sequence_data['reply'];
 $agent_name = explode(" ", $sms_sequence_data['agent_name']);
 $agent = $agent_name[0];
