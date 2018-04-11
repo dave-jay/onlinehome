@@ -1,5 +1,22 @@
 <div class="MyPageHeader">
-    Email Sequence Settings 
+    Email Sequence Settings
+    <div style="float: right;">
+        <?php
+                $call_status = qs("select *,value as seq_status from config where `key` = 'EMAIL_SEQUENCE_STATUS' AND  tenant_id='{$_SESSION['user']['tenant_id']}'");
+                if (strtolower($call_status['seq_status']) != "on") {
+                    $status_img = "<i class='fa fa-exclamation-triangle'></i> OFF";
+                    $current_status = "off";
+                    $current_style="background-color:#CC1E1E";
+                }else{
+                    $status_img = "<i class='fa fa fa-check'></i> ON";
+                    $current_status = "on";
+                    $current_style="background-color:#39891D";
+                }
+                ?>
+                    <div style="font-size: 14px; float: left; padding-top: 15px; color: rgb(110, 86, 86);">Email Sequence &nbsp;</div>
+                    <div style="cursor:pointer;float: left; color: white; margin-top: 15px; font-family: verdana; width: 57px; padding: 2px 0px 5px; text-align: center;font-size: 13px;<?php print $current_style; ?>" id="call_status_img_email_seq" onclick="changeEmailSequenceStatus('<?= $current_status; ?>')"><?= $status_img; ?></div>
+    </div>
+    <div style="clear:both;"></div>
 </div>
 
 <div class="page_body">

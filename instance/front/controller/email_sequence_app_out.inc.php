@@ -7,7 +7,7 @@ $all_tenants = q("select * from admin_users where is_active='1' and id=1");
 foreach ($all_tenants as $each_tenant):
     $GLOBALS['tenant_id'] = $each_tenant['id'];
     include _PATH . 'instance/front/controller/define_settings.inc.php';
-    if (strtolower($conf_data['SEQUENCE_STATUS']) != "on") {
+    if (strtolower($conf_data['EMAIL_SEQUENCE_STATUS']) != "on") {
         continue;
     }
     $apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);

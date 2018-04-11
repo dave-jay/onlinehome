@@ -11,9 +11,14 @@ if(!isset($_REQUEST['seq_id'])){
     addLogs($_REQUEST['q'],$sms_sequence_data['tenant_id'], "Sequence id has been set");
 }
 $GLOBALS['tenant_id'] = $sms_sequence_data['tenant_id'];
-include _PATH.'instance/front/controller/define_settings.inc.php';
-    
+include _PATH.'instance/front/controller/define_settings.inc.php';    
+
 $apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
+$deal_detail[$conf_data['FOLLOWUP_SEQUENCE_KEY']] = 'OFF';
+$apiPD->modifyDeal($sms_sequence_data['last_deal_id'], $deal_detail);
+qu("sms_sequence",array("need_to_send_sms"=>"0"),"tenant_id='{$GLOBALS['tenant_id']}' AND last_deal_id='{$sms_sequence_data['last_deal_id']}'");
+qu("email_sequence",array("need_to_send_email"=>"0"),"tenant_id='{$GLOBALS['tenant_id']}' AND last_deal_id='{$sms_sequence_data['last_deal_id']}'");
+if($GLOBALS['tenant_id']!=1){ die; }
 $_REQUEST['cont']=$sms_sequence_data['reply'];
 $agent_name = explode(" ", $sms_sequence_data['agent_name']);
 $agent = $agent_name[0];

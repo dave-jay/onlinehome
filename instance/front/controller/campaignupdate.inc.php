@@ -150,12 +150,5 @@ if (!empty($tbl_camp_data)) {
     $active_campaign_contact_id = $tbl_camp_data['id'];
 }
 
-if($agent_id!='' && $agent_id != "990918"){
-    $agent_data = qs("select * from pd_users where tenant_id='".$GLOBALS['tenant_id']."' AND pd_id='{$agent_id}'");
-}else{
-    $agent_data = qs("select * from pd_users where tenant_id='".$GLOBALS['tenant_id']."' AND is_default='1'");
-}
-$agent = $agent_data['name'];
-
 die;
 ?>

@@ -144,7 +144,7 @@
                 }else{
                     new_status = "ON";
                 }
-                if(confirm("Are you sure, you want to Turn "+new_status+" Followup Sequence?")){
+                if(confirm("Are you sure, you want to Turn "+new_status+" SMS followup Sequence?")){
                     
                 }else{
                     return;
@@ -161,6 +161,34 @@
                 $.ajax({
                 url: _U + 'call_report',
                 data: {change_seq_status: 1,curr_status:curr_status},
+                success: function (r) {
+                
+                }
+            });
+            }
+            function  changeEmailSequenceStatus(curr_status){
+                if(curr_status=="on"){
+                    new_status = "OFF";
+                }else{
+                    new_status = "ON";
+                }
+                if(confirm("Are you sure, you want to Turn "+new_status+" Email followup Sequence?")){
+                    
+                }else{
+                    return;
+                }
+                if(curr_status=="on"){
+                    $("#call_status_img_email_seq").html('<i class="fa fa-exclamation-triangle"></i> OFF');
+                    $("#call_status_img_email_seq").css("background-color","#CC1E1E");
+                    $("#call_status_img_email_seq").attr("onclick","changeEmailSequenceStatus('off')");
+                }else{
+                    $("#call_status_img_email_seq").html('<i class="fa fa-check"></i> ON');
+                    $("#call_status_img_email_seq").css("background-color","#39891D");
+                    $("#call_status_img_email_seq").attr("onclick","changeEmailSequenceStatus('on')");
+                }
+                $.ajax({
+                url: _U + 'call_report',
+                data: {change_email_seq_status: 1,curr_email_status:curr_status},
                 success: function (r) {
                 
                 }

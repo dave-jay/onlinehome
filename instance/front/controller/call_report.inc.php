@@ -35,6 +35,14 @@ if(isset($_REQUEST['change_seq_status']) && $_REQUEST['change_seq_status']=="1")
     }
     die;
 }
+if(isset($_REQUEST['change_email_seq_status']) && $_REQUEST['change_email_seq_status']=="1"){
+    if($_REQUEST['curr_email_status']=="on"){
+        qu("config",array("value"=>"off"),"`key`='EMAIL_SEQUENCE_STATUS' AND  tenant_id='{$_SESSION['user']['tenant_id']}'");
+    }else{
+        qu("config",array("value"=>"on"),"`key`='EMAIL_SEQUENCE_STATUS' AND  tenant_id='{$_SESSION['user']['tenant_id']}'");
+    }
+    die;
+}
 if (isset($_REQUEST['download']) && $_REQUEST['download']==3) {    
     $destination_name_ulaw = "https://api.twilio.com/2010-04-01/Accounts/".$GLOBALS['ACCOUNT_SID']."/Recordings/RE338a2c7e3153c26600a45d42c6c4b358.wav";
     $src = $destination_name_ulaw;

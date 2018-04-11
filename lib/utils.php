@@ -345,7 +345,7 @@ function getTimeZoneFromState($state_code) {
     if (!$state_code) {
         $state_code = "ny";
     }
-    $timezones = json_decode('{"on":"Canada\/Eastern","ak":"America\/Anchorage","id":"America\/Boise","al":"America\/Chicago","ar":"America\/Chicago","il":"America\/Chicago","ia":"America\/Chicago","ks":"America\/Chicago","la":"America\/Chicago","mn":"America\/Chicago","ms":"America\/Chicago","mo":"America\/Chicago","ne":"America\/Chicago","ok":"America\/Chicago","sd":"America\/Chicago","tn":"America\/Chicago","tx":"America\/Chicago","wi":"America\/Chicago","co":"America\/Denver","mt":"America\/Denver","nm":"America\/Denver","ut":"America\/Denver","wy":"America\/Denver","mi":"America\/Detroit","in":"America\/Indiana\/Indianapolis","ky":"America\/Kentucky\/Louisville","ca":"America\/Los_Angeles","nv":"America\/Los_Angeles","or":"America\/Los_Angeles","wa":"America\/Los_Angeles","ct":"America\/New_York","de":"America\/New_York","fl":"America\/New_York","ga":"America\/New_York","me":"America\/New_York","md":"America\/New_York","ma":"America\/New_York","nh":"America\/New_York","nj":"America\/New_York","ny":"America\/New_York","nc":"America\/New_York","oh":"America\/New_York","pa":"America\/New_York","ri":"America\/New_York","sc":"America\/New_York","vt":"America\/New_York","va":"America\/New_York","dc":"America\/New_York","wv":"America\/New_York","nd":"America\/North_Dakota","az":"America\/Phoenix","hi":"Pacific\/Honolulu"}', true);
+    $timezones = json_decode('{"on":"Canada\/Eastern","ak":"America\/Anchorage","id":"America\/Boise","al":"America\/Chicago","ar":"America\/Chicago","il":"America\/Chicago","ia":"America\/Chicago","ks":"America\/Chicago","la":"America\/Chicago","mn":"America\/Chicago","ms":"America\/Chicago","mo":"America\/Chicago","ne":"America\/Chicago","ok":"America\/Chicago","sd":"America\/Chicago","tn":"America\/Chicago","tx":"America\/Chicago","wi":"America\/Chicago","co":"America\/Denver","mt":"America\/Denver","nm":"America\/Denver","ut":"America\/Denver","wy":"America\/Denver","mi":"America\/Detroit","in":"America\/Indiana\/Indianapolis","ky":"America\/Kentucky\/Louisville","ca":"America\/Los_Angeles","nv":"America\/Los_Angeles","or":"America\/Los_Angeles","wa":"America\/Los_Angeles","ct":"America\/New_York","de":"America\/New_York","fl":"America\/New_York","ga":"America\/New_York","me":"America\/New_York","md":"America\/New_York","ma":"America\/New_York","nh":"America\/New_York","nj":"America\/New_York","ny":"America\/New_York","nc":"America\/New_York","oh":"America\/New_York","pa":"America\/New_York","ri":"America\/New_York","sc":"America\/New_York","vt":"America\/New_York","va":"America\/New_York","dc":"America\/New_York","wv":"America\/New_York","nd":"America\/North_Dakota\/Center","az":"America\/Phoenix","hi":"Pacific\/Honolulu"}', true);
     $state_code = strtolower($state_code);
     if (isset($timezones[$state_code])) {
         return $timezones[$state_code];
@@ -2015,6 +2015,22 @@ function addLogs($page,$tenant,$logs){
     $logs_data['tenant_id'] = $tenant;
     $logs_data['logs'] = $logs;
     qi("logs",  _escapeArray($logs_data));
+}
+
+function isTimetoSend($timezone,$start_time="08:00",$end_time="20:00"){
+    $current_tz = getTimeZoneTime($timezone);
+    $current = strtotime($current_tz->format("2010-01-01 H:i"));
+    
+    $current_tz = getTimeZoneTime($timezone,"2010-01-03 {$start_time}");
+    $start = strtotime($current_tz->format("2010-01-01 H:i"));
+    
+    $current_tz = getTimeZoneTime($timezone,"2010-01-03 {$end_time}");
+    $end = strtotime($current_tz->format("2010-01-01 H:i"));
+    
+    if($current>$start && $current<$end){
+        return true;
+    }
+    return false;
 }
 
 ?>

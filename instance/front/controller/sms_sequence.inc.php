@@ -15,6 +15,9 @@ foreach($all_tenants as $each_tenant):
     $apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
     $sms_sequence_data = q("select * from sms_sequence where  tenant_id='{$GLOBALS['tenant_id']}' AND need_to_send_sms='1'");
     foreach ($sms_sequence_data as $each_sms) {
+        if(!isTimetoSend($each_sms["timezone"])){ //SMS will only send if current time is between 8AM - 8PM (NOTE: this time is dynamic)
+            continue;             
+        }
         $deal_info = $seq_data = array();
         $req_sms_detail = getSMSText($each_sms,$sequence);
         if ($req_sms_detail['success'] == 1) {
