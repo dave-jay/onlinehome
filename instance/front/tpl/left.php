@@ -67,7 +67,7 @@
                 }
                 ?>
                 <li>
-                    <div style="font-size: 14px; float: left; padding-top: 15px; color: rgb(110, 86, 86);">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;SMS-Email Sequence &nbsp;</div>
+                    <div style="font-size: 14px; float: left; padding-top: 15px; color: rgb(110, 86, 86);">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;SMS Sequence &nbsp;</div>
                     <div style="cursor:pointer;float: left; color: white; margin-top: 15px; font-family: verdana; width: 57px; padding: 2px 0px 5px; text-align: center;<?php print $current_style; ?>" id="call_status_img_seq" onclick="changeSequenceStatus('<?= $current_status; ?>')"><?= $status_img; ?></div>
                 </li>
             </ul>

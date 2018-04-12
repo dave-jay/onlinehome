@@ -21,7 +21,9 @@ if (!in_array($deal_source, array('44','37')) && $unique_code==1) {
 }
 if($unique_code==2){
     $agents_det = qs("select * from pd_users where tenant_id=2 and is_default='1'");
-    $apiPD->assignDeal($data['current']['id'], $agents_det['pd_id']); //3063876
+    $deal_data['user_id'] = $agents_det['pd_id'];
+    $deal_data[$conf_data['FOLLOWUP_SEQUENCE_KEY']] = 'ON';
+    $apiPD->modifyDeal($data['current']['id'], $deal_data); //3063876
 }
 
 //Getting Deal Info and change stage if pipeline id is '1' (i.e. for "Leads")
