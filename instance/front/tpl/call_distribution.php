@@ -1,72 +1,22 @@
 <div class="MyPageHeader">
     Call Distribution Settings
+    <div class="TopRight" onclick="syncSources()">
+        <i class="glyphicon glyphicon-refresh"></i>
+        Sync Sources With Pipedrive
+    </div>
 </div>
 
 <div class="page_body">
     <div class="panel-body" style="padding-left:0px;padding-right:0px;">   
         <form action="" method="post" id="userForm" novalidate="novalidate">
-            <table class="table" border='0' style="width:100%;">
-                <tr>
-                    <td style="font-weight:bold;background-color:#1294d5;color:white">Deal Source</td>
-                    <td style="font-weight:bold;background-color:#1294d5;color:white">Total Agent</td>
-                    <td style="font-weight:bold;background-color:#1294d5;color:white">Edit</td>
-                </tr>
-                <?php if (!empty($source_list)): ?>
-                    <?php foreach ($source_list as $each_source): ?>
-                        <tr>
-                            <td style="font-weight:bold;"><?php echo $each_source["source_name"] ?></td>
-                            <td style="">
-                                <?php
-                                $source_user_list = array();
-                                $source_user_list_ids = array();
-                                $source_user_list = Call_distribution::GetSourceUserIdList($each_source["pd_source_id"]);
-                                if (!empty($source_user_list)) {
-                                    if (trim($source_user_list["pd_user_id"]) != '' && trim($source_user_list["pd_user_id"]) != '[]') {
-                                        $source_user_list_ids = json_decode(trim($source_user_list["pd_user_id"]), true);
-                                    }
-                                }
-                                ?>
-                                <?php /* if (!empty($user_list)) { ?>
-                                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="height:100px;overflow:auto">
-                                  <?php foreach ($user_list as $each_user): ?>
-                                  <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="padding:2px 10px;">
-                                  <?php
-                                  $checcked_user = '';
-                                  if (in_array($each_user["pd_id"], $source_user_list_ids)) {
-                                  $checcked_user = "checked='checked'";
-                                  }
-                                  ?>
-                                  <label style="font-weight:normal;"><input type="checkbox" name="fields[call][<?php print $each_source["pd_source_id"]; ?>][<?php print $each_user["pd_id"]; ?>]" id="user_<?php print $each_user["pd_id"] ?>_<?php print $each_source["pd_source_id"] ?>" <?php print $checcked_user; ?> />&nbsp;&nbsp;<?php echo $each_user["name"]; ?></label>
-                                  </div>
-                                  <?php endforeach; ?>
-                                  </div>
-                                  <?php } else { ?>
-                                  Agent Not Available
-                                  <?php } */ ?>
-                                <?php echo count($source_user_list_ids); ?>
-                            </td>
-                            <td><label class="label label-success" style="cursor:pointer;font-size:12px;" onclick="return OpenEditPopup('<?php print $each_source['id']; ?>')">Edit</label></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="2">Record Not Available</td>
-                    </tr>
-                <?php endif; ?>
-
+            <table id="tblAgents" class="table" border='0' style="width:100%;">
+                <?php include _PATH . 'instance/front/tpl/call_distribution_data.php'; ?>
             </table>
 
             <div class="clear-space hidden-lg hidden-md">&nbsp;</div>
 
             <div class="clear-space">&nbsp;</div>
-
-            <div class="footer-btn-panel" style="height:60px;">
-                <!--
-                <input type="hidden" value="1" name="update_call" id="update_call">
-                <button id="btn_submit" class="btn green-btn" type="submit">Update</button>
-                <input id="btn_cancel" type="button" class="btn white-btn" value="Cancel" onclick="javascript:location.reload();">
-                -->
-            </div>
+             
         </form>
     </div>
     <script>
@@ -128,5 +78,20 @@
     }
     .btn-success{
         background-color: #5cb85c;
+    }
+    .tooltip-inner{
+        color: white !important;
+    }
+    .TopRight{
+        position: absolute; 
+        top: 12px; 
+        cursor: pointer; 
+        padding: 1px 8px; 
+        border-radius: 3px; 
+        background-color: yellowgreen; 
+        right: 10px; 
+        color: white; 
+        font-weight: bold; 
+        font-size: 12px;
     }
 </style>

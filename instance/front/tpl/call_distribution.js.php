@@ -64,5 +64,39 @@
         });
         return false;
     }
+    
+    function syncSources(){
+        showWait();
+        $.ajax({
+            url: _U + 'call_distribution',
+            data: {syncSources: 1},
+            success: function (r) {
+                hideWait();
+                $("#tblAgents").html(r);
+            }
+        });
+    }
+    function AddtoActive(id) {
+        showWait();
+        $.ajax({
+            url: _U + 'call_distribution',
+            data: {AddtoActive: 1, source_id: id},
+            success: function (r) {
+                hideWait();
+                $("#tblAgents").html(r);
+            }
+        });
+    }
+    function RemoveFromActive(id) {
+        showWait();
+        $.ajax({
+            url: _U + 'call_distribution',
+            data: {RemoveFromActive: 1, source_id: id},
+            success: function (r) {
+                hideWait();
+                $("#tblAgents").html(r);
+            }
+        });
+    }
 
 </script>

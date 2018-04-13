@@ -69,6 +69,47 @@ if (isset($_REQUEST['update_call']) && $_REQUEST['update_call'] == 1) {
     echo "1";
     die;
 }
+if ($_REQUEST['syncSources']) {
+    $GLOBALS['tenant_id'] = $_SESSION['user']['tenant_id'];
+    include _PATH.'instance/front/controller/define_settings.inc.php';
+    $apiPD = new apiPipeDrive($conf_data['PIPEDRIVER_API_KEY']);
+    $data = $apiPD->getAllDealFields();
+    $data = json_decode($data,true);
+    foreach($data['data'] as $each){
+        if($each['key']==$conf_data['PIPEDRIVE_SOURCE']){
+            foreach($each['options'] as $each_option){
+                $existing = qs("select * from pd_sources where tenant_id='{$GLOBALS['tenant_id']}' AND pd_source_id='{$each_option['id']}'");
+                $pd_source_new['tenant_id'] = $GLOBALS['tenant_id'];
+                $pd_source_new['pd_source_id'] = $each_option['id'];
+                $pd_source_new['source_name'] = $each_option['label'];
+                $pd_source_new['is_deleted'] = '0';
+                if(empty($existing)){
+                    qi("pd_sources",  _escapeArray($pd_source_new));
+                }else{
+                    qu("pd_sources",  _escapeArray($pd_source_new),"id='{$existing['id']}'");
+                }
+            }
+        }
+    }
+    $source_list = Call_distribution::getSourceList();
+    $user_list = Call_distribution::getUserList();
+    include _PATH . 'instance/front/tpl/call_distribution_data.php';
+    die;
+}
+if ($_REQUEST['AddtoActive']) {
+    qu("pd_sources", array("is_active" => "1"), "id='{$_REQUEST['source_id']}'");
+    $source_list = Call_distribution::getSourceList();
+    $user_list = Call_distribution::getUserList();
+    include _PATH . 'instance/front/tpl/call_distribution_data.php';
+    die;
+}
+if ($_REQUEST['RemoveFromActive']) {
+    qu("pd_sources", array("is_active" => "0"), "id='{$_REQUEST['source_id']}'");
+    $source_list = Call_distribution::getSourceList();
+    $user_list = Call_distribution::getUserList();
+    include _PATH . 'instance/front/tpl/call_distribution_data.php';
+    die;
+}
 
 $source_list = Call_distribution::getSourceList();
 $user_list = Call_distribution::getUserList();

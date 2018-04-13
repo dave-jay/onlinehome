@@ -15,7 +15,7 @@ class Call_distribution {
     }
 
     public static function getSourceList() {
-        return q("SELECT * FROM pd_sources WHERE is_deleted = 0 AND tenant_id='{$_SESSION['user']['tenant_id']}' ORDER BY pd_source_id ASC");
+        return q("SELECT * FROM pd_sources WHERE is_deleted = 0 AND tenant_id='{$_SESSION['user']['tenant_id']}' ORDER BY id ASC");
     }
 
     public static function getUserList() {
