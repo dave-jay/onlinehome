@@ -20,9 +20,11 @@ if (!in_array($deal_source, array('44','37')) && $unique_code==1) {
     die;
 }
 if($unique_code==2){
-    $agents_det = qs("select * from pd_users where tenant_id=2 and is_default='1'");
-    $deal_data['user_id'] = $agents_det['pd_id'];
     $deal_data[$conf_data['FOLLOWUP_SEQUENCE_KEY']] = 'ON';
+    if($data['current']['creator_user_id']=="990918"){
+        $agents_det = qs("select * from pd_users where tenant_id=2 and is_default='1'");
+        $deal_data['user_id'] = $agents_det['pd_id'];
+    }
     $apiPD->modifyDeal($data['current']['id'], $deal_data); //3063876
 }
 

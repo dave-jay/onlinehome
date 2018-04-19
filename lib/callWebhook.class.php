@@ -7,7 +7,7 @@ class callWebhook {
         $auth_token = $GLOBALS['AUTH_TOKEN'];
         
         if(!isset($GLOBALS['tenant_id'])) $GLOBALS['tenant_id']=1; //Temparary tenant_id set
-        $call_status = qs("select *,value as call_status from config where `key` = 'CALL_STATUS' and tenant_id='1'");
+        $call_status = qs("select *,value as call_status from config where `key` = 'CALL_STATUS' and tenant_id='{$GLOBALS['tenant_id']}'");
         if(strtolower($call_status['call_status'])!="on"){
             addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "call distribution is off");
             die;
@@ -38,6 +38,7 @@ class callWebhook {
         }
 		
 		
+        addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "aa");
         qi("agent_call_dialed",  _escapeArray(array("tenant_id"=>$GLOBALS['tenant_id'], "agent_numbers"=>$agent_numbers,"deal_id"=>$dealId,"is_redial"=>$is_redial,"customer_phone"=>$phone_value,"category"=>$filter_agent_number['group'])));
         $client = new Services_Twilio($account_sid, $auth_token);
         $deal_sid_data = q("select * from deal_sid where tenant_id='".$GLOBALS['tenant_id']."' AND status!='R' AND status!='C' AND deal_id='{$dealId}'");
@@ -50,6 +51,7 @@ class callWebhook {
             ));
         }
         try {
+            addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "bb");
 
             foreach ($filter_agent_number['agent'] as $key => $each_agent) {
                 //foreach ($agent_numbers_arr as $key => $each_agent) {
@@ -59,7 +61,8 @@ class callWebhook {
                 $params = ("tenant_id=" . $GLOBALS['tenant_id'] . "&agent_numbers=" . $agent_numbers . "&dealId=" . $dealId . "&phone_value=" . $phone_value . "&cur_agent=" . $each_agent);
                 $url_agent_calling .= $params;
                 $url_agent_received .= $params;
-
+                addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "agent: ".$agent_numbers);
+                addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "twilio: ".$GLOBALS['TWILIO_PHONE_NUMBER']);
                 $call = $client->account->calls->create($GLOBALS['TWILIO_PHONE_NUMBER'], $each_agent, $url_agent_received, array(
                     "Method" => "GET",
                     "StatusCallback" => $url_agent_calling,
@@ -69,6 +72,7 @@ class callWebhook {
                     "Timeout" => "25"
                 ));
                 echo $call->sid . "<br>";
+                addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "new sid: ".$call->sid);
                 //sleep(2);
             }
 
@@ -76,6 +80,7 @@ class callWebhook {
             echo "<br>We are calling on " . $phone_value;
             die;
         } catch (Exception $e) {
+            addLogs($_REQUEST['q'], $GLOBALS['tenant_id'], "Error: ".$e->getMessage());
             // Failed calls will throw
             echo $e;
             die;

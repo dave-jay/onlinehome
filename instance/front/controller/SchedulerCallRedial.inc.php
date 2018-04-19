@@ -8,7 +8,7 @@ foreach($all_tenants as $each_tenant):
     if(!isset($conf_data['CALL_REDIAL_TIME']) || $conf_data['CALL_REDIAL_TIME']<1){
         $conf_data['CALL_REDIAL_TIME']=1;
     }
-    $calls = q("select distinct(deal_id) as deal_id,tenant_id from agent_call_dialed where tenant_id='{$GLOBALS['tenant_id']}' AND is_received='0' AND  DATE(`created_at`) = CURDATE() AND created_at<=NOW() - INTERVAL {$pipedriver_api_key['value']} MINUTE order by id desc limit 0,10");
+    $calls = q("select distinct(deal_id) as deal_id,tenant_id from agent_call_dialed where id>8831 AND tenant_id='{$GLOBALS['tenant_id']}' AND is_received='0' AND  DATE(`created_at`) = CURDATE() AND created_at<=NOW() - INTERVAL {$conf_data['CALL_REDIAL_TIME']} MINUTE order by id desc limit 0,10");
      
     foreach ($calls as $each_call) {
         $is_received = qs("select count(*) as is_received from agent_call_dialed where tenant_id='{$GLOBALS['tenant_id']}' AND is_received='1' AND deal_id='" . $each_call['deal_id'] . "'");
@@ -48,7 +48,7 @@ foreach($all_tenants as $each_tenant):
                     if ($category != 'A' && $category != 'B' && $category != 'C') {
                         $category = 'A';
                     }
-                    $query = "select count(*) as count from agent_call_dialed where tenant_id='{$GLOBALS['tenant_id']}' AND deal_id='" . $each_call['deal_id'] . "' AND  DATE(`created_at`) = CURDATE() AND created_at>NOW() - INTERVAL {$pipedriver_api_key['value']} MINUTE order by created_at desc";
+                    $query = "select count(*) as count from agent_call_dialed where tenant_id='{$GLOBALS['tenant_id']}' AND deal_id='" . $each_call['deal_id'] . "' AND  DATE(`created_at`) = CURDATE() AND created_at>NOW() - INTERVAL {$conf_data['CALL_REDIAL_TIME']} MINUTE order by created_at desc";
                     $last_call = qs($query);
                     echo $query;
                     d($last_call);

@@ -8,16 +8,16 @@ if (count($call_list) > 0):
             <td style="display:none;"><?php echo $_SESSION['pipedrive_source'][$each_call['source_id']]['source_name']; ?></td>
             <td style="max-width: 120px; padding-left: 20px;">
                 <?php 
-                    echo "<a style='color: white; cursor: pointer;' class='label label-primary' title='View Deal in Pipedrive' target='_blank' href='https://sprout2.pipedrive.com/deal/".$each_call['deal_id']."'>". $each_call['deal_id'] . "</a><br>"; 
+                    echo "<a style='color: white; cursor: pointer;' class='label label-primary' title='View Deal in Pipedrive' target='_blank' href='".$conf_data['PIPEDRIVE_URL']."/deal/".$each_call['deal_id']."'>". $each_call['deal_id'] . "</a><br>"; 
                     echo "<div style='height:2px;'></div>";
-                    echo "<a id='deal_name_".$cnt."' style='color: gray; cursor: pointer;'  title='View Deal in Pipedrive' target='_blank' href='https://sprout2.pipedrive.com/deal/".$each_call['deal_id']."'>". $each_call['org_name'] . "</a><br>"; 
+                    echo "<a id='deal_name_".$cnt."' style='color: gray; cursor: pointer;'  title='View Deal in Pipedrive' target='_blank' href='".$conf_data['PIPEDRIVE_URL']."/deal/".$each_call['deal_id']."'>". $each_call['org_name'] . "</a><br>"; 
                     echo "<div style='height:2px;'></div>";
-                    echo "<a style='color: gray; cursor: pointer;'  title='View Deal in Pipedrive' target='_blank' href='https://sprout2.pipedrive.com/deal/".$each_call['deal_id']."'>(". $_SESSION['pipedrive_source'][$each_call['source_id']]['source_name'] . ")</a><br>"; 
+                    echo "<a style='color: gray; cursor: pointer;'  title='View Deal in Pipedrive' target='_blank' href='".$conf_data['PIPEDRIVE_URL']."/deal/".$each_call['deal_id']."'>(". $_SESSION['pipedrive_source'][$each_call['source_id']]['source_name'] . ")</a><br>"; 
                 ?>
             </td>
             <td style="max-width:150px; word-wrap: break-word;"><?php
                 if ($each_call['customer_name'] != '')
-                    echo "<a style='color:#1294D5;' title='View Deal in Pipedrive' target='_blank' href='https://sprout2.pipedrive.com/deal/".$each_call['deal_id']."'>". $each_call['customer_name'] . "</a><br>";
+                    echo "<a style='color:#1294D5;' title='View Deal in Pipedrive' target='_blank' href='".$conf_data['PIPEDRIVE_URL']."/deal/".$each_call['deal_id']."'>". $each_call['customer_name'] . "</a><br>";
                 if ($each_call['customer_phone'] != '')
                     echo $each_call['customer_phone'] . "<br>";
                 if ($each_call['customer_email'] != '')

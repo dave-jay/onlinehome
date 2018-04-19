@@ -67,3 +67,6 @@
 12 APR 2018
     INSERT INTO `config` (`id`, `tenant_id`, `key`, `value`, `created_at`, `modified_at`) VALUES (NULL, '0', 'PIPEDRIVE_SOURCE', '', '2016-02-19 01:10:17', '2016-02-19 01:10:17'), (NULL, '1', 'PIPEDRIVE_SOURCE', 'c2a6fc3129578b646ae55717ed15f03ce3ee4df0', '2016-02-19 01:10:17', '2016-02-19 01:10:17'), (NULL, '2', 'PIPEDRIVE_SOURCE', '6cc3149825570391f007ade3610101a051a4ce68', '2016-02-19 01:10:17', '2016-02-19 01:10:17');
     ALTER TABLE `pd_sources` ADD `is_active` ENUM('0','1') NOT NULL DEFAULT '0' AFTER `pd_source_id`;
+
+13 APR 2018
+    INSERT INTO `config` (`id`, `tenant_id`, `key`, `value`, `created_at`, `modified_at`) VALUES (NULL, '0', 'PIPEDRIVE_URL', '', '2016-02-19 01:10:17', '2016-02-19 01:10:17'), (NULL, '1', 'PIPEDRIVE_URL', 'https://sprout2.pipedrive.com', '2016-02-19 01:10:17', '2016-02-19 01:10:17'), (NULL, '2', 'PIPEDRIVE_URL', 'https://smartsolar.pipedrive.com', '2016-02-19 01:10:17', '2016-02-19 01:10:17');
